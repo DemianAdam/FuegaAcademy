@@ -23,7 +23,7 @@ export function SectionHeader({ tag, tagKey, title, titleKey, action, className 
   const actionLabel = action?.labelKey ? t(action.labelKey) : action?.label;
 
   return (
-    <div className={cn('flex justify-between items-end mb-12', className)}>
+    <div className={cn('flex flex-col sm:flex-row sm:justify-between sm:items-end gap-3 sm:gap-6 mb-8 sm:mb-12', className)}>
       <div>
         {tagText && (
           <p className="text-secondary font-bold text-xs uppercase tracking-widest mb-2">
@@ -31,7 +31,7 @@ export function SectionHeader({ tag, tagKey, title, titleKey, action, className 
           </p>
         )}
         {titleText && (
-          <h2 className="font-display-lg text-4xl font-extrabold text-on-surface">
+          <h2 className="font-display-lg text-3xl sm:text-4xl font-extrabold text-on-surface">
             {titleText}
           </h2>
         )}
@@ -39,10 +39,10 @@ export function SectionHeader({ tag, tagKey, title, titleKey, action, className 
       {action && (
         <Link
           to={action.href}
-          className="flex items-center gap-2 font-bold text-on-surface-variant hover:text-primary transition-colors"
+          className="flex items-center gap-2 font-bold text-on-surface-variant hover:text-primary transition-colors whitespace-nowrap self-start sm:self-auto"
         >
-          {actionLabel}
-          <span className="material-symbols-outlined" aria-hidden="true">arrow_right_alt</span>
+          <span>{actionLabel}</span>
+          <span className="material-symbols-outlined shrink-0" aria-hidden="true">arrow_right_alt</span>
         </Link>
       )}
     </div>

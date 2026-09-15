@@ -11,7 +11,7 @@ export function HeroSection() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-100px' }}
       transition={{ duration: 0.8, ease: 'easeOut' }}
-      className="relative min-h-[85vh] flex items-center overflow-hidden"
+      className="relative py-16 md:py-24 flex items-center overflow-hidden"
       aria-labelledby="hero-title"
     >
       {/* Background */}
