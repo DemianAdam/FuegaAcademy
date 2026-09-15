@@ -72,6 +72,12 @@
   --radius-lg: 0.25rem;
   --radius-xl: 0.5rem;
   --radius-full: 0.75rem;
+  --radius-card: 1rem;
+  --radius-button: 9999px;
+
+  --font-display-lg: 800 3.5rem/1.1 var(--font-family-display);
+  --font-label-md: 500 0.875rem/1.25rem var(--font-family-sans);
+  --font-body-lg: 400 1.125rem/1.75rem var(--font-family-sans);
 }
 
 @keyframes accordion-down {
