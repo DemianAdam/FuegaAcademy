@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { cn } from '../../lib/utils';
 
 type BadgeVariant = 'most-chosen' | 'new' | 'popular';
@@ -13,20 +14,18 @@ const variantStyles: Record<BadgeVariant, string> = {
   popular: 'bg-lavanda text-on-background',
 };
 
-const variantLabels: Record<BadgeVariant, string> = {
-  'most-chosen': 'Más elegido',
-  new: 'Nuevo',
-  popular: 'Popular',
-};
-
 export function Badge({ variant, className }: BadgeProps) {
+  const { t } = useTranslation('home');
+
   return (
-    <span className={cn(
-      'absolute top-4 left-4 text-[10px] font-bold px-3 py-1 rounded-full uppercase',
-      variantStyles[variant],
-      className
-    )}>
-      {variantLabels[variant]}
+    <span
+      className={cn(
+        'absolute top-4 left-4 text-[10px] font-bold px-3 py-1 rounded-full uppercase',
+        variantStyles[variant],
+        className
+      )}
+    >
+      {t(`courses.badges.${variant}`)}
     </span>
   );
 }

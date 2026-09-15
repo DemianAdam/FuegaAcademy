@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Badge } from '../ui/Badge';
 import { cn } from '../../lib/utils';
 import type { CourseData } from '../../data/courses';
@@ -8,6 +9,8 @@ interface CourseCardProps {
 }
 
 export function CourseCard({ course }: CourseCardProps) {
+  const { t } = useTranslation('home');
+
   return (
     <Link
       to={`/course/${course.id}`}
@@ -18,23 +21,27 @@ export function CourseCard({ course }: CourseCardProps) {
     >
       <div className="relative h-56 overflow-hidden">
         <img
-          alt={course.title}
+          alt={t(`courses.items.${course.id}.title`, { defaultValue: course.title })}
           src={course.imageUrl}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
         <Badge variant={course.badge} />
       </div>
       <div className="p-6">
-        <h3 className="text-xl font-bold text-on-surface mb-2">{course.title}</h3>
-        <p className="text-on-surface-variant text-sm mb-6 leading-relaxed">{course.description}</p>
+        <h3 className="text-xl font-bold text-on-surface mb-2">
+          {t(`courses.items.${course.id}.title`, { defaultValue: course.title })}
+        </h3>
+        <p className="text-on-surface-variant text-sm mb-6 leading-relaxed">
+          {t(`courses.items.${course.id}.description`, { defaultValue: course.description })}
+        </p>
         <div className="flex items-center gap-4 text-xs text-on-surface-variant mb-6">
           <span className="flex items-center gap-1">
             <span className="material-symbols-outlined text-sm" aria-hidden="true">calendar_today</span>
-            {course.duration}
+            {t(`courses.items.${course.id}.duration`, { defaultValue: course.duration })}
           </span>
           <span className="flex items-center gap-1">
             <span className="material-symbols-outlined text-sm" aria-hidden="true">video_library</span>
-            {course.format}
+            {t(`courses.items.${course.id}.format`, { defaultValue: course.format })}
           </span>
         </div>
         <button className="w-12 h-12 rounded-full border border-surface-dim flex items-center justify-center transition-colors ml-auto arrow-btn" type="button">

@@ -23,9 +23,34 @@
     "online": "online e de qualquer lugar"
   },
   "courses": {
+    "badges": {
+      "most-chosen": "Mais escolhido",
+      "new": "Novo",
+      "popular": "Popular"
+  },
     "sectionTag": "Nossos Cursos",
     "sectionTitle": "Escolha seu próximo passo.",
-    "viewAll": "Ver todos os cursos"
+    "viewAll": "Ver todos os cursos",
+    "items": {
+      "ugc-creator": {
+        "title": "UGC Content Creator",
+        "description": "Aprenda a criar conteúdo que conecta e converte para marcas reais.",
+        "duration": "4 semanas",
+        "format": "Ao vivo + Gravado"
+      },
+      "video-editing": {
+        "title": "Edição de Vídeo",
+        "description": "Domine a edição de vídeos para redes sociais e campanhas.",
+        "duration": "5 semanas",
+        "format": "Ao vivo + Gravado"
+      },
+      "languages": {
+        "title": "Idiomas para Marketers",
+        "description": "Inglês, italiano e japonês focado em marketing e negócios.",
+        "duration": "8 semanas",
+        "format": "Ao vivo + Gravado"
+      }
+    }
   },
   "talentPool": {
     "tag": "Oportunidade Exclusiva",
@@ -36,18 +61,62 @@
   "teachers": {
     "sectionTag": "Aprenda com quem faz",
     "sectionTitle": "Conheça seus professores.",
-    "viewAll": "Ver todos os professores"
+    "viewAll": "Ver todos os professores",
+    "items": {
+      "magali-valles": {
+        "role": "Paid Media Senior",
+        "description": "+6 anos de experiência. USD 1M diários gerenciados para marcas internacionais."
+      },
+      "yago-balbi": {
+        "role": "Content Creator",
+        "description": "Criador de conteúdo para marcas globais com foco em storytelling visual."
+      },
+      "martina-russo": {
+        "role": "Editora Audiovisual",
+        "description": "+8 anos de experiência em edição e pós-produção de alto impacto comercial."
+      }
+    }
   },
   "testimonials": {
     "sectionTag": "Histórias Reais",
     "sectionTitle": "Eles já transformaram suas carreiras.",
     "antes": "Antes",
-    "ahora": "Agora"
+    "ahora": "Agora",
+    "items": {
+      "magali-buvac": {
+        "beforeCompany": "Empresa EUA",
+        "beforeSalary": "USD 2.300/mês"
+      },
+      "lucas-perez": {
+        "beforeRole": "Editor Freelance",
+        "beforeCompany": "Trabalha de",
+        "beforeSalary": "Qualquer lugar"
+      },
+      "sofia-diaz": {
+        "beforeRole": "UGC Creator",
+        "beforeCompany": "Viaja e trabalha",
+        "beforeSalary": "Com marcas"
+      }
+    }
   },
   "howItWorks": {
-    "sectionTag": "Como Funciona",
-    "sectionTitle": "Aprenda em 3 passos simples."
-  },
+  "sectionTag": "Como Funciona",
+  "sectionTitle": "Aprenda em 3 passos simples.",
+  "steps": {
+    "1": {
+      "title": "Escolha seu curso",
+      "description": "Selecione o programa que melhor se adapta aos seus objetivos."
+    },
+    "2": {
+      "title": "Aprenda na prática",
+      "description": "Participe de aulas ao vivo e trabalhe em projetos com feedback real."
+    },
+    "3": {
+      "title": "Conecte-se com marcas",
+      "description": "Entre para o Talent Pool e candidata-se aos seus primeiros trabalhos remunerados."
+    }
+  }
+},
   "ctaFooter": {
     "tag": "Seu futuro começa hoje",
     "title": "Pronto para trabalhar de onde quiser?",

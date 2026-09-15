@@ -65,7 +65,7 @@
   --spacing-stack-md: 16px;
   --spacing-stack-lg: 32px;
   --spacing-gutter: 16px;
-  --spacing-margin-mobile: 20px;
+  --spacing-margin-mobile: 16px;
   --spacing-margin-desktop: 64px;
 
   --radius-default: 0.125rem;
@@ -126,5 +126,15 @@
   }
 }
 
-body { margin: 0; min-height: 100vh; }
-#root { min-height: 100vh; }
+html, body {
+  margin: 0;
+  min-height: 100vh;
+  max-width: 100vw;
+  overflow-x: hidden; /* Evita que la pantalla se mueva a los lados */
+}
+
+#root {
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+}
