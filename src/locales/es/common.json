@@ -1,0 +1,24 @@
+{
+  "appName": "Fuega Academy",
+  "nav": {
+    "courses": "Cursos",
+    "teachers": "Profesores",
+    "howItWorks": "Cómo funciona",
+    "testimonials": "Testimonios",
+    "login": "Ingresar",
+    "startNow": "Comenzar ahora"
+  },
+  "footer": {
+    "tagline": "Aprendé. Creá. Viví de eso. La academia para los creadores del futuro.",
+    "explorar": "Explorar",
+    "cursosEnVivo": "Cursos en vivo",
+    "cursosGrabados": "Cursos grabados",
+    "talleresGratuitos": "Talleres gratuitos",
+    "comunidad": "Comunidad",
+    "nuestroDiscord": "Nuestro Discord",
+    "blog": "Blog",
+    "eventos": "Eventos",
+    "contacto": "Contacto",
+    "rights": "Todos los derechos reservados."
+  }
+}

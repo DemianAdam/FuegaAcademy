@@ -1,33 +1,124 @@
-@import "tailwindcss";
+﻿@import "tailwindcss";
 
 @theme {
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
+
+  --color-primary: #506600;
+  --color-primary-container: #ccff00;
+  --color-primary-fixed: #c3f400;
+  --color-primary-fixed-dim: #abd600;
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: #161e00;
+  --color-on-primary-fixed: #161e00;
+  --color-on-primary-fixed-variant: #3c4d00;
+
+  --color-secondary: #625595;
+  --color-secondary-container: #c6b7ff;
+  --color-secondary-fixed: #e7deff;
+  --color-secondary-fixed-dim: #ccbeff;
+  --color-on-secondary: #ffffff;
+  --color-on-secondary-container: #524584;
+  --color-on-secondary-fixed: #1e0e4e;
+  --color-on-secondary-fixed-variant: #4a3d7c;
+
+  --color-tertiary: #5f5e5e;
+  --color-tertiary-container: #efeceb;
+  --color-tertiary-fixed: #e5e2e1;
+  --color-tertiary-fixed-dim: #c8c6c5;
+  --color-on-tertiary: #ffffff;
+  --color-on-tertiary-container: #6c6a6a;
+
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
+  --color-on-error: #ffffff;
+  --color-on-error-container: #93000a;
+
+  --color-surface: #fbf9f4;
+  --color-surface-bright: #fbf9f4;
+  --color-surface-dim: #dcdad5;
+  --color-surface-container: #f0eee9;
+  --color-surface-container-low: #f5f3ee;
+  --color-surface-container-high: #eae8e3;
+  --color-surface-container-highest: #e4e2dd;
+  --color-surface-tint: #506600;
+  --color-surface-variant: #e4e2dd;
+
+  --color-on-surface: #1b1c19;
+  --color-on-surface-variant: #444933;
+
+  --color-background: #fbf9f4;
+  --color-on-background: #1b1c19;
+
+  --color-outline: #747a60;
+  --color-outline-variant: #c4c9ac;
+
+  --color-inverse-surface: #30312e;
+  --color-inverse-on-surface: #f3f1ec;
+  --color-inverse-primary: #abd600;
+
+  --color-lima: #ccff00;
+  --color-lavanda: #c6b7ff;
+
+  --spacing-unit: 4px;
+  --spacing-stack-sm: 8px;
+  --spacing-stack-md: 16px;
+  --spacing-stack-lg: 32px;
+  --spacing-gutter: 16px;
+  --spacing-margin-mobile: 20px;
+  --spacing-margin-desktop: 64px;
+
+  --radius-default: 0.125rem;
+  --radius-lg: 0.25rem;
+  --radius-xl: 0.5rem;
+  --radius-full: 0.75rem;
 }
 
 @keyframes accordion-down {
-  from {
-    height: 0;
-  }
-  to {
-    height: var(--radix-accordion-content-height);
-  }
+  from { height: 0; }
+  to { height: var(--radix-accordion-content-height); }
 }
-
 @keyframes accordion-up {
-  from {
-    height: var(--radix-accordion-content-height);
-  }
-  to {
-    height: 0;
+  from { height: var(--radix-accordion-content-height); }
+  to { height: 0; }
+}
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.hero-overlay {
+  background: linear-gradient(to right, rgba(251, 249, 244, 0.95) 30%, rgba(251, 249, 244, 0.2) 100%);
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+
+.course-card:hover .arrow-btn {
+  background-color: #ccff00;
+  color: #1b1c19;
+}
+
+.before-after-card {
+  background: linear-gradient(90deg, #e4e2dd 50%, #f0eee9 50%);
+}
+
+*:focus-visible {
+  outline: 2px solid #ccff00;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
-body {
-  margin: 0;
-  min-height: 100vh;
-}
-
-#root {
-  min-height: 100vh;
-}
+body { margin: 0; min-height: 100vh; }
+#root { min-height: 100vh; }

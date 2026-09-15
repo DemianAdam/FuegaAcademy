@@ -1,0 +1,71 @@
+{
+  "nav": {
+    "courses": "Courses",
+    "teachers": "Teachers",
+    "howItWorks": "How it works",
+    "testimonials": "Testimonials",
+    "login": "Login",
+    "startNow": "Start now"
+  },
+  "hero": {
+    "tagline": "Learn. Grow. Work from anywhere.",
+    "headlinePart1": "Build the digital career you always ",
+    "headlinePart2": "imagined.",
+    "subheadline": "Live and recorded courses taught by professionals who work for global brands.",
+    "ctaPrimary": "View courses",
+    "ctaSecondary": "Learn more"
+  },
+  "stats": {
+    "heading": "Our impact in numbers",
+    "students": "students in the entire community",
+    "rating": "average rating",
+    "companies": "companies hired alumni",
+    "online": "online and from anywhere"
+  },
+  "courses": {
+    "sectionTag": "Our Courses",
+    "sectionTitle": "Choose your next step.",
+    "viewAll": "View all courses"
+  },
+  "talentPool": {
+    "tag": "Exclusive Opportunity",
+    "title": "Boost your career with our Talent Pool",
+    "description": "Upon completing your courses, you can apply to join our talent pool of creators and professionals. We connect you directly with global brands for your first real projects.",
+    "ctaLabel": "Learn more about the Talent Pool"
+  },
+  "teachers": {
+    "sectionTag": "Learn from those who do",
+    "sectionTitle": "Meet your teachers.",
+    "viewAll": "View all teachers"
+  },
+  "testimonials": {
+    "sectionTag": "Real Stories",
+    "sectionTitle": "They already transformed their careers.",
+    "antes": "Before",
+    "ahora": "Now"
+  },
+  "howItWorks": {
+    "sectionTag": "How it Works",
+    "sectionTitle": "Learn in 3 simple steps."
+  },
+  "ctaFooter": {
+    "tag": "Your future starts today",
+    "title": "Ready to work from anywhere?",
+    "description": "Join Fuega Academy and start today.",
+    "ctaLabel": "View courses",
+    "studentsCount": "+3.000 students are already learning"
+  },
+  "footer": {
+    "tagline": "Learn. Create. Live from it. The academy for the creators of the future.",
+    "explorar": "Explore",
+    "cursosEnVivo": "Live courses",
+    "cursosGrabados": "Recorded courses",
+    "talleresGratuitos": "Free workshops",
+    "comunidad": "Community",
+    "nuestroDiscord": "Our Discord",
+    "blog": "Blog",
+    "eventos": "Events",
+    "contacto": "Contact",
+    "rights": "All rights reserved."
+  }
+}

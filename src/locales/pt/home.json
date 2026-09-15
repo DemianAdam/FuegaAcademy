@@ -1,0 +1,71 @@
+{
+  "nav": {
+    "courses": "Cursos",
+    "teachers": "Professores",
+    "howItWorks": "Como funciona",
+    "testimonials": "Depoimentos",
+    "login": "Entrar",
+    "startNow": "Começar agora"
+  },
+  "hero": {
+    "tagline": "Aprenda. Cresça. Trabalhe de onde quiser.",
+    "headlinePart1": "Construa a carreira digital que sempre ",
+    "headlinePart2": "imaginou.",
+    "subheadline": "Cursos ao vivo e gravados ministrados por profissionais que trabalham para marcas globais.",
+    "ctaPrimary": "Ver cursos",
+    "ctaSecondary": "Saiba mais"
+  },
+  "stats": {
+    "heading": "Nosso impacto em números",
+    "students": "alunos em toda a comunidade",
+    "rating": "avaliação média",
+    "companies": "empresas contrataram alunos",
+    "online": "online e de qualquer lugar"
+  },
+  "courses": {
+    "sectionTag": "Nossos Cursos",
+    "sectionTitle": "Escolha seu próximo passo.",
+    "viewAll": "Ver todos os cursos"
+  },
+  "talentPool": {
+    "tag": "Oportunidade Exclusiva",
+    "title": "Impulsione sua carreira com nosso Pool de Talentos",
+    "description": "Ao finalizar seus cursos, você pode se candidatar para fazer parte do nosso banco de talentos de criadores e profissionais. Conectamos você diretamente com marcas globais para seus primeiros projetos reais.",
+    "ctaLabel": "Saiba mais sobre o Talent Pool"
+  },
+  "teachers": {
+    "sectionTag": "Aprenda com quem faz",
+    "sectionTitle": "Conheça seus professores.",
+    "viewAll": "Ver todos os professores"
+  },
+  "testimonials": {
+    "sectionTag": "Histórias Reais",
+    "sectionTitle": "Eles já transformaram suas carreiras.",
+    "antes": "Antes",
+    "ahora": "Agora"
+  },
+  "howItWorks": {
+    "sectionTag": "Como Funciona",
+    "sectionTitle": "Aprenda em 3 passos simples."
+  },
+  "ctaFooter": {
+    "tag": "Seu futuro começa hoje",
+    "title": "Pronto para trabalhar de onde quiser?",
+    "description": "Junte-se à Fuega Academy e comece hoje.",
+    "ctaLabel": "Ver cursos",
+    "studentsCount": "+3.000 alunos já estão aprendendo"
+  },
+  "footer": {
+    "tagline": "Aprenda. Crie. Viva disso. A academia para os criadores do futuro.",
+    "explorar": "Explorar",
+    "cursosEnVivo": "Cursos ao vivo",
+    "cursosGrabados": "Cursos gravados",
+    "talleresGratuitos": "Oficinas gratuitas",
+    "comunidad": "Comunidade",
+    "nuestroDiscord": "Nosso Discord",
+    "blog": "Blog",
+    "eventos": "Eventos",
+    "contacto": "Contato",
+    "rights": "Todos os direitos reservados."
+  }
+}
