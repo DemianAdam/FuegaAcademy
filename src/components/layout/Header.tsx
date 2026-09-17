@@ -4,10 +4,10 @@ import { useLanguage } from '../../lib/LanguageContext';
 import { cn } from '../../lib/utils';
 
 const navLinks = [
-  { href: '#cursos', labelKey: 'nav.courses' },
-  { href: '#profesores', labelKey: 'nav.teachers' },
-  { href: '#como-funciona', labelKey: 'nav.howItWorks' },
-  { href: '#testimonios', labelKey: 'nav.testimonials' },
+  { href: '/courses', labelKey: 'nav.courses' },
+  { href: '/#profesores', labelKey: 'nav.teachers' },
+  { href: '/#como-funciona', labelKey: 'nav.howItWorks' },
+  { href: '/#testimonios', labelKey: 'nav.testimonials' },
 ] as const;
 
 const languages = [

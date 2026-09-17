@@ -20,5 +20,16 @@
     "eventos": "Eventos",
     "contacto": "Contacto",
     "rights": "Todos los derechos reservados."
+  },
+  "coursesPage": {
+    "handwritten": "Encuentra tu próximo paso",
+    "title": "Explora nuestros cursos",
+    "all": "Todos",
+    "live": "En Vivo",
+    "recorded": "Grabados",
+    "proBadge": "Membresía PRO",
+    "proTitle": "Acceso total a todos los cursos grabados.",
+    "proDesc": "Suscribite y empezá a aprender a tu ritmo con más de 250 testimonios de éxito.",
+    "proCta": "Ver planes"
   }
 }

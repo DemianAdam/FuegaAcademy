@@ -20,5 +20,16 @@
     "eventos": "Events",
     "contacto": "Contact",
     "rights": "All rights reserved."
+  },
+  "coursesPage": {
+    "handwritten": "Find your next step",
+    "title": "Explore our courses",
+    "all": "All",
+    "live": "Live",
+    "recorded": "Recorded",
+    "proBadge": "PRO Membership",
+    "proTitle": "Total access to all recorded courses.",
+    "proDesc": "Subscribe and start learning at your own pace with over 250 success stories.",
+    "proCta": "See plans"
   }
 }
