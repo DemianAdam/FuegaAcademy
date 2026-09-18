@@ -1,0 +1,53 @@
+{
+  
+  "sidebar": {
+    "courses": "Mis Cursos",
+    "calendar": "Calendario",
+    "community": "Comunidad",
+    "profile": "Perfil",
+    "role": "Creador Digital"
+  },
+  "welcome": {
+    "greeting": "¡Hola, {{name}}! 👋",
+    "subtitle": "Es momento de <1>aprender hoy</1> para trabajar desde cualquier lugar.",
+    "note": "Estás a solo 2 clases de terminar tu curso actual."
+  },
+  "coursesSection": {
+    "title": "Mis Cursos en progreso",
+    "viewAll": "Ver todos"
+  },
+  "courseCard": {
+    "progress": "Progreso",
+    "classes": "{{completed}}/{{total}} clases",
+    "creatorCategory": "CREATOR ECONOMY",
+    "marketingCategory": "MARKETING"
+  },
+  "communitySection": {
+    "title": "Comunidad que inspira",
+    "timeAgo": "Hace 2 horas",
+    "postContent": "¡Acabo de conseguir mi primer cliente de edición gracias a lo que aprendí en el módulo 4! La clave fue el tip de cómo presentar el portfolio. ¡Vamos que se puede!",
+    "comments": "{{count}} comentarios"
+  },
+  "liveClass": {
+    "badge": "En Vivo",
+    "title": "Q&A con Mentores: Monetización",
+    "schedule": "Hoy a las 19:00 HS (GMT-3). Prepará tus dudas sobre presupuestos.",
+    "join": "Unirse a la sesión",
+    "joined": "Sesión Conectada ✓"
+  },
+  "recommendation": {
+    "quote": "Tu próxima versión <0></0> empieza hoy."
+  },
+  "activityStats": {
+    "title": "Tu actividad",
+    "streak": "Racha de estudio",
+    "streakValue": "{{days}} días 🔥",
+    "skills": "Habilidades ganadas"
+  },
+  "footer": {
+    "copyright": "© 2024 Fuega Academy. Aprendé. Creá. Viví de eso.",
+    "privacy": "Privacidad",
+    "support": "Soporte",
+    "community": "Comunidad"
+  }
+}

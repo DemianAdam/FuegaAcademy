@@ -22,7 +22,7 @@ export function CTAFooterSection() {
       className="bg-on-background py-24 px-margin-desktop relative overflow-hidden"
       aria-labelledby="cta-footer-heading"
     >
-      <div className="absolute inset-0 opacity-10 pointer-events-none bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-lima via-transparent to-transparent" aria-hidden="true" />
+      <div className="absolute inset-0 opacity-10 pointer-events-none bg-[radial-gradient(circle_at_center,var(--tw-gradient-stops))] from-lima via-transparent to-transparent" aria-hidden="true" />
       <div className="relative z-10 flex flex-col md:flex-row justify-between items-center gap-10">
         <motion.div
           initial={{ opacity: 0, x: -40 }}
