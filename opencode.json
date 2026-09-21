@@ -1,0 +1,30 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "project": {
+    "name": "fuega-academy",
+    "framework": "react-vite-convex-tailwind"
+  },
+  "agents": {
+    "frontend-component": {
+      "mode": "all",
+      "prompt": ".opencode/agents/frontend-component.md",
+      "tools": ["read", "edit", "write", "glob", "grep", "bash"],
+      "description": "Specialist in building self-contained React components with direct Convex queries/mutations, Radix UI, Tailwind v4, and i18n."
+    },
+    "convex-architect": {
+      "mode": "all",
+      "prompt": ".opencode/agents/convex-architect.md",
+      "tools": ["read", "edit", "write", "glob", "grep", "bash"],
+      "description": "Universal Convex architect agent with modular folder structure, Zod v4 validation, zodOutputToConvex schemas, custom function wrappers, and relational triggers."
+    },
+    "i18n-localization-agent": {
+      "mode": "all",
+      "prompt": ".opencode/agents/i18n-localization-agent.md",
+      "tools": ["read", "edit", "write", "glob", "grep"],
+      "description": "Specialist in maintaining translation parity across English, Spanish, and Portuguese localization JSON files and i18next contexts."
+    }
+  },
+  "skills": {
+    "path": ".opencode/skills"
+  }
+}

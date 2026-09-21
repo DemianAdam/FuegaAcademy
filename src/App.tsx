@@ -5,6 +5,8 @@ import { LanguageProvider } from './lib/LanguageContext';
 import './lib/i18n';
 import { MainLayout } from './components/layout';
 import { Home } from './pages/Home';
+import { CoursePage } from './pages/CoursePage';
+import { CoursesPage } from './pages/CoursesPage';
 import { Dashboard } from './pages/Dashboard';
 
 function AppRoutes() {
@@ -12,7 +14,8 @@ function AppRoutes() {
     <Routes>
       <Route path="/:lang?" element={<MainLayout />}>
         <Route index element={<Home />} />
-        {/* Future routes will go here */}
+        <Route path="courses" element={<CoursesPage />} />
+        <Route path="course/:slug" element={<CoursePage />} />
       </Route>
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/:lang/dashboard" element={<Dashboard />} />

@@ -5,3 +5,8 @@ export * from './LanguageSlider';
 export * from './SectionHeader';
 export * from './Badge';
 export * from './Avatar';
+export * from './Accordion';
+export * from './Tabs';
+export * from './Dialog';
+export * from './DropdownMenu';
+export * from './Tooltip';
