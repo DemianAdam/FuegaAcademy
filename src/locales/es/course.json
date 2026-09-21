@@ -1,0 +1,50 @@
+{
+  "badges": {
+    "mostChosen": "Más Elegido",
+    "new": "Nuevo",
+    "popular": "Popular"
+  },
+  "details": {
+    "lifetimeAccess": "Acceso de por vida",
+    "notFoundTitle": "Curso no encontrado",
+    "notFoundDesc": "El curso que buscas no existe o fue removido.",
+    "backHome": "Volver al inicio"
+  },
+  "tabs": {
+    "overview": "Resumen",
+    "curriculum": "Programa de Estudios",
+    "mentor": "Profesor"
+  },
+  "overviewTab": {
+    "title": "Lo que vas a lograr"
+  },
+  "curriculumTab": {
+    "title": "Módulos del Curso",
+    "description": "Desplegá cada sección para ver el contenido detallado."
+  },
+  "pricing": {
+    "enrollment": "Inscripción",
+    "live": "Vivo",
+    "recorded": "Grabado",
+    "singlePayment": "pago único"
+  },
+  "schedules": {
+    "selectGroup": "Elegí tu grupo y horarios:",
+    "limitedSpots": "Cupos limitados",
+    "full": "Completo",
+    "spotsFree": "{{count}} lugares libres"
+  },
+  "enrollment": {
+    "button": "Inscribirme Ahora",
+    "securePayment": "🔒 Pago seguro vía Stripe / PayPal. Cupos atómicos garantizados."
+  },
+  "days": {
+    "lunes": "Lunes",
+    "martes": "Martes",
+    "miércoles": "Miércoles",
+    "jueves": "Jueves",
+    "viernes": "Viernes",
+    "sábado": "Sábado",
+    "domingo": "Domingo"
+  }
+}
