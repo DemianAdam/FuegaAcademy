@@ -9,7 +9,7 @@ import { PolaroidFrame } from '../components/shared/PolaroidFrame';
 
 export function CoursePage() {
   const { slug } = useParams<{ slug: string }>();
-  useTranslation('course');
+  const { t } = useTranslation('course');
   const [formatType, setFormatType] = useState<'live' | 'recorded'>('live');
   
   const course = courses.find((c) => c.id === slug);
@@ -21,10 +21,10 @@ export function CoursePage() {
   if (!course) {
     return (
       <div className="min-h-screen bg-surface flex flex-col items-center justify-center px-4">
-        <h1 className="font-display-lg text-3xl font-bold text-on-surface mb-2">Curso no encontrado</h1>
-        <p className="text-on-surface-variant mb-6">El curso que buscas no existe o fue removido.</p>
+        <h1 className="font-display-lg text-3xl font-bold text-on-surface mb-2">{t('details.notFoundTitle')}</h1>
+        <p className="text-on-surface-variant mb-6">{t('details.notFoundDesc')}</p>
         <Link to="/">
-          <Button variant="primary">Volver al inicio</Button>
+          <Button variant="primary">{t('details.backHome')}</Button>
         </Link>
       </div>
     );
@@ -37,7 +37,7 @@ export function CoursePage() {
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-7 space-y-6">
             <span className="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-bold uppercase tracking-wider">
-              {course.badge === 'most-chosen' ? 'Más Elegido' : course.badge === 'new' ? 'Nuevo' : 'Popular'}
+              {course.badge === 'most-chosen' ? t('badges.mostChosen') : course.badge === 'new' ? t('badges.new') : t('badges.popular')}
             </span>
             <h1 className="font-display-lg text-4xl md:text-5xl font-black tracking-tight text-on-surface">
               {course.title}
@@ -56,7 +56,7 @@ export function CoursePage() {
               </div>
               <div className="flex items-center gap-2">
                 <span className="material-symbols-outlined text-primary">verified</span>
-                <span className="text-sm font-medium">Acceso de por vida</span>
+                <span className="text-sm font-medium">{t('details.lifetimeAccess')}</span>
               </div>
             </div>
           </div>
@@ -78,15 +78,15 @@ export function CoursePage() {
         <div className="lg:col-span-8">
           <Tabs defaultValue="overview" className="w-full">
             <TabsList>
-              <TabsTrigger value="overview">Resumen</TabsTrigger>
-              <TabsTrigger value="curriculum">Programa de Estudios</TabsTrigger>
-              <TabsTrigger value="mentor">Profesor</TabsTrigger>
+              <TabsTrigger value="overview">{t('tabs.overview')}</TabsTrigger>
+              <TabsTrigger value="curriculum">{t('tabs.curriculum')}</TabsTrigger>
+              <TabsTrigger value="mentor">{t('tabs.mentor')}</TabsTrigger>
             </TabsList>
 
             {/* Overview Tab */}
             <TabsContent value="overview" className="space-y-8">
               <div>
-                <h2 className="text-2xl font-bold mb-4">Lo que vas a lograr</h2>
+                <h2 className="text-2xl font-bold mb-4">{t('overviewTab.title')}</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {course.achievements.map((item, idx) => (
                     <div key={idx} className="flex gap-3 p-4 rounded-xl bg-surface-container-low border border-outline-variant">
@@ -114,8 +114,8 @@ export function CoursePage() {
             {/* Curriculum Tab */}
             <TabsContent value="curriculum" className="space-y-6">
               <div>
-                <h2 className="text-2xl font-bold mb-2">Módulos del Curso</h2>
-                <p className="text-on-surface-variant text-sm mb-6">Desplegá cada sección para ver el contenido detallado.</p>
+                <h2 className="text-2xl font-bold mb-2">{t('curriculumTab.title')}</h2>
+                <p className="text-on-surface-variant text-sm mb-6">{t('curriculumTab.description')}</p>
               </div>
               <Accordion type="single" collapsible defaultValue="module-1">
                 {course.modules.map((mod) => (
@@ -161,35 +161,35 @@ export function CoursePage() {
         <div className="lg:col-span-4">
           <div className="sticky top-24 p-6 rounded-2xl border border-outline-variant bg-surface-container-low space-y-6 shadow-xl">
             <div className="flex justify-between items-center">
-              <span className="font-bold text-lg text-on-surface">Inscripción</span>
+              <span className="font-bold text-lg text-on-surface">{t('pricing.enrollment')}</span>
               <div className="flex gap-1 bg-surface p-1 rounded-lg border border-outline-variant">
                 <button
                   onClick={() => setFormatType('live')}
                   className={`px-3 py-1.5 rounded-md text-xs font-bold transition-colors ${formatType === 'live' ? 'bg-primary text-on-primary' : 'text-on-surface-variant hover:text-on-surface'}`}
                 >
-                  Vivo
+                  {t('pricing.live')}
                 </button>
                 <button
                   onClick={() => setFormatType('recorded')}
                   className={`px-3 py-1.5 rounded-md text-xs font-bold transition-colors ${formatType === 'recorded' ? 'bg-primary text-on-primary' : 'text-on-surface-variant hover:text-on-surface'}`}
                 >
-                  Grabado
+                  {t('pricing.recorded')}
                 </button>
               </div>
             </div>
 
             <div className="text-3xl font-black text-on-surface">
               {formatType === 'live' ? course.pricing.live.price : course.pricing.recorded.price}
-              <span className="text-xs font-normal text-on-surface-variant ml-2">pago único</span>
+              <span className="text-xs font-normal text-on-surface-variant ml-2">{t('pricing.singlePayment')}</span>
             </div>
 
             {formatType === 'live' && course.schedules && course.schedules.length > 0 && (
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
                   <label className="text-xs font-bold uppercase tracking-wider text-on-surface-variant">
-                    Elegí tu grupo y horarios:
+                    {t('schedules.selectGroup')}
                   </label>
-                  <span className="text-xs text-primary font-medium">Cupos limitados</span>
+                  <span className="text-xs text-primary font-medium">{t('schedules.limitedSpots')}</span>
                 </div>
                 <div className="space-y-2.5">
                   {course.schedules.map((sched) => {
@@ -216,14 +216,14 @@ export function CoursePage() {
                           <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${
                             isFull ? 'bg-error/10 text-error' : 'bg-surface-container-high text-on-surface-variant'
                           }`}>
-                            {isFull ? 'Completo' : `${sched.capacity - sched.enrolledCount} lugares libres`}
+                            {isFull ? t('schedules.full') : t('schedules.spotsFree', { count: sched.capacity - sched.enrolledCount })}
                           </span>
                         </div>
                         <div className="space-y-1">
                           {sched.sessions.map((sess, idx) => (
                             <div key={idx} className="flex items-center gap-1.5 text-xs text-on-surface-variant">
                               <span className="material-symbols-outlined text-xs text-primary">event</span>
-                              <span className="font-medium text-on-surface">{sess.day}:</span>
+                              <span className="font-medium text-on-surface">{t(`days.${sess.day.toLowerCase()}`, { defaultValue: sess.day })}:</span>
                               <span>{sess.startTime} - {sess.endTime}hs</span>
                             </div>
                           ))}
@@ -237,10 +237,10 @@ export function CoursePage() {
 
             <div className="space-y-3 pt-2">
               <Button variant="primary" className="w-full py-4 font-bold text-base shadow-md">
-                Inscribirme Ahora
+                {t('enrollment.button')}
               </Button>
               <p className="text-center text-xs text-on-surface-variant">
-                🔒 Pago seguro vía Stripe / PayPal. Cupos atómicos garantizados.
+                {t('enrollment.securePayment')}
               </p>
             </div>
           </div>

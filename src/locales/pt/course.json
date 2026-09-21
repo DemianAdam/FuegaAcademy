@@ -1,0 +1,50 @@
+{
+  "badges": {
+    "mostChosen": "Mais Popular",
+    "new": "Novo",
+    "popular": "Em alta"
+  },
+  "details": {
+    "lifetimeAccess": "Acesso vitalício",
+    "notFoundTitle": "Curso não encontrado",
+    "notFoundDesc": "O curso que você procura não existe ou foi removido.",
+    "backHome": "Voltar ao início"
+  },
+  "tabs": {
+    "overview": "Resumo",
+    "curriculum": "Programa de Estudos",
+    "mentor": "Professor"
+  },
+  "overviewTab": {
+    "title": "O que você vai alcançar"
+  },
+  "curriculumTab": {
+    "title": "Módulos do Curso",
+    "description": "Expanda cada seção para ver o conteúdo detalhado."
+  },
+  "pricing": {
+    "enrollment": "Inscrição",
+    "live": "Ao Vivo",
+    "recorded": "Gravado",
+    "singlePayment": "pagamento único"
+  },
+  "schedules": {
+    "selectGroup": "Escolha seu grupo e horários:",
+    "limitedSpots": "Vagas limitadas",
+    "full": "Completo",
+    "spotsFree": "{{count}} vagas livres"
+  },
+  "enrollment": {
+    "button": "Inscreva-se Agora",
+    "securePayment": "🔒 Pagamento seguro via Stripe / PayPal. Vagas atômicas garantidas."
+  },
+  "days": {
+    "lunes": "Segunda-feira",
+    "martes": "Terça-feira",
+    "miércoles": "Quarta-feira",
+    "jueves": "Quinta-feira",
+    "viernes": "Sexta-feira",
+    "sábado": "Sábado",
+    "domingo": "Domingo"
+  }
+}
