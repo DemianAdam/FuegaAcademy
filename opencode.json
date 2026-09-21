@@ -16,6 +16,12 @@
       "prompt": ".opencode/agents/convex-architect.md",
       "tools": ["read", "edit", "write", "glob", "grep", "bash"],
       "description": "Universal Convex architect agent with modular folder structure, Zod v4 validation, zodOutputToConvex schemas, custom function wrappers, and relational triggers."
+    },
+    "i18n-localization-agent": {
+      "mode": "all",
+      "prompt": ".opencode/agents/i18n-localization-agent.md",
+      "tools": ["read", "edit", "write", "glob", "grep"],
+      "description": "Specialist in maintaining translation parity across English, Spanish, and Portuguese localization JSON files and i18next contexts."
     }
   },
   "skills": {
