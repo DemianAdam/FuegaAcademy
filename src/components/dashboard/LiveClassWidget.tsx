@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { LiveClass } from '../../data/mockDashboardData';
+import { Button } from '../ui/Button';
 
 interface LiveClassWidgetProps {
   liveClass: LiveClass;
 }
 
-export function LiveClassWidget({}: LiveClassWidgetProps) {
+export function LiveClassWidget(_props: LiveClassWidgetProps) {
   const { t } = useTranslation('dashboard');
   const [joined, setJoined] = useState(false);
 
@@ -23,14 +24,15 @@ export function LiveClassWidget({}: LiveClassWidgetProps) {
       </div>
       <h3 className="font-headline-lg text-[22px] mb-2">{t('liveClass.title')}</h3>
       <p className="text-surface-dim mb-6 text-sm">{t('liveClass.schedule')}</p>
-      <button
+      <Button
+        variant="primary"
+        size="full"
         onClick={handleJoin}
-        className="w-full py-3 bg-primary-fixed text-on-primary-fixed font-bold rounded-lg flex items-center justify-center gap-2 transform transition-transform hover:scale-[1.02] active:scale-95"
-        type="button"
+        className="bg-primary-fixed text-on-primary-fixed hover:scale-[1.02] active:scale-95"
       >
         <span className="material-symbols-outlined">videocam</span>
         {joined ? t('liveClass.joined') : t('liveClass.join')}
-      </button>
+      </Button>
     </div>
   );
 }

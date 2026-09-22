@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useLanguage } from '../../lib/LanguageContext';
 import { cn } from '../../lib/utils';
+import { Button } from '../ui/Button';
 
 const navLinks = [
   { href: '/courses', labelKey: 'nav.courses' },
@@ -83,9 +84,9 @@ export function Header() {
             {t('nav.login')}
           </Link>
           <Link to="/register">
-            <button className="px-5 py-2.5 bg-lima text-on-background font-bold rounded-full text-label-md hover:scale-105 transition-transform whitespace-nowrap">
+            <Button variant="primary" className="rounded-full px-5 py-2.5">
               {t('nav.startNow')}
-            </button>
+            </Button>
           </Link>
         </div>
 
@@ -105,15 +106,17 @@ export function Header() {
             ))}
           </div>
 
-          <button
+          <Button
+            variant="ghost"
+            size="sm"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="p-2 text-on-surface rounded-lg focus:outline-none"
             aria-label="Toggle Menu"
+            className="p-2 rounded-lg"
           >
             <span className="material-symbols-outlined text-2xl">
               {isMenuOpen ? 'close' : 'menu'}
             </span>
-          </button>
+          </Button>
         </div>
       </nav>
 
@@ -139,9 +142,9 @@ export function Header() {
             {t('nav.login')}
           </Link>
           <Link to="/register" onClick={() => setIsMenuOpen(false)}>
-            <button className="w-full py-3 bg-lima text-on-background font-bold rounded-full text-center shadow-sm">
+            <Button variant="primary" className="w-full rounded-full py-3">
               {t('nav.startNow')}
-            </button>
+            </Button>
           </Link>
         </div>
       )}

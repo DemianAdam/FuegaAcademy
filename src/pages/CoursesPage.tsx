@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { courses } from '../data/courses';
 import { PolaroidFrame } from '../components/shared/PolaroidFrame';
+import { Button } from '../components/ui/Button';
 
 export function CoursesPage() {
   const { t } = useTranslation('common');
@@ -29,31 +30,31 @@ export function CoursesPage() {
         </div>
 
         {/* Filters Toggle */}
-        <div className="flex bg-surface-container-highest p-1 rounded-xl w-fit border border-outline-variant">
-          <button
+        <div className="flex bg-surface-container-highest p-1 rounded-xl w-fit border border-outline-variant gap-1">
+          <Button
+            variant={filter === 'all' ? 'primary' : 'ghost'}
+            size="sm"
             onClick={() => setFilter('all')}
-            className={`px-6 py-2 font-label-md text-sm rounded-lg transition-all ${
-              filter === 'all' ? 'bg-black text-white font-bold shadow-sm' : 'text-on-surface-variant hover:bg-surface'
-            }`}
+            className={filter === 'all' ? 'shadow-sm' : 'text-on-surface-variant'}
           >
             {t('coursesPage.all')}
-          </button>
-          <button
+          </Button>
+          <Button
+            variant={filter === 'en-vivo' ? 'primary' : 'ghost'}
+            size="sm"
             onClick={() => setFilter('en-vivo')}
-            className={`px-6 py-2 font-label-md text-sm rounded-lg transition-all ${
-              filter === 'en-vivo' ? 'bg-black text-white font-bold shadow-sm' : 'text-on-surface-variant hover:bg-surface'
-            }`}
+            className={filter === 'en-vivo' ? 'shadow-sm' : 'text-on-surface-variant'}
           >
             {t('coursesPage.live')}
-          </button>
-          <button
+          </Button>
+          <Button
+            variant={filter === 'grabado' ? 'primary' : 'ghost'}
+            size="sm"
             onClick={() => setFilter('grabado')}
-            className={`px-6 py-2 font-label-md text-sm rounded-lg transition-all ${
-              filter === 'grabado' ? 'bg-black text-white font-bold shadow-sm' : 'text-on-surface-variant hover:bg-surface'
-            }`}
+            className={filter === 'grabado' ? 'shadow-sm' : 'text-on-surface-variant'}
           >
             {t('coursesPage.recorded')}
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -90,9 +91,9 @@ export function CoursesPage() {
             <div className="mt-6 flex justify-between items-center">
               <span className="text-xl font-black text-on-surface">{course.pricing.live.price}</span>
               <Link to={`/course/${course.id}`}>
-                <button className="bg-black text-white px-5 py-2 font-label-md text-xs font-bold rounded-lg hover:-translate-y-0.5 transition-all shadow-md">
+                <Button variant="secondary" size="sm" className="shadow-md">
                   Ver programa
-                </button>
+                </Button>
               </Link>
             </div>
           </div>
@@ -110,10 +111,10 @@ export function CoursesPage() {
             <p className="text-on-secondary-container opacity-80 mb-6 text-sm md:text-base leading-relaxed">
               {t('coursesPage.proDesc')}
             </p>
-            <button className="bg-white text-on-secondary-fixed font-bold px-8 py-3 rounded-xl hover:translate-x-1 transition-transform inline-flex items-center gap-2 shadow-md text-sm">
+            <Button variant="secondary" className="bg-white text-on-secondary-fixed shadow-md">
               {t('coursesPage.proCta')}
               <span className="material-symbols-outlined text-lg">arrow_forward</span>
-            </button>
+            </Button>
           </div>
           <div className="hidden md:block absolute -right-6 -bottom-6 w-60 h-60 opacity-15">
             <span className="material-symbols-outlined text-[180px]" style={{ fontVariationSettings: "'FILL' 1" }}>school</span>
