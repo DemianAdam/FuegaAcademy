@@ -1,19 +1,6 @@
 import { defineTable } from "convex/server";
-import { v } from "convex/values";
+import { zodOutputToConvex } from "convex-helpers/server/zod";
+import { mentorValidator } from "./validators";
 
-export const mentorSchema = defineTable({
-  name: v.string(),
-  title: v.string(),
-  bio: v.string(),
-  quote: v.optional(v.string()),
-  imageUrl: v.string(),
-  skills: v.array(v.string()),
-  stats: v.optional(
-    v.array(
-      v.object({
-        label: v.string(),
-        value: v.string(),
-      })
-    )
-  ),
-}).index("by_name", ["name"]);
+export const mentorSchema = defineTable(zodOutputToConvex(mentorValidator))
+  .index("by_name", ["name"]);

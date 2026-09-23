@@ -1,8 +1,6 @@
 import { defineTable } from "convex/server";
-import { v } from "convex/values";
+import { zodOutputToConvex } from "convex-helpers/server/zod";
+import { moduleValidator } from "./validators";
 
-export const moduleSchema = defineTable({
-  courseId: v.id("courses"),
-  title: v.string(),
-  items: v.array(v.string()),
-}).index("by_course", ["courseId"]);
+export const moduleSchema = defineTable(zodOutputToConvex(moduleValidator))
+  .index("by_course", ["courseId"]);
