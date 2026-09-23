@@ -31,3 +31,6 @@ Whenever a request is made related to a specific domain or topic, delegate to th
 - **Styling:** Tailwind CSS v4 with Material Design 3 tokens.
 - **i18n:** Ensure all new user-facing text is added across `en`, `es`, and `pt` translation JSON files.
 - **Schedules / Capacity:** Course schedules support multi-session weekly blocks with capacity and enrollment tracking (`schedules` table in Convex schema).
+
+## Agent Interaction Rule: Code Review & Permission
+- **Always Show Code & Ask Permission:** Agents must **ALWAYS** present the proposed code/changes and explicitly ask for user permission before writing, editing, or implementing any piece of code.
