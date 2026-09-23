@@ -81,16 +81,33 @@ const mutationWithTriggers = customMutation(rawMutation, customCtx(triggersDB));
 export const zMutation = zCustomMutation(mutationWithTriggers, NoOp);
 ```
 
-### 5. Relational Triggers (`convex/[domain]/triggers.ts`)
-Subscribe to database events for cascading deletes and guard checks using `subscribeTrigger`.
-```ts
-import { subscribeTrigger } from "../triggers";
+### 5. Relational Triggers (`convex/[domain]/triggers.ts` & `convex/triggers.ts`)
+Define and export typed trigger objects in domain `triggers.ts` files, and centralize their registration in `convex/triggers.ts` to prevent ES module hoisting and circular dependency issues.
 
-subscribeTrigger("items", {
+`convex/[domain]/triggers.ts`:
+```ts
+import { DeleteOperation } from "../triggers";
+
+export const itemTriggers: {
+  delete: DeleteOperation<"items">;
+} = {
   delete: async (ctx, { oldDoc }) => {
     // Cascade delete or clean up related records when an item is deleted
+    const relatedRecords = await ctx.db.query("related")
+      .withIndex("by_item", (q) => q.eq("itemId", oldDoc._id))
+      .collect();
+
+    for (const record of relatedRecords) {
+      await ctx.db.delete("related", record._id);
+    }
   },
-});
+};
+```
+
+`convex/triggers.ts`:
+```ts
+import { itemTriggers } from "./items/triggers";
+subscribeTrigger("items", itemTriggers);
 ```
 
 ### 6. Queries & Mutations (`convex/[domain]/queries.ts` & `mutations.ts`)
