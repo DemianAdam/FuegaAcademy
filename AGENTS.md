@@ -13,6 +13,7 @@
 - **Internationalization (i18n):** `i18next` with locales (`en`, `es`, `pt`) under `src/locales/`.
 
 ## Key Directories
+- `shared/`: Centralized Zod validators, insert schemas, and shared TypeScript types acting as the source of truth for both Convex and Frontend.
 - `src/components/ui/`: Reusable primitive components (Button, Card, Accordion, Tabs, Dialog, DropdownMenu, Tooltip).
 - `src/components/shared/`: Shared feature components (CourseCard, PolaroidFrame, etc.).
 - `src/components/home/`: Landing page sections.
@@ -27,7 +28,7 @@ Whenever a request is made related to a specific domain or topic, delegate to th
 - **`convex-architect`** (`.opencode/agents/convex-architect.md`): Use for any task involving Convex backend design, modular schemas (`zodOutputToConvex`), Zod v4 validators, custom query/mutation wrappers, relational triggers, and database indexing.
 
 ## Conventions & Gotchas
-- **Path Aliases:** `@/` maps to `./src/` in Vite and TypeScript.
+- **Path Aliases:** `@/` maps to `./src/`, `@shared/` maps to `./shared/` in Vite and TypeScript.
 - **Styling:** Tailwind CSS v4 with Material Design 3 tokens.
 - **i18n:** Ensure all new user-facing text is added across `en`, `es`, and `pt` translation JSON files.
 - **Schedules / Capacity:** Course schedules support multi-session weekly blocks with capacity and enrollment tracking (`schedules` table in Convex schema).
