@@ -10,7 +10,7 @@
 - **Frontend:** React 19, TypeScript, Vite, Tailwind CSS v4, React Router v7.
 - **UI Primitives:** Radix UI primitives (`@radix-ui/react-accordion`, `tabs`, `dialog`, `dropdown-menu`, `tooltip`) wrapped in `src/components/ui/`.
 - **Backend / Database:** Convex (`convex/schema.ts`, client initialized via `src/lib/convex.ts`).
-- **Internationalization (i18n):** `i18next` with locales (`en`, `es`, `pt`) under `src/locales/`.
+- **Internationalization (i18n) & Routing:** Hybrid i18n architecture combining bundled static English (`en`) JSON files for instant first paint, dynamic Convex-driven translation hydration (`translations` table), `localStorage` caching, `/:lang` route parameters (`/en`, `/es`, `/pt`), `<LocalizedLink>`, and missing language telemetry (`missingLanguages` table).
 
 ## Key Directories
 - `shared/`: Centralized Zod validators, insert schemas, and shared TypeScript types acting as the source of truth for both Convex and Frontend.
@@ -26,6 +26,7 @@
 Whenever a request is made related to a specific domain or topic, delegate to the corresponding specialized agent/subagent:
 - **`frontend-component`** (`.opencode/agents/frontend-component.md`): Use for any task involving building or refactoring React components. Enforces self-contained component architecture (direct Convex queries/mutations inside components to avoid prop drilling and optimize pricing/cost efficiency), Radix UI primitives, Tailwind v4 styling, and i18n parity (`en`, `es`, `pt`).
 - **`convex-architect`** (`.opencode/agents/convex-architect.md`): Use for any task involving Convex backend design, modular schemas (`zodOutputToConvex`), Zod v4 validators, custom query/mutation wrappers, relational triggers, and database indexing.
+- **`i18n-localization-agent`** (`.opencode/agents/i18n-localization-agent.md`): Use for tasks involving hybrid i18n, translation parity across `en`, `es`, `pt`, Convex translation hydration (`translations`), and missing language telemetry (`missingLanguages`).
 
 ## Conventions & Gotchas
 - **Path Aliases:** `@/` maps to `./src/`, `@shared/` maps to `./shared/` in Vite and TypeScript.

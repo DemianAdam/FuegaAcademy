@@ -133,3 +133,20 @@ export const createItem = zMutation({
   },
 });
 ```
+
+### 7. Hybrid i18n & Telemetry Tables (`convex/schema.ts`)
+```ts
+translations: defineTable({
+  key: v.string(),
+  namespace: v.string(),
+  language: v.string(),
+  value: v.string(),
+  updatedAt: v.number(),
+}).index("by_lang_ns_key", ["language", "namespace", "key"]),
+
+missingLanguages: defineTable({
+  languageCode: v.string(),
+  count: v.number(),
+  lastRequestedAt: v.number(),
+}).index("by_lang", ["languageCode"]),
+```

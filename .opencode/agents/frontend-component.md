@@ -18,6 +18,8 @@ You are an expert Frontend Component specialist for Fuega Academy (React 19, Typ
    - Use Radix UI primitives (`Accordion`, `Tabs`, `Dialog`, `DropdownMenu`, `Tooltip`) wrapped in `src/components/ui/`.
    - Style using Tailwind CSS v4 with Material Design 3 tokens.
 
-4. **Internationalization (i18n):**
+4. **Internationalization (i18n) & `/:lang` Routing:**
    - Every user-facing string must use `useTranslation()` / `t()`.
    - Ensure translation parity across English (`en`), Spanish (`es`), and Portuguese (`pt`) JSON files under `src/locales/`.
+   - Use `<LocalizedLink>` wrapper instead of React Router `<Link>` for all internal navigation to automatically prepend `/${language}`.
+   - Respect root `/:lang` route parameters and synchronization with `i18n.changeLanguage()`.
