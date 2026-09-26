@@ -31,5 +31,13 @@
     "proTitle": "Acceso total a todos los cursos grabados.",
     "proDesc": "Suscribite y empezá a aprender a tu ritmo con más de 250 testimonios de éxito.",
     "proCta": "Ver planes"
+  },
+  "teachersPage": {
+    "handwritten": "Aprende de los mejores",
+    "title": "Conoce a nuestros profesores",
+    "ctaBadge": "Expertos de la industria",
+    "ctaTitle": "¿Listo para aprender de profesionales reales?",
+    "ctaDesc": "Explora nuestros cursos en vivo y grabados dictados por profesionales que administran campañas globales y marcas top.",
+    "ctaButton": "Explorar cursos"
   }
 }

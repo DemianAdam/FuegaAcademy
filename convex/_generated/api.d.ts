@@ -12,6 +12,12 @@ import type * as courses_validators from "../courses/validators.js";
 import type * as mentors_validators from "../mentors/validators.js";
 import type * as modules_validators from "../modules/validators.js";
 import type * as schedules_validators from "../schedules/validators.js";
+import type * as teachers_mutations from "../teachers/mutations.js";
+import type * as teachers_queries from "../teachers/queries.js";
+import type * as teachers_seed from "../teachers/seed.js";
+import type * as teachers_validators from "../teachers/validators.js";
+import type * as triggers from "../triggers.js";
+import type * as zod from "../zod.js";
 
 import type {
   ApiFromModules,
@@ -24,6 +30,12 @@ declare const fullApi: ApiFromModules<{
   "mentors/validators": typeof mentors_validators;
   "modules/validators": typeof modules_validators;
   "schedules/validators": typeof schedules_validators;
+  "teachers/mutations": typeof teachers_mutations;
+  "teachers/queries": typeof teachers_queries;
+  "teachers/seed": typeof teachers_seed;
+  "teachers/validators": typeof teachers_validators;
+  triggers: typeof triggers;
+  zod: typeof zod;
 }>;
 
 /**

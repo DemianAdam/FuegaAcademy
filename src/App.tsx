@@ -7,6 +7,7 @@ import { MainLayout } from './components/layout';
 import { Home } from './pages/Home';
 import { CoursePage } from './pages/CoursePage';
 import { CoursesPage } from './pages/CoursesPage';
+import { TeachersPage } from './pages/TeachersPage';
 import { Dashboard } from './pages/Dashboard';
 
 function AppRoutes() {
@@ -15,6 +16,7 @@ function AppRoutes() {
       <Route path="/:lang?" element={<MainLayout />}>
         <Route index element={<Home />} />
         <Route path="courses" element={<CoursesPage />} />
+        <Route path="teachers" element={<TeachersPage />} />
         <Route path="course/:slug" element={<CoursePage />} />
       </Route>
       <Route path="/dashboard" element={<Dashboard />} />

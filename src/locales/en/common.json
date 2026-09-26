@@ -31,5 +31,13 @@
     "proTitle": "Total access to all recorded courses.",
     "proDesc": "Subscribe and start learning at your own pace with over 250 success stories.",
     "proCta": "See plans"
+  },
+  "teachersPage": {
+    "handwritten": "Learn from the best",
+    "title": "Meet our teachers",
+    "ctaBadge": "Industry Experts",
+    "ctaTitle": "Ready to learn from real practitioners?",
+    "ctaDesc": "Explore our live and recorded courses taught by professionals managing global campaigns and top brands.",
+    "ctaButton": "Explore courses"
   }
 }
