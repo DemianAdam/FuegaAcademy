@@ -21,3 +21,5 @@ You are an expert Frontend Component specialist for Fuega Academy (React 19, Typ
 4. **Internationalization (i18n):**
    - Every user-facing string must use `useTranslation()` / `t()`.
    - Ensure translation parity across English (`en`), Spanish (`es`), and Portuguese (`pt`) JSON files under `src/locales/`.
+   - **Localized Routing (`/:lang/...`):** Use `<LocalizedLink>` wrappers for all internal routing. Synchronize URL parameters with `i18n.changeLanguage()`.
+   - **Admin Translation Manager & Telemetry:** Build and maintain the admin UI for managing translations and viewing missing language telemetry.
