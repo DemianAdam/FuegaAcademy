@@ -1,3 +1,5 @@
+import type { TeacherData } from './teachers';
+
 export interface CourseModule {
   id: string;
   title: string;
@@ -15,14 +17,7 @@ export interface CourseSidebarItem {
   value: string;
 }
 
-export interface CourseMentor {
-  name: string;
-  title: string;
-  bio: string;
-  quote: string;
-  image: string;
-  stats: { label: string; value: string }[];
-}
+export type CourseMentor = TeacherData;
 
 export interface CourseStat {
   icon: string;
@@ -133,11 +128,13 @@ export const courses: CourseData[] = [
       { label: 'Clases', value: 'Martes y Jueves' }
     ],
     mentor: {
+      id: 'martina-beltrini',
       name: 'Martina Beltrini',
       title: 'Fundadora de Fuega Academy',
       bio: 'Fundadora de Fuega Academy, Martina ha ayudado a más de 3,000 creativos a digitalizar sus habilidades. Su enfoque es 100% práctico y orientado a resultados reales, sin rodeos ni teoría innecesaria.',
       quote: 'Aprendé de alguien que ya recorrió el camino.',
-      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuATjwdopVldJnHyhdfmgXpXEcpYNXJFsG04NknT5svuy_WbiwtnVluyESd8I11bRsABixpkAcMF2yKAuMXgecwJGyRoQmAj0IoAFSNF9h0n_GeFsLU0X9xLQQzM6afLsip-xn0J4lfQk_0g2Rwz_m5CRmqjTlngHrbBLhGii74q2RPfMA16PqKNYejBIunx13cUBcqCb4NhR687BTS5bPKQn6MNJdkY9q7cPo_SOqQ15LmgB8k98rSf8YHTMeibAHMyaUZdra44c-M',
+      imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuATjwdopVldJnHyhdfmgXpXEcpYNXJFsG04NknT5svuy_WbiwtnVluyESd8I11bRsABixpkAcMF2yKAuMXgecwJGyRoQmAj0IoAFSNF9h0n_GeFsLU0X9xLQQzM6afLsip-xn0J4lfQk_0g2Rwz_m5CRmqjTlngHrbBLhGii74q2RPfMA16PqKNYejBIunx13cUBcqCb4NhR687BTS5bPKQn6MNJdkY9q7cPo_SOqQ15LmgB8k98rSf8YHTMeibAHMyaUZdra44c-M',
+      skills: ['Fundadora', 'Marketing', 'Estrategia'],
       stats: [
         { label: 'Años Exp.', value: '10+' },
         { label: 'Alumnos', value: '3k' }
@@ -172,7 +169,7 @@ export const courses: CourseData[] = [
           { day: 'Jueves', startTime: '21:00', endTime: '23:00' }
         ],
         capacity: 20,
-        enrolledCount: 20 // Full / sold out
+        enrolledCount: 20
       },
       {
         id: 'sched-3',
@@ -193,7 +190,7 @@ export const courses: CourseData[] = [
     description: 'Dominá la edición de videos para redes sociales y campañas. Aprendé técnicas profesionales de edición, storytelling visual y post-producción para crear contenido que enganche y convierta.',
     imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCRXDeyiH-fqrJ5u69YDmAJ-aZaAE7QeRkuEfwSHMV5CyAOtYLFh0HMLxDWBTiRJz8ksl4EKkDueioJ3xJJUwmBGg00wbkubapQ4nX6O16qU7EsONk6OmTgZ8LMolbN4PQ8Iy-UKa4TD6nnXDahjFz0L44SCmdTRvxSfPUHowjSwlfwmLiebPCVsjYggqK7ZASDy18Ith_Xmw5wQrjE_G-a0JKgbhqwZIjlOusuIR_rHcAUYap9V4jlhCplNsJuORpWnVY3LWHdBfk',
     heroImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCRXDeyiH-fqrJ5u69YDmAJ-aZaAE7QeRkuEfwSHMV5CyAOtYLFh0HMLxDWBTiRJz8ksl4EKkDueioJ3xJJUwmBGg00wbkubapQ4nX6O16qU7EsONk6OmTgZ8LMolbN4PQ8Iy-UKa4TD6nnXDahjFz0L44SCmdTRvxSfPUHowjSwlfwmLiebPCVsjYggqK7ZASDy18Ith_Xmw5wQrjE_G-a0JKgbhqwZIjlOusuIR_rHcAUYap9V4jlhCplNsJuORpWnVY3LWHdBfk',
-    polaroidImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCRXDeyiH-fqrJ5u69YDmAJ-aZaAE7QeRkuEfwSHMV5CyAOtYLFh0HMLxDWBTiRJz8ksl4EKkDueioJ3xJJUwmBGg00wbkubapQ4nX6O16qU7EsONk6OmTgZ8LMolbN4PQ8Iy-UKa4TD6nnXDahjFz0L44SCmdTRvxSfPUHowjSwlfwmLiebPCVsjYggqK7ZASDy18Ith_Xmw5wQrjE_G-a0JKgbhqwZIjlOusuIR_rHcAUYap9V4jlhCplNsZip-xn0J4lfQk_0g2Rwz_m5CRmqjTlngHrbBLhGii74q2RPfMA16PqKNYejBIunx13cUBcqCb4NhR687BTS5bPKQn6MNJdkY9q7cPo_SOqQ15LmgB8k98rSf8YHTMeibAHMyaUZdra44c-M',
+    polaroidImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCRXDeyiH-fqrJ5u69YDmAJ-aZaAE7QeRkuEfwSHMV5CyAOtYLFh0HMLxDWBTiRJz8ksl4EKkDueioJ3xJJUwmBGg00wbkubapQ4nX6O16qU7EsONk6OmTgZ8LMolbN4PQ8Iy-UKa4TD6nnXDahjFz0L44SCmdTRvxSfPUHowjSwlfwmLiebPCVsjYggqK7ZASDy18Ith_Xmw5wQrjE_G-a0JKgbhqwZIjlOusuIR_rHcAUYap9V4jlhCplNsJuORpWnVY3LWHdBfk',
     polaroidCaption: 'Tu estudio de edición...',
     badge: 'new',
     duration: '5 semanas',
@@ -241,11 +238,13 @@ export const courses: CourseData[] = [
       { label: 'Clases', value: 'Martes y Jueves' }
     ],
     mentor: {
+      id: 'martina-beltrini',
       name: 'Martina Beltrini',
       title: 'Fundadora de Fuega Academy',
       bio: 'Fundadora de Fuega Academy, Martina ha ayudado a más de 3,000 creativos a digitalizar sus habilidades. Su enfoque es 100% práctico y orientado a resultados reales, sin rodeos ni teoría innecesaria.',
       quote: 'Aprendé de alguien que ya recorrió el camino.',
-      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuATjwdopVldJnHyhdfmgXpXEcpYNXJFsG04NknT5svuy_WbiwtnVluyESd8I11bRsABixpkAcMF2yKAuMXgecwJGyRoQmAj0IoAFSNF9h0n_GeFsLU0X9xLQQzM6afLsip-xn0J4lfQk_0g2Rwz_m5CRmqjTlngHrbBLhGii74q2RPfMA16PqKNYejBIunx13cUBcqCb4NhR687BTS5bPKQn6MNJdkY9q7cPo_SOqQ15LmgB8k98rSf8YHTMeibAHMyaUZdra44c-M',
+      imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuATjwdopVldJnHyhdfmgXpXEcpYNXJFsG04NknT5svuy_WbiwtnVluyESd8I11bRsABixpkAcMF2yKAuMXgecwJGyRoQmAj0IoAFSNF9h0n_GeFsLU0X9xLQQzM6afLsip-xn0J4lfQk_0g2Rwz_m5CRmqjTlngHrbBLhGii74q2RPfMA16PqKNYejBIunx13cUBcqCb4NhR687BTS5bPKQn6MNJdkY9q7cPo_SOqQ15LmgB8k98rSf8YHTMeibAHMyaUZdra44c-M',
+      skills: ['Fundadora', 'Marketing', 'Estrategia'],
       stats: [
         { label: 'Años Exp.', value: '10+' },
         { label: 'Alumnos', value: '3k' }
@@ -309,11 +308,13 @@ export const courses: CourseData[] = [
       { label: 'Clases', value: 'Miércoles y Viernes' }
     ],
     mentor: {
+      id: 'martina-beltrini',
       name: 'Martina Beltrini',
       title: 'Fundadora de Fuega Academy',
       bio: 'Fundadora de Fuega Academy, Martina ha ayudado a más de 3,000 creativos a digitalizar sus habilidades.',
       quote: 'El marketing efectivo conecta personas con soluciones reales.',
-      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuATjwdopVldJnHyhdfmgXpXEcpYNXJFsG04NknT5svuy_WbiwtnVluyESd8I11bRsABixpkAcMF2yKAuMXgecwJGyRoQmAj0IoAFSNF9h0n_GeFsLU0X9xLQQzM6afLsip-xn0J4lfQk_0g2Rwz_m5CRmqjTlngHrbBLhGii74q2RPfMA16PqKNYejBIunx13cUBcqCb4NhR687BTS5bPKQn6MNJdkY9q7cPo_SOqQ15LmgB8k98rSf8YHTMeibAHMyaUZdra44c-M',
+      imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuATjwdopVldJnHyhdfmgXpXEcpYNXJFsG04NknT5svuy_WbiwtnVluyESd8I11bRsABixpkAcMF2yKAuMXgecwJGyRoQmAj0IoAFSNF9h0n_GeFsLU0X9xLQQzM6afLsip-xn0J4lfQk_0g2Rwz_m5CRmqjTlngHrbBLhGii74q2RPfMA16PqKNYejBIunx13cUBcqCb4NhR687BTS5bPKQn6MNJdkY9q7cPo_SOqQ15LmgB8k98rSf8YHTMeibAHMyaUZdra44c-M',
+      skills: ['Fundadora', 'Marketing', 'Estrategia'],
       stats: [
         { label: 'Años Exp.', value: '10+' },
         { label: 'Alumnos', value: '3k' }
@@ -338,7 +339,7 @@ export const courses: CourseData[] = [
           { day: 'Viernes', startTime: '18:00', endTime: '20:00' }
         ],
         capacity: 20,
-        enrolledCount: 19 // Almost full
+        enrolledCount: 19
       }
     ]
   }

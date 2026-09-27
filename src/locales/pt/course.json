@@ -13,7 +13,7 @@
   "tabs": {
     "overview": "Resumo",
     "curriculum": "Programa de Estudos",
-    "mentor": "Professor"
+    "teacher": "Professor"
   },
   "overviewTab": {
     "title": "O que você vai alcançar"

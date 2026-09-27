@@ -28,7 +28,7 @@ export const courseInsertValidator = z.object({
   badge: z.string().optional(),
   duration: z.string().min(1),
   format: z.enum(["live", "recorded", "hybrid"]),
-  mentorId: zid("mentors"),
+  teacherId: zid("teachers"),
   achievements: z.array(achievementValidator),
   pricing: pricingValidator,
 });

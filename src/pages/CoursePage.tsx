@@ -8,7 +8,7 @@ import {
   CourseHero,
   CourseOverviewTab,
   CourseCurriculumTab,
-  CourseMentorTab,
+  CourseTeacherTab,
   CourseSidebar,
 } from '../components/course';
 
@@ -34,13 +34,13 @@ export function CoursePage() {
 
       {/* Main Content & Sidebar */}
       <main className="max-w-7xl mx-auto px-4 md:px-margin-desktop mt-12 grid grid-cols-1 lg:grid-cols-12 gap-12">
-        {/* Left Column: Tabs (Overview, Curriculum, Mentor) */}
+        {/* Left Column: Tabs (Overview, Curriculum, Teacher) */}
         <div className="lg:col-span-8">
           <Tabs defaultValue="overview" className="w-full">
             <TabsList>
               <TabsTrigger value="overview">{t('tabs.overview')}</TabsTrigger>
               <TabsTrigger value="curriculum">{t('tabs.curriculum')}</TabsTrigger>
-              <TabsTrigger value="mentor">{t('tabs.mentor')}</TabsTrigger>
+              <TabsTrigger value="teacher">{t('tabs.teacher')}</TabsTrigger>
             </TabsList>
 
             {/* Overview Tab */}
@@ -53,9 +53,9 @@ export function CoursePage() {
               <CourseCurriculumTab course={course} />
             </TabsContent>
 
-            {/* Mentor Tab */}
-            <TabsContent value="mentor">
-              <CourseMentorTab course={course} />
+            {/* Teacher Tab */}
+            <TabsContent value="teacher">
+              <CourseTeacherTab course={course} />
             </TabsContent>
           </Tabs>
         </div>

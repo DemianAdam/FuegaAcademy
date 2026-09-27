@@ -83,7 +83,7 @@ export const mockDashboardData = {
   liveClass: {
     _id: "live_01",
     _creationTime: Date.now(),
-    title: "Q&A con Mentores: Monetización",
+    title: "Q&A con Profesores: Monetización",
     scheduleText: "Hoy a las 19:00 HS (GMT-3). Prepará tus dudas sobre presupuestos.",
   } as LiveClass,
   activity: {
