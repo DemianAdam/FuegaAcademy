@@ -8,9 +8,9 @@ import {
   CourseHero,
   CourseOverviewTab,
   CourseCurriculumTab,
-  CourseTeacherTab,
   CourseSidebar,
 } from '../components/course';
+import { TeacherCard } from '../components/shared/TeacherCard';
 
 export function CoursePage() {
   const { slug } = useParams<{ slug: string }>();
@@ -55,7 +55,9 @@ export function CoursePage() {
 
             {/* Teacher Tab */}
             <TabsContent value="teacher">
-              <CourseTeacherTab course={course} />
+              <div className="max-w-3xl mx-auto">
+                <TeacherCard teacher={course.mentor} showQuote={true} showStats={true} />
+              </div>
             </TabsContent>
           </Tabs>
         </div>
