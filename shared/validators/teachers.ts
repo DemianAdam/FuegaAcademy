@@ -1,4 +1,9 @@
 import { z } from "zod";
+import type { Doc, Id } from "../../convex/_generated/dataModel";
+
+export type TeacherId = Id<"teachers">;
+export type TeacherDoc = Doc<"teachers">;
+export type TeacherInput = Omit<TeacherDoc, "_id" | "_creationTime">;
 
 export const teacherStatValidator = z.object({
   label: z.string(),
@@ -17,4 +22,3 @@ export const teacherValidator = z.object({
 });
 
 export type TeacherStatInput = z.infer<typeof teacherStatValidator>;
-export type TeacherInput = z.infer<typeof teacherValidator>;

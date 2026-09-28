@@ -1,5 +1,14 @@
 import { z } from "zod";
 import { zid } from "convex-helpers/server/zod4";
+import type { Doc, Id } from "../../convex/_generated/dataModel";
+import type { TeacherDoc } from "./teachers";
+import type { ModuleDoc } from "./modules";
+import type { ScheduleDoc } from "./schedules";
+
+export type CourseId = Id<"courses">;
+export type CourseDoc = Doc<"courses">;
+export type CourseInput = Omit<CourseDoc, "_id" | "_creationTime">;
+export type CourseInsertInput = CourseInput;
 
 export const achievementValidator = z.object({
   icon: z.string(),
@@ -35,5 +44,9 @@ export const courseInsertValidator = z.object({
 
 export const courseValidator = courseInsertValidator;
 
-export type CourseInsertInput = z.infer<typeof courseInsertValidator>;
-export type CourseInput = z.infer<typeof courseValidator>;
+export type CourseWithRelations = CourseDoc & {
+  teacher: TeacherDoc | null;
+  mentor: TeacherDoc | null;
+  modules: ModuleDoc[];
+  schedules: ScheduleDoc[];
+};

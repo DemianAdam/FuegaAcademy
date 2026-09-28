@@ -1,5 +1,10 @@
 import { z } from "zod";
 import { zid } from "convex-helpers/server/zod4";
+import type { Doc, Id } from "../../convex/_generated/dataModel";
+
+export type ScheduleId = Id<"schedules">;
+export type ScheduleDoc = Doc<"schedules">;
+export type ScheduleInput = Omit<ScheduleDoc, "_id" | "_creationTime">;
 
 export const sessionValidator = z.object({
   day: z.string(),
@@ -15,4 +20,4 @@ export const scheduleValidator = z.object({
   enrolledCount: z.number(),
 });
 
-export type ScheduleInput = z.infer<typeof scheduleValidator>;
+export type SessionInput = z.infer<typeof sessionValidator>;
