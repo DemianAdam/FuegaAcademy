@@ -17,9 +17,12 @@ description: Hybrid i18n, /:lang route prefixing, localStorage caching, browser-
 
 ## 2. Technical Architecture & Component Design
 ### A. Convex Backend Schema (`convex/schema.ts`)
+- **`languages` Table:**
+  - Fields: `code` (string, e.g. `"en"`, `"es"`, `"pt"`), `name` (string, e.g. `"English"`), `isActive` (boolean), `isDefault` (boolean), `createdAt` (number).
+  - Indexes: `.index("by_code", ["code"])`, `.index("by_active", ["isActive"])`.
 - **`translations` Table:**
-  - Fields: `key` (string), `namespace` (string), `language` (string), `value` (string), `updatedAt` (number).
-  - Indexes: `.index("by_lang_ns_key", ["language", "namespace", "key"])`.
+  - Fields: `key` (string), `namespace` (string), `languageId` (zid("languages")), `value` (string), `updatedAt` (number).
+  - Indexes: `.index("by_lang_ns_key", ["languageId", "namespace", "key"])`.
 - **`missingLanguages` Table:**
   - Fields: `languageCode` (string), `count` (number), `lastRequestedAt` (number).
   - Indexes: `.index("by_lang", ["languageCode"])`.

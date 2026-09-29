@@ -9,8 +9,8 @@
 ## Tech Stack & Architecture
 - **Frontend:** React 19, TypeScript, Vite, Tailwind CSS v4, React Router v7.
 - **UI Primitives:** Radix UI primitives (`@radix-ui/react-accordion`, `tabs`, `dialog`, `dropdown-menu`, `tooltip`) wrapped in `src/components/ui/`.
-- **Backend / Database:** Convex (`convex/schema.ts`, client initialized via `src/lib/convex.ts`).
-- **Internationalization (i18n) & Routing:** Hybrid i18n architecture combining bundled static English (`en`) JSON files for instant first paint, dynamic Convex-driven translation hydration (`translations` table), `localStorage` caching, `/:lang` route parameters (`/en`, `/es`, `/pt`), `<LocalizedLink>`, and missing language telemetry (`missingLanguages` table).
+- **Backend / Database:** Convex (`convex/schema.ts`, client initialized via `src/lib/convex.ts`), Convex Auth (`@convex-dev/auth`) with Google and Password authentication, and admin role authorization guards (`zAdminQuery`, `zAdminMutation`).
+- **Internationalization (i18n) & Routing:** Hybrid i18n architecture combining bundled static English (`en`) JSON files for instant first paint, dynamic Convex-driven translation hydration via relational `languages` table (`languageId: zid("languages")`) and `translations` table, `localStorage` caching, `/:lang` route parameters (`/en`, `/es`, `/pt`), `<LocalizedLink>`, and missing language telemetry (`missingLanguages` table).
 
 ## Key Directories
 - `shared/`: Centralized Zod validators, insert schemas, and shared TypeScript types acting as the source of truth for both Convex and Frontend.

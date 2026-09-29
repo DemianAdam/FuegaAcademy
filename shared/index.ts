@@ -1,5 +1,7 @@
 export * from "./validators/courses";
+export * from "./validators/languages";
 export * from "./validators/modules";
 export * from "./validators/schedules";
 export * from "./validators/teachers";
+export * from "./validators/translations";
 export * from "./validators/users";
