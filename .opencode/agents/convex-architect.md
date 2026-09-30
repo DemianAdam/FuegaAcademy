@@ -135,17 +135,17 @@ export const createItem = zMutation({
 ```
 
 ## 7. Hybrid i18n & Telemetry Backend Schema (`convex/translations.ts` & `convex/languages.ts`)
-- **`translations` Table:** Fields: `key` (string), `namespace` (string), `language` (string), `value` (string), `updatedAt` (number). Index: `.index("by_lang_ns_key", ["language", "namespace", "key"])`.
+- **`translations` Table:** Fields: `key` (string), `namespace` (string), `languageId` (zid("languages")), `value` (string), `updatedAt` (number). Index: `.index("by_lang_ns_key", ["languageId", "namespace", "key"])`.
 - **`missingLanguages` Table:** Fields: `languageCode` (string), `count` (number), `lastRequestedAt` (number). Index: `.index("by_lang", ["languageCode"])`.
 - **Queries & Mutations:** Implement `api.translations.getByLanguage` to supply dynamic translation bundles to the frontend, and `api.languages.reportMissingLanguage` to track unsupported visitor language requests.
 ```ts
 translations: defineTable({
   key: v.string(),
   namespace: v.string(),
-  language: v.string(),
+  languageId: zid("languages"),
   value: v.string(),
   updatedAt: v.number(),
-}).index("by_lang_ns_key", ["language", "namespace", "key"]),
+}).index("by_lang_ns_key", ["languageId", "namespace", "key"]),
 
 missingLanguages: defineTable({
   languageCode: v.string(),
