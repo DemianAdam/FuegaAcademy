@@ -1,7 +1,5 @@
 import { zAdminMutation, zMutation } from "../zod";
-import { languageValidator } from "./validators";
-import { zid } from "convex-helpers/server/zod4";
-import { z } from "zod";
+import { languageValidator, languageUpdateValidator, missingLanguageReportValidator } from "./validators";
 
 export const create = zAdminMutation({
   args: languageValidator,
@@ -23,12 +21,7 @@ export const create = zAdminMutation({
 });
 
 export const update = zAdminMutation({
-  args: {
-    id: zid("languages"),
-    name: languageValidator.shape.name.optional(),
-    isActive: languageValidator.shape.isActive.optional(),
-    isDefault: languageValidator.shape.isDefault.optional(),
-  },
+  args: languageUpdateValidator,
   handler: async (ctx, args) => {
     const { id, ...updates } = args;
     if (updates.isDefault) {
@@ -44,7 +37,7 @@ export const update = zAdminMutation({
 });
 
 export const reportMissingLanguage = zMutation({
-  args: { languageCode: z.string().min(1) },
+  args: missingLanguageReportValidator,
   handler: async (ctx, args) => {
     const existing = await ctx.db
       .query("missingLanguages")

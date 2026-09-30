@@ -1,5 +1,5 @@
 import { zQuery } from "../zod";
-import { courseValidator, CourseWithRelations } from "@shared/validators/courses";
+import { CourseWithRelations, courseBySlugValidator } from "@shared/validators/courses";
 
 export const list = zQuery({
   args: {},
@@ -32,7 +32,7 @@ export const list = zQuery({
 });
 
 export const getBySlug = zQuery({
-  args: { slug: courseValidator.shape.slug },
+  args: courseBySlugValidator,
   handler: async (ctx, args): Promise<CourseWithRelations | null> => {
     const course = await ctx.db
       .query("courses")

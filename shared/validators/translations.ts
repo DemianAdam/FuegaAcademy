@@ -15,3 +15,13 @@ export const translationValidator = z.object({
 });
 
 export const translationInsertValidator = translationValidator;
+
+export const translationGetByLanguageIdValidator = translationValidator.pick({
+  languageId: true,
+}).extend({
+  namespace: z.string().optional(),
+});
+
+export const translationRemoveValidator = z.object({
+  id: zid("translations"),
+});

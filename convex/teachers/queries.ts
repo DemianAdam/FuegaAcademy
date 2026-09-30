@@ -1,5 +1,5 @@
 import { zQuery } from "../zod";
-import { teacherValidator } from "./validators";
+import { teacherBySlugValidator } from "./validators";
 
 export const list = zQuery({
   args: {},
@@ -9,7 +9,7 @@ export const list = zQuery({
 });
 
 export const getBySlug = zQuery({
-  args: { slug: teacherValidator.shape.slug },
+  args: teacherBySlugValidator,
   handler: async (ctx, args) => {
     return await ctx.db
       .query("teachers")

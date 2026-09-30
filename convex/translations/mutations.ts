@@ -1,6 +1,5 @@
 import { zAdminMutation } from "../zod";
-import { translationValidator } from "./validators";
-import { zid } from "convex-helpers/server/zod4";
+import { translationValidator, translationRemoveValidator } from "./validators";
 
 export const upsert = zAdminMutation({
   args: translationValidator,
@@ -25,7 +24,7 @@ export const upsert = zAdminMutation({
 });
 
 export const remove = zAdminMutation({
-  args: { id: zid("translations") },
+  args: translationRemoveValidator,
   handler: async (ctx, args) => {
     await ctx.db.delete(args.id);
   },

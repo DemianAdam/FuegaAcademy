@@ -1,12 +1,8 @@
 import { zQuery } from "../zod";
-import { zid } from "convex-helpers/server/zod4";
-import { z } from "zod";
+import { translationGetByLanguageIdValidator } from "./validators";
 
 export const getByLanguageId = zQuery({
-  args: {
-    languageId: zid("languages"),
-    namespace: z.string().optional(),
-  },
+  args: translationGetByLanguageIdValidator,
   handler: async (ctx, args) => {
     const query = ctx.db
       .query("translations")

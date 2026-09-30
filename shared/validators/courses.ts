@@ -44,6 +44,10 @@ export const courseInsertValidator = z.object({
 
 export const courseValidator = courseInsertValidator;
 
+export const courseBySlugValidator = courseValidator.pick({
+  slug: true,
+});
+
 export type CourseWithRelations = CourseDoc & {
   teacher: TeacherDoc | null;
   mentor: TeacherDoc | null;

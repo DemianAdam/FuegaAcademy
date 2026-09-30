@@ -21,4 +21,9 @@ export const teacherValidator = z.object({
   stats: z.array(teacherStatValidator).optional(),
 });
 
+export const teacherBySlugValidator = teacherValidator.pick({
+  slug: true,
+});
+
+
 export type TeacherStatInput = z.infer<typeof teacherStatValidator>;
