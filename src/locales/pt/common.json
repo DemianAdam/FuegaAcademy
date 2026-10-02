@@ -39,5 +39,30 @@
     "ctaTitle": "Pronto para aprender com profissionais reais?",
     "ctaDesc": "Explore nossos cursos ao vivo e gravados ministrados por profissionais que gerenciam campanhas globais e grandes marcas.",
     "ctaButton": "Explorar cursos"
+  },
+  "auth": {
+    "signInTitle": "Bem-vindo de volta",
+    "signUpTitle": "Criar uma conta",
+    "signInSubtitle": "Entre para acessar seu painel e cursos.",
+    "signUpSubtitle": "Junte-se ao Fuega Academy e comece a aprender hoje.",
+    "tabSignIn": "Entrar",
+    "tabSignUp": "Cadastrar",
+    "emailLabel": "Endereço de e-mail",
+    "emailPlaceholder": "nome@exemplo.com",
+    "passwordLabel": "Senha",
+    "passwordPlaceholder": "••••••••",
+    "signInButton": "Entrar",
+    "signUpButton": "Criar Conta",
+    "googleButton": "Continuar com o Google",
+    "orDivider": "ou",
+    "errorGeneric": "Ocorreu um erro durante a autenticação. Por favor, verifique suas credenciais.",
+    "successSignIn": "Login realizado com sucesso! Redirecionando...",
+    "successSignUp": "Conta criada com sucesso! Redirigiendo..."
+  },
+  "theme": {
+    "light": "Claro",
+    "dark": "Escuro",
+    "system": "Sistema",
+    "toggle": "Alternar tema"
   }
 }

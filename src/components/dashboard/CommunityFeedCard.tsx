@@ -27,7 +27,7 @@ export function CommunityFeedCard({ post }: CommunityFeedCardProps) {
         <span className="material-symbols-outlined text-[128px] text-primary">diversity_3</span>
       </div>
       <div className="flex gap-4 items-start relative z-10">
-        <div className="w-12 h-12 rounded-full border-2 border-white overflow-hidden shrink-0">
+        <div className="w-12 h-12 rounded-full border-2 border-surface dark:border-surface-container overflow-hidden shrink-0">
           <img
             className="w-full h-full object-cover"
             alt={post.authorName}

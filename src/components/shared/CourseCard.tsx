@@ -15,7 +15,7 @@ export function CourseCard({ course }: CourseCardProps) {
     <Link
       to={`/course/${course.id}`}
       className={cn(
-        'group course-card bg-white border border-outline-variant rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-500',
+        'group course-card bg-white dark:bg-surface-container border border-outline-variant rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-500',
         'block'
       )}
     >

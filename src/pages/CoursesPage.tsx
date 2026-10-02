@@ -102,7 +102,7 @@ export function CoursesPage() {
         {/* Custom CTA Card / Bento Element */}
         <div className="lg:col-span-2 bg-secondary-container rounded-2xl p-8 flex flex-col md:flex-row items-center gap-8 overflow-hidden relative border border-outline-variant shadow-lg">
           <div className="flex-1 z-10">
-            <span className="bg-white text-secondary px-3 py-1 font-label-md text-[11px] font-bold rounded-full mb-4 inline-block">
+            <span className="bg-white dark:bg-surface-container text-secondary px-3 py-1 font-label-md text-[11px] font-bold rounded-full mb-4 inline-block">
               {t('coursesPage.proBadge')}
             </span>
             <h2 className="text-2xl md:text-3xl font-black text-on-secondary-container mb-3 tracking-tight">
@@ -111,7 +111,7 @@ export function CoursesPage() {
             <p className="text-on-secondary-container opacity-80 mb-6 text-sm md:text-base leading-relaxed">
               {t('coursesPage.proDesc')}
             </p>
-            <Button variant="secondary" className="bg-white text-on-secondary-fixed shadow-md">
+            <Button variant="secondary" className="bg-white dark:bg-surface-container text-on-secondary-fixed dark:text-on-surface shadow-md">
               {t('coursesPage.proCta')}
               <span className="material-symbols-outlined text-lg">arrow_forward</span>
             </Button>

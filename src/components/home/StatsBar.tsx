@@ -17,7 +17,7 @@ function StatCard({ stat, index }: StatCardProps) {
       viewport={{ once: true }}
       transition={{ duration: 0.6, delay: index * 0.1 }}
       /* p-3 sm:p-5 para ahorrar espacio, layout flex compacto */
-      className={cn('bg-white rounded-2xl shadow-lg border border-outline-variant p-3 sm:p-5 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 justify-center text-center sm:text-left min-w-0')}
+      className={cn('bg-white dark:bg-surface-container rounded-2xl shadow-lg border border-outline-variant p-3 sm:p-5 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 justify-center text-center sm:text-left min-w-0')}
     >
       <div className={cn('p-2 sm:p-3 rounded-xl shrink-0 self-center sm:self-auto', stat.icon === stats[0].icon ? 'text-secondary' : stat.icon === stats[1].icon ? 'text-lima' : stat.icon === stats[2].icon ? 'text-secondary' : 'text-lima')}>
         <stat.icon className="w-5 h-5 sm:w-6 sm:h-6" aria-hidden="true" />

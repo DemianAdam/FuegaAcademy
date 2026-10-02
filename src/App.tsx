@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { ConvexProvider } from 'convex/react';
 import { convex } from './lib/convex';
 import { LanguageProvider } from './lib/LanguageContext';
+import { ThemeProvider } from './lib/ThemeContext';
 import './lib/i18n';
 import { MainLayout } from './components/layout';
 import { Home } from './pages/Home';
@@ -9,6 +9,8 @@ import { CoursePage } from './pages/CoursePage';
 import { CoursesPage } from './pages/CoursesPage';
 import { TeachersPage } from './pages/TeachersPage';
 import { Dashboard } from './pages/Dashboard';
+import { AuthPage } from './pages/AuthPage';
+import { ConvexAuthProvider } from '@convex-dev/auth/react';
 
 function AppRoutes() {
   return (
@@ -18,6 +20,9 @@ function AppRoutes() {
         <Route path="courses" element={<CoursesPage />} />
         <Route path="teachers" element={<TeachersPage />} />
         <Route path="course/:slug" element={<CoursePage />} />
+        <Route path="auth" element={<AuthPage />} />
+        <Route path="login" element={<AuthPage />} />
+        <Route path="register" element={<AuthPage />} />
       </Route>
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/:lang/dashboard" element={<Dashboard />} />
@@ -27,13 +32,15 @@ function AppRoutes() {
 
 function App() {
   return (
-    <ConvexProvider client={convex}>
-      <LanguageProvider>
-        <BrowserRouter>
-          <AppRoutes />
-        </BrowserRouter>
-      </LanguageProvider>
-    </ConvexProvider>
+    <ConvexAuthProvider client={convex}>
+      <ThemeProvider>
+        <LanguageProvider>
+          <BrowserRouter>
+            <AppRoutes />
+          </BrowserRouter>
+        </LanguageProvider>
+      </ThemeProvider>
+    </ConvexAuthProvider>
   );
 }
 

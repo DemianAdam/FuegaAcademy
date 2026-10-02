@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useLanguage } from '../../lib/LanguageContext';
 import { cn } from '../../lib/utils';
 import { Button } from '../ui/Button';
+import { ThemeToggle } from '../ui/ThemeToggle';
 
 const navLinks = [
   { href: '/courses', labelKey: 'nav.courses' },
@@ -56,6 +57,7 @@ export function Header() {
 
         {/* Right Actions (Desktop) */}
         <div className="hidden md:flex items-center gap-4">
+          <ThemeToggle />
           <div className="flex items-center gap-2 mr-2">
             <span className="material-symbols-outlined text-on-surface-variant text-lg" aria-hidden="true">language</span>
             <div className="flex gap-1.5" role="group" aria-label="Language selection">
@@ -92,6 +94,7 @@ export function Header() {
 
         {/* Mobile controls */}
         <div className="flex md:hidden items-center gap-3">
+          <ThemeToggle />
           <div className="flex gap-1">
             {languages.map((lang) => (
               <button

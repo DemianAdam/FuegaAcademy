@@ -39,5 +39,30 @@
     "ctaTitle": "Ready to learn from real practitioners?",
     "ctaDesc": "Explore our live and recorded courses taught by professionals managing global campaigns and top brands.",
     "ctaButton": "Explore courses"
+  },
+  "auth": {
+    "signInTitle": "Welcome back",
+    "signUpTitle": "Create an account",
+    "signInSubtitle": "Log in to access your dashboard and courses.",
+    "signUpSubtitle": "Join Fuega Academy and start learning today.",
+    "tabSignIn": "Sign In",
+    "tabSignUp": "Sign Up",
+    "emailLabel": "Email address",
+    "emailPlaceholder": "name@example.com",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "••••••••",
+    "signInButton": "Sign In",
+    "signUpButton": "Create Account",
+    "googleButton": "Continue with Google",
+    "orDivider": "or",
+    "errorGeneric": "An error occurred during authentication. Please check your credentials.",
+    "successSignIn": "Successfully signed in! Redirecting...",
+    "successSignUp": "Account created successfully! Redirecting..."
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System",
+    "toggle": "Toggle theme"
   }
 }

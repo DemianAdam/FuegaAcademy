@@ -13,7 +13,7 @@ export function TeacherCard({ teacher, showQuote = false, showStats = false }: T
   const { t } = useTranslation('home');
 
   return (
-    <div className={cn('bg-white p-6 rounded-2xl border border-outline-variant flex flex-col justify-between')}>
+    <div className={cn('bg-white dark:bg-surface-container p-6 rounded-2xl border border-outline-variant flex flex-col justify-between')}>
       <div>
         <div className="flex items-start gap-6 mb-6">
           <Avatar src={teacher.imageUrl} alt={teacher.name} size="md" />

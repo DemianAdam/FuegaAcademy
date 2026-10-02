@@ -13,7 +13,7 @@ export function RecommendationWidget() {
       </div>
       <span className="font-['Bricolage_Grotesque'] text-[20px] leading-[1.2] text-on-surface block text-center mt-2 transform -rotate-2">
         <Trans i18nKey="recommendation.quote" ns="dashboard">
-          Tu próxima versión <br /> <span className="bg-[#ccff00] px-1.5 py-0.5 italic">empieza hoy.</span>
+          Tu próxima versión <br /> <span className="bg-lima dark:bg-primary-container dark:text-on-primary-container px-1.5 py-0.5 italic">empieza hoy.</span>
         </Trans>
       </span>
     </div>

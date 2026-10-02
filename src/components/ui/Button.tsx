@@ -13,7 +13,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     
     const variants = {
       primary: 'bg-lima text-on-background hover:scale-105 focus:ring-lima/50 shadow-[0_0_20px_rgba(204,255,0,0.3)]',
-      secondary: 'bg-white/80 backdrop-blur border border-outline-variant text-on-surface hover:bg-white focus:ring-outline-variant',
+      secondary: 'bg-white/80 dark:bg-surface-container/80 backdrop-blur border border-outline-variant text-on-surface hover:bg-white dark:hover:bg-surface-container focus:ring-outline-variant',
       outline: 'border-2 border-primary text-primary hover:bg-primary/10 focus:ring-primary/50',
       ghost: 'text-on-surface hover:text-primary focus:ring-transparent',
     };
