@@ -11,7 +11,7 @@ export const userValidator = z.object({
   image: z.string().optional(),
   phone: z.string().optional(),
   isAnonymous: z.boolean().optional(),
-  role: z.enum(["admin", "student", "teacher"]).optional(),
+  role: z.enum(["admin", "student"]).optional(),
 });
 
 export const userInputValidator = userValidator;
