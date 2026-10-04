@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { courses } from '../data/courses';
+import { useQuery } from 'convex/react';
+import { api } from '../../convex/_generated/api';
 import { PolaroidFrame } from '../components/shared/PolaroidFrame';
 import { Button } from '../components/ui/Button';
 
@@ -9,12 +10,14 @@ export function CoursesPage() {
   const { t } = useTranslation('common');
   const [filter, setFilter] = useState<'all' | 'en-vivo' | 'grabado'>('all');
 
-  const filteredCourses = courses.filter((course) => {
+  const courses = useQuery(api.courses.queries.list);
+
+  const filteredCourses = courses ? courses.filter((course) => {
     if (filter === 'all') return true;
-    if (filter === 'en-vivo') return course.format.toLowerCase().includes('vivo');
-    if (filter === 'grabado') return course.format.toLowerCase().includes('grabado') || !course.format.toLowerCase().includes('vivo');
+    if (filter === 'en-vivo') return course.format.toLowerCase().includes('live') || course.format.toLowerCase().includes('vivo');
+    if (filter === 'grabado') return course.format.toLowerCase().includes('recorded') || course.format.toLowerCase().includes('grabado');
     return true;
-  });
+  }) : [];
 
   return (
     <main className="flex-grow pt-12 pb-24 px-6 md:px-margin-desktop max-w-7xl mx-auto w-full">
@@ -60,44 +63,48 @@ export function CoursesPage() {
 
       {/* Bento / Course Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-        {filteredCourses.map((course) => (
-          <div key={course.id} className="group">
-            <PolaroidFrame
-              src={course.polaroidImage}
-              alt={course.title}
-              rotate={1}
-              scale={1}
-              className="relative"
-            >
-              {/* Badge */}
-              <div className="absolute top-4 right-4 bg-primary-fixed text-on-primary-fixed px-3 py-1 font-label-md text-[11px] uppercase tracking-wider font-bold rounded-full z-20">
-                {course.format.includes('Vivo') ? t('coursesPage.live') : t('coursesPage.recorded')}
-              </div>
-            </PolaroidFrame>
+        {courses === undefined ? (
+          <div className="col-span-3 text-center py-12 text-on-surface-variant">Cargando programas...</div>
+        ) : (
+          filteredCourses.map((course) => (
+            <div key={course._id} className="group">
+              <PolaroidFrame
+                src={course.polaroidImage}
+                alt={course.title}
+                rotate={1}
+                scale={1}
+                className="relative"
+              >
+                {/* Badge */}
+                <div className="absolute top-4 right-4 bg-primary-fixed text-on-primary-fixed px-3 py-1 font-label-md text-[11px] uppercase tracking-wider font-bold rounded-full z-20">
+                  {course.format === 'live' ? t('coursesPage.live') : t('coursesPage.recorded')}
+                </div>
+              </PolaroidFrame>
 
-            <div className="mt-4 flex justify-between items-start">
-              <div>
-                <h3 className="text-lg font-bold text-on-surface mb-1">{course.title}</h3>
-                <p className="text-on-surface-variant text-sm">
-                  Por <span className="font-bold text-on-surface">{course.mentor.name}</span>
-                </p>
+              <div className="mt-4 flex justify-between items-start">
+                <div>
+                  <h3 className="text-lg font-bold text-on-surface mb-1">{course.title}</h3>
+                  <p className="text-on-surface-variant text-sm">
+                    Por <span className="font-bold text-on-surface">{course.teacher?.name || 'Instructor'}</span>
+                  </p>
+                </div>
+                <div className="flex items-center gap-1 bg-surface-container-low px-2 py-1 rounded-lg border border-outline-variant">
+                  <span className="material-symbols-outlined text-[16px] text-primary" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                  <span className="font-bold text-xs">4.9</span>
+                </div>
               </div>
-              <div className="flex items-center gap-1 bg-surface-container-low px-2 py-1 rounded-lg border border-outline-variant">
-                <span className="material-symbols-outlined text-[16px] text-primary" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-                <span className="font-bold text-xs">4.9</span>
+
+              <div className="mt-6 flex justify-between items-center">
+                <span className="text-xl font-black text-on-surface">${course.pricing.live?.amount || 99}</span>
+                <Link to={`/course/${course.slug}`}>
+                  <Button variant="secondary" size="sm" className="shadow-md">
+                    Ver programa
+                  </Button>
+                </Link>
               </div>
             </div>
-
-            <div className="mt-6 flex justify-between items-center">
-              <span className="text-xl font-black text-on-surface">{course.pricing.live.price}</span>
-              <Link to={`/course/${course.id}`}>
-                <Button variant="secondary" size="sm" className="shadow-md">
-                  Ver programa
-                </Button>
-              </Link>
-            </div>
-          </div>
-        ))}
+          ))
+        )}
 
         {/* Custom CTA Card / Bento Element */}
         <div className="lg:col-span-2 bg-secondary-container rounded-2xl p-8 flex flex-col md:flex-row items-center gap-8 overflow-hidden relative border border-outline-variant shadow-lg">

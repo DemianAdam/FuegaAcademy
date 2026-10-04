@@ -1,9 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import { Button } from '../ui/Button';
-import type { CourseData } from '../../data/courses';
+import type { CourseWithRelations } from '@shared/validators/courses';
 
 interface CourseSidebarProps {
-  course: CourseData;
+  course: CourseWithRelations;
   formatType: 'live' | 'recorded';
   setFormatType: (format: 'live' | 'recorded') => void;
   selectedScheduleId: string;
@@ -18,6 +18,9 @@ export function CourseSidebar({
   setSelectedScheduleId,
 }: CourseSidebarProps) {
   const { t } = useTranslation('course');
+
+  const livePrice = course.pricing.live ? `$${course.pricing.live.amount}` : '$99';
+  const recordedPrice = course.pricing.recorded ? `$${course.pricing.recorded.amount}` : '$49';
 
   return (
     <div className="sticky top-24 p-6 rounded-2xl border border-outline-variant bg-surface-container-low space-y-6 shadow-xl">
@@ -44,7 +47,7 @@ export function CourseSidebar({
       </div>
 
       <div className="text-3xl font-black text-on-surface">
-        {formatType === 'live' ? course.pricing.live.price : course.pricing.recorded.price}
+        {formatType === 'live' ? livePrice : recordedPrice}
         <span className="text-xs font-normal text-on-surface-variant ml-2">{t('pricing.singlePayment')}</span>
       </div>
 
@@ -59,13 +62,13 @@ export function CourseSidebar({
           <div className="space-y-2.5">
             {course.schedules.map((sched) => {
               const isFull = sched.enrolledCount >= sched.capacity;
-              const isSelected = selectedScheduleId === sched.id;
+              const isSelected = selectedScheduleId === sched._id;
 
               return (
                 <button
-                  key={sched.id}
+                  key={sched._id}
                   disabled={isFull}
-                  onClick={() => setSelectedScheduleId(sched.id)}
+                  onClick={() => setSelectedScheduleId(sched._id)}
                   className={`w-full text-left p-3.5 rounded-xl border transition-all relative ${
                     isFull
                       ? 'border-outline-variant bg-surface opacity-50 cursor-not-allowed'
@@ -88,7 +91,7 @@ export function CourseSidebar({
                     {sched.sessions.map((sess, idx) => (
                       <div key={idx} className="flex items-center gap-1.5 text-xs text-on-surface-variant">
                         <span className="material-symbols-outlined text-xs text-primary">event</span>
-                        <span className="font-medium text-on-surface">{t(`days.${sess.day.toLowerCase()}`, { defaultValue: sess.day })}:</span>
+                        <span className="font-medium text-on-surface">{sess.day}:</span>
                         <span>{sess.startTime} - {sess.endTime}hs</span>
                       </div>
                     ))}

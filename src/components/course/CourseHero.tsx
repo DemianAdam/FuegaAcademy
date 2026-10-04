@@ -1,9 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import { PolaroidFrame } from '../shared/PolaroidFrame';
-import type { CourseData } from '../../data/courses';
+import type { CourseWithRelations } from '@shared/validators/courses';
 
 interface CourseHeroProps {
-  course: CourseData;
+  course: CourseWithRelations;
 }
 
 export function CourseHero({ course }: CourseHeroProps) {
@@ -25,7 +25,7 @@ export function CourseHero({ course }: CourseHeroProps) {
           <div className="flex flex-wrap gap-6 pt-2">
             <div className="flex items-center gap-2">
               <span className="material-symbols-outlined text-primary">schedule</span>
-              <span className="text-sm font-medium">{course.duration}</span>
+              <span className="text-sm font-medium">{course.duration} semanas</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="material-symbols-outlined text-primary">videocam</span>

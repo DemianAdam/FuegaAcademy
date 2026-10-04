@@ -1,9 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '../ui/Accordion';
-import type { CourseData } from '../../data/courses';
+import type { CourseWithRelations } from '@shared/validators/courses';
 
 interface CourseCurriculumTabProps {
-  course: CourseData;
+  course: CourseWithRelations;
 }
 
 export function CourseCurriculumTab({ course }: CourseCurriculumTabProps) {
@@ -15,9 +15,9 @@ export function CourseCurriculumTab({ course }: CourseCurriculumTabProps) {
         <h2 className="text-2xl font-bold mb-2">{t('curriculumTab.title')}</h2>
         <p className="text-on-surface-variant text-sm mb-6">{t('curriculumTab.description')}</p>
       </div>
-      <Accordion type="single" collapsible defaultValue="module-1">
+      <Accordion type="single" collapsible defaultValue={course.modules[0]?._id}>
         {course.modules.map((mod) => (
-          <AccordionItem key={mod.id} value={mod.id}>
+          <AccordionItem key={mod._id} value={mod._id}>
             <AccordionTrigger>{mod.title}</AccordionTrigger>
             <AccordionContent>
               <ul className="space-y-2">

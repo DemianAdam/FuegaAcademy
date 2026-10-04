@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { courses } from '../data/courses';
+import { useQuery } from 'convex/react';
+import { api } from '../../convex/_generated/api';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '../components/ui/Tabs';
 import {
   CourseNotFound,
@@ -17,13 +18,18 @@ export function CoursePage() {
   const { t } = useTranslation('course');
   const [formatType, setFormatType] = useState<'live' | 'recorded'>('live');
   
-  const course = courses.find((c) => c.id === slug);
+  const course = useQuery(api.courses.queries.getBySlug, slug ? { slug } : "skip");
 
-  // Default to first available schedule that is not full, or first schedule
-  const defaultScheduleId = course?.schedules.find(s => s.enrolledCount < s.capacity)?.id || course?.schedules[0]?.id || '';
-  const [selectedScheduleId, setSelectedScheduleId] = useState(defaultScheduleId);
+  const defaultScheduleId = course?.schedules?.find(s => s.enrolledCount < s.capacity)?._id || course?.schedules?.[0]?._id || '';
+  const [selectedScheduleId, setSelectedScheduleId] = useState('');
 
-  if (!course) {
+  const activeScheduleId = selectedScheduleId || defaultScheduleId;
+
+  if (course === undefined) {
+    return <div className="min-h-screen bg-surface flex items-center justify-center">Cargando programa...</div>;
+  }
+
+  if (course === null) {
     return <CourseNotFound />;
   }
 
@@ -56,7 +62,22 @@ export function CoursePage() {
             {/* Teacher Tab */}
             <TabsContent value="teacher">
               <div className="max-w-3xl mx-auto">
-                <TeacherCard teacher={course.mentor} showQuote={true} showStats={true} />
+                {course.teacher && (
+                  <TeacherCard
+                    teacher={{
+                      id: course.teacher.slug,
+                      name: course.teacher.name,
+                      title: course.teacher.title,
+                      imageUrl: course.teacher.imageUrl,
+                      skills: course.teacher.skills,
+                      bio: course.teacher.bio,
+                      quote: course.teacher.quote,
+                      stats: course.teacher.stats,
+                    }}
+                    showQuote={true}
+                    showStats={true}
+                  />
+                )}
               </div>
             </TabsContent>
           </Tabs>
@@ -68,7 +89,7 @@ export function CoursePage() {
             course={course}
             formatType={formatType}
             setFormatType={setFormatType}
-            selectedScheduleId={selectedScheduleId}
+            selectedScheduleId={activeScheduleId}
             setSelectedScheduleId={setSelectedScheduleId}
           />
         </div>
