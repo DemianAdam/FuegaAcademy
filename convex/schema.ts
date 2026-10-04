@@ -8,6 +8,7 @@ import { userSchema } from "./users/schema";
 import { languageSchema } from "./languages/schema";
 import { translationSchema } from "./translations/schema";
 import { missingLanguageSchema } from "./languages/schema";
+import { enrollmentSchema } from "./enrollments/schema";
 
 export default defineSchema({
   ...authTables,
@@ -19,4 +20,5 @@ export default defineSchema({
   teachers: teacherSchema,
   translations: translationSchema,
   missingLanguages: missingLanguageSchema,
+  enrollments: enrollmentSchema,
 });
