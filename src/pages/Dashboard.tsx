@@ -1,3 +1,5 @@
+import { useQuery } from "convex/react";
+import { api } from "../../convex/_generated/api";
 import { mockDashboardData } from '../data/mockDashboardData';
 import {
   DashboardLayout,
@@ -10,7 +12,27 @@ import {
 } from '../components/dashboard';
 
 export function Dashboard() {
-  const { user, courses, communityPost, liveClass, activity } = mockDashboardData;
+  const enrollments = useQuery(api.enrollments.queries.listMyEnrollments);
+  const fallback = mockDashboardData;
+
+  const user = fallback.user;
+
+  const courses = enrollments && enrollments.length > 0 
+    ? enrollments.map(e => ({
+        _id: e._id,
+        _creationTime: e._creationTime,
+        title: e.course?.title || "Curso Fuega",
+        category: e.course?.badge || "CREATOR ECONOMY",
+        progressPercent: e.progressPercent,
+        completedClasses: e.completedClasses,
+        totalClasses: e.totalClasses,
+        imageUrl: e.course?.imageUrl || fallback.courses[0].imageUrl,
+      }))
+    : fallback.courses;
+
+  const communityPost = fallback.communityPost;
+  const liveClass = fallback.liveClass;
+  const activity = fallback.activity;
 
   return (
     <DashboardLayout user={user}>

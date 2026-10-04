@@ -1,5 +1,6 @@
-import { Change, Triggers } from "convex-helpers/server/triggers";
-import { DataModel, TableNames } from "./_generated/dataModel";
+import { Triggers } from "convex-helpers/server/triggers";
+import type { Change } from "convex-helpers/server/triggers";
+import type { DataModel, TableNames } from "./_generated/dataModel";
 
 const triggersInstance = new Triggers<DataModel>();
 

@@ -78,11 +78,25 @@ export const seedCourses = internalMutation({
       for (const s of existingSchedules) {
         await ctx.db.delete(s._id);
       }
+      const dayMap: Record<string, number> = {
+        lunes: 1,
+        martes: 2,
+        miércoles: 3,
+        miercoles: 3,
+        jueves: 4,
+        viernes: 5,
+        sábado: 6,
+        sabado: 6,
+        domingo: 7,
+      };
       for (const sched of mockCourse.schedules) {
         await ctx.db.insert("schedules", {
           courseId,
           name: sched.name,
-          sessions: sched.sessions,
+          sessions: sched.sessions.map((s) => ({
+            ...s,
+            day: typeof s.day === "number" ? s.day : (dayMap[s.day.toLowerCase()] || 1),
+          })),
           capacity: sched.capacity,
           enrolledCount: sched.enrolledCount,
         });

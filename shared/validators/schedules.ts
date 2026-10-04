@@ -7,7 +7,7 @@ export type ScheduleDoc = Doc<"schedules">;
 export type ScheduleInput = Omit<ScheduleDoc, "_id" | "_creationTime">;
 
 export const sessionValidator = z.object({
-  day: z.string(),
+  day: z.number().int().min(1).max(7),
   startTime: z.string(),
   endTime: z.string(),
 });
@@ -19,5 +19,5 @@ export const scheduleValidator = z.object({
   capacity: z.number(),
   enrolledCount: z.number(),
 });
-
+    
 export type SessionInput = z.infer<typeof sessionValidator>;

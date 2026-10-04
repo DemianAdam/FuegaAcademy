@@ -1,5 +1,6 @@
 import { zQuery } from "../zod";
-import { CourseWithRelations, courseBySlugValidator } from "@shared/validators/courses";
+import type { CourseWithRelations } from "@shared/validators/courses";
+import { courseBySlugValidator } from "@shared/validators/courses";
 
 export const list = zQuery({
   args: {},

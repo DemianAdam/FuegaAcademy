@@ -1,4 +1,5 @@
 export * from "./validators/courses";
+export * from "./validators/enrollments";
 export * from "./validators/languages";
 export * from "./validators/modules";
 export * from "./validators/schedules";

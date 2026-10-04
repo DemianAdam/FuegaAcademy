@@ -54,7 +54,7 @@ export interface CourseData {
   polaroidImage: string;
   polaroidCaption: string;
   badge: 'most-chosen' | 'new' | 'popular';
-  duration: string;
+  duration: number;
   format: string;
   modules: CourseModule[];
   achievements: CourseAchievement[];
@@ -76,7 +76,7 @@ export const courses: CourseData[] = [
     polaroidImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD2oEFj8RWrnboHyk1eh_NwJUGnCX1Xv8bzRLWQ-3WsCns1nKgSqS2la85qKitF5_Apdom2kylGAIKn0HXFNf7W9zYZReGpiHdGZKmO3U65s8BUGa9XQe_zm_rXiR9d9C7lz7NleK0X-ItA_o3fpwbCdTvTUuEHnc-DpsXZ7au9MoMfpaT8EI1ynF1DhVsJ_aIU-laQzx63twb4O07XO9SGluuFSRguBcPzlABK2hiYO-Kyk8OKJLGZYLxrb8GWuJKCtg',
     polaroidCaption: 'Tu futura oficina...',
     badge: 'most-chosen',
-    duration: '8 Semanas',
+    duration: 18,
     format: 'En vivo + Grabado',
     modules: [
       {
@@ -193,7 +193,7 @@ export const courses: CourseData[] = [
     polaroidImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCRXDeyiH-fqrJ5u69YDmAJ-aZaAE7QeRkuEfwSHMV5CyAOtYLFh0HMLxDWBTiRJz8ksl4EKkDueioJ3xJJUwmBGg00wbkubapQ4nX6O16qU7EsONk6OmTgZ8LMolbN4PQ8Iy-UKa4TD6nnXDahjFz0L44SCmdTRvxSfPUHowjSwlfwmLiebPCVsjYggqK7ZASDy18Ith_Xmw5wQrjE_G-a0JKgbhqwZIjlOusuIR_rHcAUYap9V4jlhCplNsJuORpWnVY3LWHdBfk',
     polaroidCaption: 'Tu estudio de edición...',
     badge: 'new',
-    duration: '5 semanas',
+    duration: 16,
     format: 'En vivo + Grabado',
     modules: [
       {
@@ -283,7 +283,7 @@ export const courses: CourseData[] = [
     polaroidImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDVV68iK55jCbEMygH1Rra3y4mztWrwLPAOi2cPDQweQ3tiTcKgvEOITR9Y015MIjpre-T6QOYUO2hO6n7tJ2lLgsF59PiDj-Wc6WDCzeFqUir_m1A3gzFZUv_0plaFyEYtCjlTZzLpSRWeXQw5xal0bb9O3Lw4xxswl2_3Tg5wvHLA2l9HLgjXkmsh0P5ldxW2oUwgp6AzsgSgfCMaNshmUHBUY-MBnfCtRe5bLtJX5rK5jwnc64wLtyDnxI1G8ViecfowImt2CGQ',
     polaroidCaption: 'Tu pasaporte global...',
     badge: 'popular',
-    duration: '6 semanas',
+    duration: 12,
     format: 'En vivo + Grabado',
     modules: [
       {

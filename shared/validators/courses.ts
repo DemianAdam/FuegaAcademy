@@ -35,7 +35,7 @@ export const courseInsertValidator = z.object({
   polaroidImage: z.string().min(1),
   polaroidCaption: z.string().min(1),
   badge: z.string().optional(),
-  duration: z.string().min(1),
+  duration: z.number(),
   format: z.enum(["live", "recorded", "hybrid"]),
   teacherId: zid("teachers"),
   achievements: z.array(achievementValidator),
