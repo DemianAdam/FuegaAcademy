@@ -1,12 +1,15 @@
-import { customMutation, customQuery, NoOp } from "convex-helpers/server/customFunctions";
+import { customMutation, NoOp } from "convex-helpers/server/customFunctions";
 import { zCustomQuery, zCustomMutation } from "convex-helpers/server/zod4";
 import type { MutationCtx, QueryCtx } from "./_generated/server";
-import { mutation as rawMutation, query as rawQuery } from "./_generated/server";
+import { internalMutation, mutation as rawMutation, query as rawQuery } from "./_generated/server";
 import { customCtx } from "convex-helpers/server/customFunctions";
 import { triggersDB } from "./triggers";
 import { getAuthUserId } from "@convex-dev/auth/server";
 
 export const zQuery = zCustomQuery(rawQuery, NoOp);
+
+export const zInternalMutation = zCustomMutation(internalMutation, customCtx(triggersDB));
+
 
 const mutationWithTriggers = customMutation(rawMutation, customCtx(triggersDB));
 export const zMutation = zCustomMutation(mutationWithTriggers, NoOp);

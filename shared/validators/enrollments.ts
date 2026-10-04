@@ -12,3 +12,8 @@ export const enrollmentValidator = z.object({
   scheduleId: zid("schedules").optional(),
   completedClasses: z.number().min(0),
 });
+
+export const enrollInCourseValidator = z.object({
+  courseId: zid("courses"),
+  scheduleId: zid("schedules").optional(),
+});

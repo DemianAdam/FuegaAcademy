@@ -1,11 +1,8 @@
 import { zStudentMutation } from "../zod";
-import { zid } from "convex-helpers/server/zod4";
+import { enrollInCourseValidator } from "./validators";
 
 export const enrollInCourse = zStudentMutation({
-  args: {
-    courseId: zid("courses"),
-    scheduleId: zid("schedules").optional(),
-  },
+  args: enrollInCourseValidator,
   handler: async (ctx, args) => {
     const userId = ctx.userId;
 
