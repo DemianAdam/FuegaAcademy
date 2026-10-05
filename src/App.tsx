@@ -11,6 +11,7 @@ import { CoursesPage } from './pages/CoursesPage';
 import { TeachersPage } from './pages/TeachersPage';
 import { Dashboard } from './pages/Dashboard';
 import { AuthPage } from './pages/AuthPage';
+import { AdminCourseCreatePage } from './pages/AdminCourseCreatePage';
 import { ConvexAuthProvider } from '@convex-dev/auth/react';
 
 function AppRoutes() {
@@ -27,6 +28,8 @@ function AppRoutes() {
       </Route>
       <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
       <Route path="/:lang/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+      <Route path="/admin/courses/new" element={<ProtectedRoute requireAdmin><AdminCourseCreatePage /></ProtectedRoute>} />
+      <Route path="/:lang/admin/courses/new" element={<ProtectedRoute requireAdmin><AdminCourseCreatePage /></ProtectedRoute>} />
     </Routes>
   );
 }

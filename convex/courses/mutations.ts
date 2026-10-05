@@ -1,7 +1,7 @@
-import { zMutation } from "../zod";
+import { zAdminMutation } from "../zod";
 import { courseInsertValidator } from "@shared/validators/courses";
 
-export const create = zMutation({
+export const create = zAdminMutation({
   args: courseInsertValidator,
   handler: async (ctx, args) => {
     const existing = await ctx.db

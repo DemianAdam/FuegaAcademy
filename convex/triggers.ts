@@ -1,6 +1,7 @@
 import { Triggers } from "convex-helpers/server/triggers";
 import type { Change } from "convex-helpers/server/triggers";
 import type { DataModel, TableNames } from "./_generated/dataModel";
+import { userTriggers } from "./users/triggers";
 
 const triggersInstance = new Triggers<DataModel>();
 
@@ -49,3 +50,5 @@ export function subscribeTrigger<T extends TableNames>(
     }
   });
 }
+
+subscribeTrigger("users", userTriggers);
