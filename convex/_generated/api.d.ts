@@ -32,7 +32,6 @@ import type * as translations_validators from "../translations/validators.js";
 import type * as triggers from "../triggers.js";
 import type * as users_internal from "../users/internal.js";
 import type * as users_queries from "../users/queries.js";
-import type * as users_triggers from "../users/triggers.js";
 import type * as users_validators from "../users/validators.js";
 import type * as zod from "../zod.js";
 
@@ -67,7 +66,6 @@ declare const fullApi: ApiFromModules<{
   triggers: typeof triggers;
   "users/internal": typeof users_internal;
   "users/queries": typeof users_queries;
-  "users/triggers": typeof users_triggers;
   "users/validators": typeof users_validators;
   zod: typeof zod;
 }>;
