@@ -45,9 +45,9 @@ export function AuthPage() {
       setTimeout(() => {
         navigate(dashboardPath);
       }, 1000);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
-      setError(err?.message || t('auth.errorGeneric'));
+      setError((err as { message?: string })?.message || t('auth.errorGeneric'));
     } finally {
       setLoading(false);
     }
@@ -57,10 +57,11 @@ export function AuthPage() {
     try {
       setError(null);
       setLoading(true);
-      await signIn('google', { redirectTo: dashboardPath });
-    } catch (err: any) {
+      const frontendUrl = window.location.origin;
+      await signIn('google', { redirectTo: `${frontendUrl}${dashboardPath}` });
+    } catch (err: unknown) {
       console.error(err);
-      setError(err?.message || t('auth.errorGeneric'));
+      setError((err as { message?: string })?.message || t('auth.errorGeneric'));
       setLoading(false);
     }
   };

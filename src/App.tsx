@@ -4,6 +4,7 @@ import { LanguageProvider } from './lib/LanguageContext';
 import { ThemeProvider } from './lib/ThemeContext';
 import './lib/i18n';
 import { MainLayout } from './components/layout';
+import { ProtectedRoute } from './components/shared';
 import { Home } from './pages/Home';
 import { CoursePage } from './pages/CoursePage';
 import { CoursesPage } from './pages/CoursesPage';
@@ -24,8 +25,8 @@ function AppRoutes() {
         <Route path="login" element={<AuthPage />} />
         <Route path="register" element={<AuthPage />} />
       </Route>
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/:lang/dashboard" element={<Dashboard />} />
+      <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+      <Route path="/:lang/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
     </Routes>
   );
 }

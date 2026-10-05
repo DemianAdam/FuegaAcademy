@@ -16,7 +16,7 @@ export const zMutation = zCustomMutation(mutationWithTriggers, NoOp);
 
 const adminContext = {
   args: {},
-  input: async (ctx: QueryCtx | MutationCtx, args: Record<string, any>) => {
+  input: async (ctx: QueryCtx | MutationCtx, args: Record<string, unknown>) => {
     const userId = await getAuthUserId(ctx);
     if (!userId) {
       throw new Error("Unauthorized: Not logged in");
@@ -39,8 +39,9 @@ export const zAdminMutation = zCustomMutation(adminMutationRaw, adminContext);
 
 const studentContext = {
   args: {},
-  input: async (ctx: QueryCtx | MutationCtx, args: Record<string, any>) => {
+  input: async (ctx: QueryCtx | MutationCtx, args: Record<string, unknown>) => {
     const userId = await getAuthUserId(ctx);
+    console.log("userId", userId);
     if (!userId) {
       throw new Error("Unauthorized: Not logged in");
     }
