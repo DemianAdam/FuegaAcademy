@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { useLanguage } from '../../lib/LanguageContext';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useLanguage } from '../../lib/useLanguage';
 import { cn } from '../../lib/utils';
 import { Button } from '../ui/Button';
 import { ThemeToggle } from '../ui/ThemeToggle';
+import { LocalizedLink } from '../shared/LocalizedLink';
 
 const navLinks = [
   { href: '/courses', labelKey: 'nav.courses' },
@@ -21,13 +22,25 @@ const languages = [
 export function Header() {
   const { language, setLanguage, t } = useLanguage();
   const location = useLocation();
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const handleLanguageChange = (newLang: 'en' | 'es' | 'pt') => {
+    setLanguage(newLang);
+    const segments = location.pathname.split('/');
+    if (segments[1] && ['en', 'es', 'pt'].includes(segments[1])) {
+      segments[1] = newLang;
+      navigate(segments.join('/') + location.search + location.hash);
+    } else {
+      navigate(`/${newLang}${location.pathname === '/' ? '' : location.pathname}${location.search}${location.hash}`);
+    }
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant relative">
       <nav className="flex justify-between items-center w-full px-4 md:px-margin-desktop py-4" aria-label="Main navigation">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2 shrink-0" aria-label={t('common.appName')}>
+        <LocalizedLink to="/" className="flex items-center gap-2 shrink-0" aria-label={t('common.appName')}>
           <svg className="w-8 h-8 fill-lima" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path d="M12 2C12 2 15 5.5 15 9.5C15 13.5 12 17 12 17C12 17 9 13.5 9 9.5C9 5.5 12 2 12 2Z" opacity="0.3"></path>
             <path d="M12 6C12 6 14 8.5 14 11C14 13.5 12 16 12 16C12 16 10 13.5 10 11C10 8.5 12 6 12 6Z"></path>
@@ -35,12 +48,12 @@ export function Header() {
           <span className="font-display-lg text-lg md:text-xl font-black tracking-tighter text-on-surface uppercase">
             Fuega <span className="text-secondary">Academy</span>
           </span>
-        </Link>
+        </LocalizedLink>
 
         {/* Desktop Navigation Links */}
         <div className="hidden lg:flex items-center gap-8">
           {navLinks.map((link) => (
-            <Link
+            <LocalizedLink
               key={link.href}
               to={link.href}
               className={cn(
@@ -51,7 +64,7 @@ export function Header() {
               )}
             >
               {t(link.labelKey)}
-            </Link>
+            </LocalizedLink>
           ))}
         </div>
 
@@ -64,7 +77,7 @@ export function Header() {
               {languages.map((lang) => (
                 <button
                   key={lang.code}
-                  onClick={() => setLanguage(lang.code)}
+                  onClick={() => handleLanguageChange(lang.code)}
                   className={`w-6 h-6 rounded-full overflow-hidden border border-outline-variant hover:scale-110 transition-transform ${
                     language === lang.code ? 'ring-2 ring-primary' : ''
                   }`}
@@ -82,14 +95,14 @@ export function Header() {
             </div>
           </div>
 
-          <Link to="/login" className="text-on-surface font-label-md hover:text-primary transition-colors px-2">
+          <LocalizedLink to="/login" className="text-on-surface font-label-md hover:text-primary transition-colors px-2">
             {t('nav.login')}
-          </Link>
-          <Link to="/register">
+          </LocalizedLink>
+          <LocalizedLink to="/register">
             <Button variant="primary" className="rounded-full px-5 py-2.5">
               {t('nav.startNow')}
             </Button>
-          </Link>
+          </LocalizedLink>
         </div>
 
         {/* Mobile controls */}
@@ -99,7 +112,7 @@ export function Header() {
             {languages.map((lang) => (
               <button
                 key={lang.code}
-                onClick={() => setLanguage(lang.code)}
+                onClick={() => handleLanguageChange(lang.code)}
                 className={`w-5 h-5 rounded-full overflow-hidden border ${
                   language === lang.code ? 'ring-2 ring-primary' : ''
                 }`}
@@ -127,28 +140,28 @@ export function Header() {
       {isMenuOpen && (
         <div className="absolute top-full left-0 w-full bg-surface/85 backdrop-blur-md border-b border-outline-variant px-6 py-6 space-y-4 flex flex-col shadow-2xl md:hidden">
           {navLinks.map((link) => (
-            <Link
+            <LocalizedLink
               key={link.href}
               to={link.href}
               onClick={() => setIsMenuOpen(false)}
               className="text-on-surface font-medium text-base py-1"
             >
               {t(link.labelKey)}
-            </Link>
+            </LocalizedLink>
           ))}
           <hr className="border-outline-variant my-1" />
-          <Link
+          <LocalizedLink
             to="/login"
             onClick={() => setIsMenuOpen(false)}
             className="text-on-surface font-medium text-base py-1"
           >
             {t('nav.login')}
-          </Link>
-          <Link to="/register" onClick={() => setIsMenuOpen(false)}>
+          </LocalizedLink>
+          <LocalizedLink to="/register" onClick={() => setIsMenuOpen(false)}>
             <Button variant="primary" className="w-full rounded-full py-3">
               {t('nav.startNow')}
             </Button>
-          </Link>
+          </LocalizedLink>
         </div>
       )}
     </header>

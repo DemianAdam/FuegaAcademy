@@ -1,5 +1,5 @@
 import { Link, type LinkProps, useParams } from 'react-router-dom';
-import { useLanguage } from '../../lib/LanguageContext';
+import { useLanguage } from '../../lib/useLanguage';
 
 export function LocalizedLink({ to, ...props }: LinkProps) {
   const { lang } = useParams<{ lang?: string }>();

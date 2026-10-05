@@ -1,4 +1,4 @@
-import { useLanguage } from '../../lib/LanguageContext';
+import { useLanguage } from '../../lib/useLanguage';
 import { Globe } from 'lucide-react';
 import { cn } from '../../lib/utils';
 

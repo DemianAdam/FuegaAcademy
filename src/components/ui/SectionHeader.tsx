@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { cn } from '../../lib/utils';
+import { LocalizedLink } from '../shared/LocalizedLink';
 
 interface SectionHeaderProps {
   tag?: string;
@@ -37,13 +37,13 @@ export function SectionHeader({ tag, tagKey, title, titleKey, action, className 
         )}
       </div>
       {action && (
-        <Link
+        <LocalizedLink
           to={action.href}
           className="flex items-center gap-2 font-bold text-on-surface-variant hover:text-primary transition-colors whitespace-nowrap self-start sm:self-auto"
         >
           <span>{actionLabel}</span>
           <span className="material-symbols-outlined shrink-0" aria-hidden="true">arrow_right_alt</span>
-        </Link>
+        </LocalizedLink>
       )}
     </div>
   );

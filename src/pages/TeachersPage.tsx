@@ -1,8 +1,8 @@
-import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { teachers } from '../data/teachers';
 import { TeacherCard } from '../components/shared/TeacherCard';
 import { Button } from '../components/ui/Button';
+import { LocalizedLink } from '../components/shared/LocalizedLink';
 
 export function TeachersPage() {
   const { t } = useTranslation('common');
@@ -42,12 +42,12 @@ export function TeachersPage() {
             <p className="text-on-secondary-container opacity-80 mb-6 text-sm md:text-base leading-relaxed">
               {t('teachersPage.ctaDesc')}
             </p>
-            <Link to="/courses">
+            <LocalizedLink to="/courses">
               <Button variant="secondary" className="bg-white dark:bg-surface-container text-on-secondary-fixed dark:text-on-surface shadow-md">
                 {t('teachersPage.ctaButton')}
                 <span className="material-symbols-outlined text-lg">arrow_forward</span>
               </Button>
-            </Link>
+            </LocalizedLink>
           </div>
           <div className="hidden md:block absolute -right-6 -bottom-6 w-60 h-60 opacity-15">
             <span className="material-symbols-outlined text-[180px]" style={{ fontVariationSettings: "'FILL' 1" }}>

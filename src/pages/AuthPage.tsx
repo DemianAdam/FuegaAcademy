@@ -6,7 +6,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '../components/ui/Tabs'
 import { Input } from '../components/ui/Input';
 import { Button } from '../components/ui/Button';
 import { Card } from '../components/ui/Card';
-import { useLanguage } from '../lib/LanguageContext';
+import { useLanguage } from '../lib/useLanguage';
 
 export function AuthPage() {
   const { t } = useTranslation('common');

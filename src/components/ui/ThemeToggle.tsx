@@ -1,5 +1,5 @@
-import { useTheme } from '../../lib/ThemeContext';
-import { useLanguage } from '../../lib/LanguageContext';
+import { useTheme } from '../../lib/useTheme';
+import { useLanguage } from '../../lib/useLanguage';
 import {
   DropdownMenu,
   DropdownMenuTrigger,

@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
-import { useLanguage } from '../../lib/LanguageContext';
+import { useLanguage } from '../../lib/useLanguage';
 import { Camera, PlayCircle, MessageCircle } from 'lucide-react';
+import { LocalizedLink } from '../shared/LocalizedLink';
 
 export function Footer() {
   const { t } = useLanguage();
@@ -26,9 +26,9 @@ export function Footer() {
           <div>
             <h5 className="text-white font-bold mb-6">{t('footer.explorar')}</h5>
             <ul className="space-y-4 text-surface-dim">
-              <li><Link to="#" className="font-medium text-base hover:text-lima transition-colors">{t('footer.cursosEnVivo')}</Link></li>
-              <li><Link to="#" className="font-medium text-base hover:text-lima transition-colors">{t('footer.cursosGrabados')}</Link></li>
-              <li><Link to="#" className="font-medium text-base hover:text-lima transition-colors">{t('footer.talleresGratuitos')}</Link></li>
+              <li><LocalizedLink to="/courses" className="font-medium text-base hover:text-lima transition-colors">{t('footer.cursosEnVivo')}</LocalizedLink></li>
+              <li><LocalizedLink to="/courses" className="font-medium text-base hover:text-lima transition-colors">{t('footer.cursosGrabados')}</LocalizedLink></li>
+              <li><LocalizedLink to="/courses" className="font-medium text-base hover:text-lima transition-colors">{t('footer.talleresGratuitos')}</LocalizedLink></li>
             </ul>
           </div>
 
@@ -36,9 +36,9 @@ export function Footer() {
           <div>
             <h5 className="text-white font-bold mb-6">{t('footer.comunidad')}</h5>
             <ul className="space-y-4 text-surface-dim">
-              <li><Link to="#" className="font-medium text-base hover:text-lima transition-colors">{t('footer.nuestroDiscord')}</Link></li>
-              <li><Link to="#" className="font-medium text-base hover:text-lima transition-colors">{t('footer.blog')}</Link></li>
-              <li><Link to="#" className="font-medium text-base hover:text-lima transition-colors">{t('footer.eventos')}</Link></li>
+              <li><LocalizedLink to="#" className="font-medium text-base hover:text-lima transition-colors">{t('footer.nuestroDiscord')}</LocalizedLink></li>
+              <li><LocalizedLink to="#" className="font-medium text-base hover:text-lima transition-colors">{t('footer.blog')}</LocalizedLink></li>
+              <li><LocalizedLink to="#" className="font-medium text-base hover:text-lima transition-colors">{t('footer.eventos')}</LocalizedLink></li>
             </ul>
           </div>
 
@@ -64,15 +64,15 @@ export function Footer() {
             © 2024 Fuega Academy. {t('footer.rights')}
           </p>
           <div className="flex gap-6">
-            <Link to="#" className="text-white/60 hover:text-lima transition-all" aria-label="Instagram">
+            <LocalizedLink to="#" className="text-white/60 hover:text-lima transition-all" aria-label="Instagram">
               <Camera className="w-5 h-5" aria-hidden="true" />
-            </Link>
-            <Link to="#" className="text-white/60 hover:text-lima transition-all" aria-label="YouTube">
+            </LocalizedLink>
+            <LocalizedLink to="#" className="text-white/60 hover:text-lima transition-all" aria-label="YouTube">
               <PlayCircle className="w-5 h-5" aria-hidden="true" />
-            </Link>
-            <Link to="#" className="text-white/60 hover:text-lima transition-all" aria-label="Discord">
+            </LocalizedLink>
+            <LocalizedLink to="#" className="text-white/60 hover:text-lima transition-all" aria-label="Discord">
               <MessageCircle className="w-5 h-5" aria-hidden="true" />
-            </Link>
+            </LocalizedLink>
           </div>
         </div>
       </div>
