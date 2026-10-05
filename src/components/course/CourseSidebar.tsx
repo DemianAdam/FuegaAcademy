@@ -1,23 +1,41 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useMutation } from 'convex/react';
+import { useNavigate } from 'react-router-dom';
+import { api } from '../../../convex/_generated/api';
 import { Button } from '../ui/Button';
 import type { CourseWithRelations } from '@shared/validators/courses';
 
 interface CourseSidebarProps {
   course: CourseWithRelations;
-  formatType: 'live' | 'recorded';
-  setFormatType: (format: 'live' | 'recorded') => void;
-  selectedScheduleId: string;
-  setSelectedScheduleId: (id: string) => void;
 }
 
-export function CourseSidebar({
-  course,
-  formatType,
-  setFormatType,
-  selectedScheduleId,
-  setSelectedScheduleId,
-}: CourseSidebarProps) {
+export function CourseSidebar({ course }: CourseSidebarProps) {
   const { t } = useTranslation('course');
+  const navigate = useNavigate();
+  const [formatType, setFormatType] = useState<'live' | 'recorded'>('live');
+
+  const defaultScheduleId = course.schedules?.find(s => s.enrolledCount < s.capacity)?._id || course.schedules?.[0]?._id || '';
+  const [selectedScheduleId, setSelectedScheduleId] = useState(defaultScheduleId);
+
+  const enroll = useMutation(api.enrollments.mutations.enrollInCourse);
+  const [isEnrolling, setIsEnrolling] = useState(false);
+
+  const handleEnroll = async () => {
+    try {
+      setIsEnrolling(true);
+      await enroll({
+        courseId: course._id,
+        scheduleId: formatType === 'live' && (selectedScheduleId || defaultScheduleId) ? (selectedScheduleId || defaultScheduleId) : undefined,
+      });
+      navigate('/dashboard');
+    } catch (err) {
+      console.error("Error enrolling in course:", err);
+      alert("Error al inscribirse. Asegúrate de haber iniciado sesión.");
+    } finally {
+      setIsEnrolling(false);
+    }
+  };
 
   const livePrice = course.pricing.live ? `$${course.pricing.live.amount}` : '$99';
   const recordedPrice = course.pricing.recorded ? `$${course.pricing.recorded.amount}` : '$49';
@@ -62,7 +80,8 @@ export function CourseSidebar({
           <div className="space-y-2.5">
             {course.schedules.map((sched) => {
               const isFull = sched.enrolledCount >= sched.capacity;
-              const isSelected = selectedScheduleId === sched._id;
+              const activeScheduleId = selectedScheduleId || defaultScheduleId;
+              const isSelected = activeScheduleId === sched._id;
 
               return (
                 <button
@@ -104,8 +123,13 @@ export function CourseSidebar({
       )}
 
       <div className="space-y-3 pt-2">
-        <Button variant="primary" className="w-full py-4 font-bold text-base shadow-md">
-          {t('enrollment.button')}
+        <Button 
+          variant="primary" 
+          className="w-full py-4 font-bold text-base shadow-md"
+          onClick={handleEnroll}
+          disabled={isEnrolling}
+        >
+          {isEnrolling ? 'Inscribiendo...' : t('enrollment.button')}
         </Button>
         <p className="text-center text-xs text-on-surface-variant">
           {t('enrollment.securePayment')}

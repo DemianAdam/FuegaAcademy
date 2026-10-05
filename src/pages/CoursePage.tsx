@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'convex/react';
@@ -16,14 +15,8 @@ import { TeacherCard } from '../components/shared/TeacherCard';
 export function CoursePage() {
   const { slug } = useParams<{ slug: string }>();
   const { t } = useTranslation('course');
-  const [formatType, setFormatType] = useState<'live' | 'recorded'>('live');
   
   const course = useQuery(api.courses.queries.getBySlug, slug ? { slug } : "skip");
-
-  const defaultScheduleId = course?.schedules?.find(s => s.enrolledCount < s.capacity)?._id || course?.schedules?.[0]?._id || '';
-  const [selectedScheduleId, setSelectedScheduleId] = useState('');
-
-  const activeScheduleId = selectedScheduleId || defaultScheduleId;
 
   if (course === undefined) {
     return <div className="min-h-screen bg-surface flex items-center justify-center">Cargando programa...</div>;
@@ -85,13 +78,7 @@ export function CoursePage() {
 
         {/* Right Column: Pricing & Schedule Selection Sidebar */}
         <div className="lg:col-span-4">
-          <CourseSidebar
-            course={course}
-            formatType={formatType}
-            setFormatType={setFormatType}
-            selectedScheduleId={activeScheduleId}
-            setSelectedScheduleId={setSelectedScheduleId}
-          />
+          <CourseSidebar course={course} />
         </div>
       </main>
     </div>
