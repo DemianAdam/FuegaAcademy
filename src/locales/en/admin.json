@@ -1,0 +1,38 @@
+{
+  "title": "Admin Dashboard",
+  "subtitle": "Manage courses, instructors, and platform analytics",
+  "tabs": {
+    "stats": "Analytics & Stats",
+    "teachers": "Instructors",
+    "courses": "Courses"
+  },
+  "stats": {
+    "totalStudents": "Total Students",
+    "totalCourses": "Total Courses",
+    "totalInstructors": "Total Instructors",
+    "totalEnrollments": "Total Enrollments",
+    "estimatedRevenue": "Est. Revenue",
+    "missingTranslations": "Missing Translations"
+  },
+  "teachers": {
+    "title": "Instructor Management",
+    "addTeacher": "Add Instructor",
+    "editTeacher": "Edit Instructor",
+    "name": "Name",
+    "slug": "Slug",
+    "professionalTitle": "Professional Title",
+    "bio": "Bio",
+    "imageUrl": "Avatar URL",
+    "skills": "Skills (comma separated)",
+    "quote": "Quote",
+    "save": "Save Instructor",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "confirmDelete": "Are you sure you want to delete this instructor?"
+  },
+  "courses": {
+    "title": "Course Catalog Management",
+    "addNew": "Create New Course",
+    "manage": "Manage Courses"
+  }
+}

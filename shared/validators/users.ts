@@ -1,6 +1,5 @@
 import { z } from "zod";
 import type { Doc, Id } from "../../convex/_generated/dataModel";
-import { zid } from "convex-helpers/server/zod4";
 
 export type UserId = Id<"users">;
 export type UserDoc = Doc<"users">;
@@ -18,8 +17,3 @@ export const userValidator = z.object({
 });
   
 export const userInputValidator = userValidator;
-
-export const setUserRoleValidator = z.object({
-  userId: zid("users"),
-  role: userRolesValidator,
-});

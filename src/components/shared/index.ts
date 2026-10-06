@@ -3,4 +3,6 @@ export * from './TeacherCard';
 export * from './TestimonialCard';
 export * from './StepCard';
 export * from './LocalizedLink';
-export * from './ProtectedRoute';
+export * from './AuthLoadingScreen';
+export * from './PromoBanner';
+export * from './PolaroidFrame';

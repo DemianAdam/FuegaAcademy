@@ -8,6 +8,7 @@
  * @module
  */
 
+import type * as analytics_queries from "../analytics/queries.js";
 import type * as auth from "../auth.js";
 import type * as courses_mutations from "../courses/mutations.js";
 import type * as courses_queries from "../courses/queries.js";
@@ -42,6 +43,7 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  "analytics/queries": typeof analytics_queries;
   auth: typeof auth;
   "courses/mutations": typeof courses_mutations;
   "courses/queries": typeof courses_queries;

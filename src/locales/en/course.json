@@ -37,52 +37,5 @@
   "enrollment": {
     "button": "Enroll Now",
     "securePayment": "🔒 Secure payment via Stripe / PayPal. Guaranteed atomic spots."
-  },
-  "days": {
-    "lunes": "Monday",
-    "martes": "Tuesday",
-    "miércoles": "Wednesday",
-    "jueves": "Thursday",
-    "viernes": "Friday",
-    "sábado": "Saturday",
-    "domingo": "Sunday"
-  },
-  "admin": {
-    "creation": {
-      "title": "Create New Course",
-      "subtitle": "Fill in the details below to publish a new course on Fuega Academy.",
-      "courseTitle": "Course Title",
-      "slug": "Slug / URL",
-      "description": "Description",
-      "category": "Category",
-      "level": "Level",
-      "duration": "Duration (hours)",
-      "teacher": "Teacher",
-      "livePrice": "Live Price ($)",
-      "recordedPrice": "Recorded Price ($)",
-      "imageUrl": "Image URL",
-      "badges": "Badges",
-      "submit": "Create Course",
-      "cancel": "Cancel"
-    },
-    "preview": {
-      "button": "Preview Course",
-      "modeActive": "Preview Mode Active",
-      "exit": "Exit Preview",
-      "banner": "You are viewing this course as a student preview."
-    },
-    "validation": {
-      "titleRequired": "Course title is required",
-      "slugRequired": "Course slug is required",
-      "descriptionRequired": "Description is required",
-      "invalidPrice": "Price must be a valid positive number",
-      "teacherRequired": "Please select a teacher",
-      "categoryRequired": "Category is required"
-    },
-    "success": {
-      "created": "Course created successfully!",
-      "updated": "Course updated successfully!",
-      "deleted": "Course deleted successfully!"
-    }
   }
 }

@@ -1,0 +1,38 @@
+{
+  "title": "Painel Administrativo",
+  "subtitle": "Gerencie cursos, instrutores e análises da plataforma",
+  "tabs": {
+    "stats": "Estatísticas",
+    "teachers": "Instrutores",
+    "courses": "Cursos"
+  },
+  "stats": {
+    "totalStudents": "Total de Estudantes",
+    "totalCourses": "Total de Cursos",
+    "totalInstructors": "Total de Instrutores",
+    "totalEnrollments": "Total de Inscrições",
+    "estimatedRevenue": "Receita Est.",
+    "missingTranslations": "Traduções Ausentes"
+  },
+  "teachers": {
+    "title": "Gerenciamento de Instrutores",
+    "addTeacher": "Adicionar Instrutor",
+    "editTeacher": "Editar Instrutor",
+    "name": "Nome",
+    "slug": "Slug",
+    "professionalTitle": "Título Profissional",
+    "bio": "Biografia",
+    "imageUrl": "URL do Avatar",
+    "skills": "Habilidades (separadas por vírgula)",
+    "quote": "Citação",
+    "save": "Salvar Instrutor",
+    "cancel": "Cancelar",
+    "delete": "Excluir",
+    "confirmDelete": "Tem certeza de que deseja excluir este instrutor?"
+  },
+  "courses": {
+    "title": "Gerenciamento de Cursos",
+    "addNew": "Criar Novo Curso",
+    "manage": "Gerenciar Cursos"
+  }
+}

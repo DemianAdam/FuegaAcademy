@@ -1,8 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { teachers } from '../data/teachers';
-import { TeacherCard } from '../components/shared/TeacherCard';
-import { Button } from '../components/ui/Button';
-import { LocalizedLink } from '../components/shared/LocalizedLink';
+import { TeacherCard, PromoBanner } from '../components/shared';
 
 export function TeachersPage() {
   const { t } = useTranslation('common');
@@ -31,30 +29,13 @@ export function TeachersPage() {
         ))}
 
         {/* Custom CTA Card / Bento Element */}
-        <div className="lg:col-span-2 bg-secondary-container rounded-2xl p-8 flex flex-col md:flex-row items-center gap-8 overflow-hidden relative border border-outline-variant shadow-lg">
-          <div className="flex-1 z-10">
-            <span className="bg-white dark:bg-surface-container text-secondary px-3 py-1 font-label-md text-[11px] font-bold rounded-full mb-4 inline-block">
-              {t('teachersPage.ctaBadge')}
-            </span>
-            <h2 className="text-2xl md:text-3xl font-black text-on-secondary-container mb-3 tracking-tight">
-              {t('teachersPage.ctaTitle')}
-            </h2>
-            <p className="text-on-secondary-container opacity-80 mb-6 text-sm md:text-base leading-relaxed">
-              {t('teachersPage.ctaDesc')}
-            </p>
-            <LocalizedLink to="/courses">
-              <Button variant="secondary" className="bg-white dark:bg-surface-container text-on-secondary-fixed dark:text-on-surface shadow-md">
-                {t('teachersPage.ctaButton')}
-                <span className="material-symbols-outlined text-lg">arrow_forward</span>
-              </Button>
-            </LocalizedLink>
-          </div>
-          <div className="hidden md:block absolute -right-6 -bottom-6 w-60 h-60 opacity-15">
-            <span className="material-symbols-outlined text-[180px]" style={{ fontVariationSettings: "'FILL' 1" }}>
-              school
-            </span>
-          </div>
-        </div>
+        <PromoBanner
+          badge={t('teachersPage.ctaBadge')}
+          title={t('teachersPage.ctaTitle')}
+          description={t('teachersPage.ctaDesc')}
+          ctaLabel={t('teachersPage.ctaButton')}
+          to="/courses"
+        />
       </div>
     </main>
   );

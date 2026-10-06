@@ -1,5 +1,5 @@
 import { zAdminMutation } from "../zod";
-import { courseInsertValidator } from "@shared/validators/courses";
+import { courseInsertValidator, courseUpdateValidator, courseRemoveValidator } from "@shared/validators/courses";
 
 export const create = zAdminMutation({
   args: courseInsertValidator,
@@ -15,5 +15,31 @@ export const create = zAdminMutation({
     }
 
     return await ctx.db.insert("courses", args);
+  },
+});
+
+export const update = zAdminMutation({
+  args: courseUpdateValidator,
+  handler: async (ctx, args) => {
+    const { id, patch } = args;
+    const course = await ctx.db.get(id);
+    if (!course) {
+      throw new Error("Course not found");
+    }
+    await ctx.db.patch(id, patch);
+    return id;
+  },
+});
+
+export const remove = zAdminMutation({
+  args: courseRemoveValidator,
+  handler: async (ctx, args) => {
+    const { id } = args;
+    const course = await ctx.db.get(id);
+    if (!course) {
+      throw new Error("Course not found");
+    }
+    await ctx.db.delete(id);
+    return id;
   },
 });

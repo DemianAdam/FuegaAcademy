@@ -44,6 +44,15 @@ export const courseInsertValidator = z.object({
 
 export const courseValidator = courseInsertValidator;
 
+export const courseUpdateValidator = z.object({
+  id: zid("courses"),
+  patch: courseInsertValidator.partial(),
+});
+
+export const courseRemoveValidator = z.object({
+  id: zid("courses"),
+});
+
 export const courseBySlugValidator = courseValidator.pick({
   slug: true,
 });

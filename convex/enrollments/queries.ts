@@ -7,7 +7,7 @@ export const listMyEnrollments = zStudentQuery({
 
     const enrollments = await ctx.db
       .query("enrollments")
-      .withIndex("by_user", (q) => q.eq("userId", userId))
+      .withIndex("by_user_course", (q) => q.eq("userId", userId))
       .collect();
 
     return await Promise.all(

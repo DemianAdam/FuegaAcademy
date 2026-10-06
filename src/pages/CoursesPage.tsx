@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'convex/react';
 import { api } from '../../convex/_generated/api';
-import { PolaroidFrame } from '../components/shared/PolaroidFrame';
+import { PolaroidFrame, PromoBanner } from '../components/shared';
 import { Button } from '../components/ui/Button';
 
 export function CoursesPage() {
@@ -107,26 +107,12 @@ export function CoursesPage() {
         )}
 
         {/* Custom CTA Card / Bento Element */}
-        <div className="lg:col-span-2 bg-secondary-container rounded-2xl p-8 flex flex-col md:flex-row items-center gap-8 overflow-hidden relative border border-outline-variant shadow-lg">
-          <div className="flex-1 z-10">
-            <span className="bg-white dark:bg-surface-container text-secondary px-3 py-1 font-label-md text-[11px] font-bold rounded-full mb-4 inline-block">
-              {t('coursesPage.proBadge')}
-            </span>
-            <h2 className="text-2xl md:text-3xl font-black text-on-secondary-container mb-3 tracking-tight">
-              {t('coursesPage.proTitle')}
-            </h2>
-            <p className="text-on-secondary-container opacity-80 mb-6 text-sm md:text-base leading-relaxed">
-              {t('coursesPage.proDesc')}
-            </p>
-            <Button variant="secondary" className="bg-white dark:bg-surface-container text-on-secondary-fixed dark:text-on-surface shadow-md">
-              {t('coursesPage.proCta')}
-              <span className="material-symbols-outlined text-lg">arrow_forward</span>
-            </Button>
-          </div>
-          <div className="hidden md:block absolute -right-6 -bottom-6 w-60 h-60 opacity-15">
-            <span className="material-symbols-outlined text-[180px]" style={{ fontVariationSettings: "'FILL' 1" }}>school</span>
-          </div>
-        </div>
+        <PromoBanner
+          badge={t('coursesPage.proBadge')}
+          title={t('coursesPage.proTitle')}
+          description={t('coursesPage.proDesc')}
+          ctaLabel={t('coursesPage.proCta')}
+        />
       </div>
     </main>
   );

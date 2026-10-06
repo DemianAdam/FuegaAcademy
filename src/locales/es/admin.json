@@ -1,0 +1,38 @@
+{
+  "title": "Panel de Administración",
+  "subtitle": "Gestiona cursos, instructores y estadísticas de la plataforma",
+  "tabs": {
+    "stats": "Estadísticas",
+    "teachers": "Instructores",
+    "courses": "Cursos"
+  },
+  "stats": {
+    "totalStudents": "Estudiantes Totales",
+    "totalCourses": "Cursos Totales",
+    "totalInstructors": "Instructores Totales",
+    "totalEnrollments": "Inscripciones Totales",
+    "estimatedRevenue": "Ingresos Est.",
+    "missingTranslations": "Traducciones Faltantes"
+  },
+  "teachers": {
+    "title": "Gestión de Instructores",
+    "addTeacher": "Agregar Instructor",
+    "editTeacher": "Editar Instructor",
+    "name": "Nombre",
+    "slug": "Slug",
+    "professionalTitle": "Título Profesional",
+    "bio": "Biografía",
+    "imageUrl": "URL de Avatar",
+    "skills": "Habilidades (separadas por coma)",
+    "quote": "Cita",
+    "save": "Guardar Instructor",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "confirmDelete": "¿Estás seguro de que deseas eliminar este instructor?"
+  },
+  "courses": {
+    "title": "Gestión del Catálogo de Cursos",
+    "addNew": "Crear Nuevo Curso",
+    "manage": "Gestionar Cursos"
+  }
+}

@@ -37,52 +37,5 @@
   "enrollment": {
     "button": "Inscribirme Ahora",
     "securePayment": "🔒 Pago seguro vía Stripe / PayPal. Cupos atómicos garantizados."
-  },
-  "days": {
-    "lunes": "Lunes",
-    "martes": "Martes",
-    "miércoles": "Miércoles",
-    "jueves": "Jueves",
-    "viernes": "Viernes",
-    "sábado": "Sábado",
-    "domingo": "Domingo"
-  },
-  "admin": {
-    "creation": {
-      "title": "Crear Nuevo Curso",
-      "subtitle": "Completá los detalles a continuación para publicar un nuevo curso en Fuega Academy.",
-      "courseTitle": "Título del Curso",
-      "slug": "Slug / URL",
-      "description": "Descripción",
-      "category": "Categoría",
-      "level": "Nivel",
-      "duration": "Duración (horas)",
-      "teacher": "Profesor",
-      "livePrice": "Precio en Vivo ($)",
-      "recordedPrice": "Precio Grabado ($)",
-      "imageUrl": "URL de Imagen",
-      "badges": "Insignias",
-      "submit": "Crear Curso",
-      "cancel": "Cancelar"
-    },
-    "preview": {
-      "button": "Vista Previa del Curso",
-      "modeActive": "Modo Vista Previa Activo",
-      "exit": "Salir de Vista Previa",
-      "banner": "Estás viendo este curso como vista previa de estudiante."
-    },
-    "validation": {
-      "titleRequired": "El título del curso es obligatorio",
-      "slugRequired": "El slug del curso es obligatorio",
-      "descriptionRequired": "La descripción es obligatoria",
-      "invalidPrice": "El precio debe ser un número positivo válido",
-      "teacherRequired": "Por favor seleccioná un profesor",
-      "categoryRequired": "La categoría es obligatoria"
-    },
-    "success": {
-      "created": "¡Curso creado con éxito!",
-      "updated": "¡Curso actualizado con éxito!",
-      "deleted": "¡Curso eliminado con éxito!"
-    }
   }
 }

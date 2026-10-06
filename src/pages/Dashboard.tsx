@@ -1,8 +1,8 @@
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { mockDashboardData } from '../data/mockDashboardData';
+import { useAuth } from '../lib/useAuth';
 import {
-  DashboardLayout,
   WelcomeHeader,
   InProgressCoursesSection,
   CommunitySection,
@@ -12,10 +12,11 @@ import {
 } from '../components/dashboard';
 
 export function Dashboard() {
+  const { user: authUser } = useAuth();
   const enrollments = useQuery(api.enrollments.queries.listMyEnrollments);
   const fallback = mockDashboardData;
 
-  const user = fallback.user;
+  const userName = authUser?.name || fallback.user.name;
 
   const courses = enrollments && enrollments.length > 0 
     ? enrollments.map(e => ({
@@ -35,9 +36,9 @@ export function Dashboard() {
   const activity = fallback.activity;
 
   return (
-    <DashboardLayout user={user}>
+    <>
       {/* Welcome Header */}
-      <WelcomeHeader userName={user.name} />
+      <WelcomeHeader userName={userName} />
 
       {/* Grid Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-stack-lg">
@@ -54,6 +55,6 @@ export function Dashboard() {
           <ActivityStatsWidget activity={activity} />
         </div>
       </div>
-    </DashboardLayout>
+    </>
   );
 }

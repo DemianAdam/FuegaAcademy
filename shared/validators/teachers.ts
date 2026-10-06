@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { zid } from "convex-helpers/server/zod4";
 import type { Doc, Id } from "../../convex/_generated/dataModel";
 
 export type TeacherId = Id<"teachers">;
@@ -19,6 +20,17 @@ export const teacherValidator = z.object({
   bio: z.string().min(1),
   quote: z.string().optional(),
   stats: z.array(teacherStatValidator).optional(),
+});
+
+export const teacherInsertValidator = teacherValidator;
+
+export const teacherUpdateValidator = z.object({
+  id: zid("teachers"),
+  patch: teacherValidator.partial(),
+});
+
+export const teacherRemoveValidator = z.object({
+  id: zid("teachers"),
 });
 
 export const teacherBySlugValidator = teacherValidator.pick({

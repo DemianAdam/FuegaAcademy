@@ -9,4 +9,4 @@ export * from './Accordion';
 export * from './Tabs';
 export * from './Dialog';
 export * from './DropdownMenu';
-export * from './Tooltip';
+export * from './ThemeToggle';
