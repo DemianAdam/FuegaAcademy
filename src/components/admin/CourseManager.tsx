@@ -5,6 +5,7 @@ import { api } from '../../../convex/_generated/api';
 import type { Doc } from '../../../convex/_generated/dataModel';
 import { Button, Card, Badge } from '@/components/ui';
 import { LocalizedLink } from '@/components/shared';
+import { calculateCourseWeeks } from '@/lib/utils';
 
 export const CourseManager: React.FC = () => {
   const { t } = useTranslation('admin');
@@ -49,6 +50,7 @@ export const CourseManager: React.FC = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {courses.map((course) => {
+            const weeks = calculateCourseWeeks(course.duration, course.schedules);
             const formatLabel =
               course.format === 'live'
                 ? 'En Vivo'
@@ -93,7 +95,7 @@ export const CourseManager: React.FC = () => {
                       {formatLabel}
                     </span>
                     <span className="text-xs text-on-surface-variant font-medium">
-                      {course.duration} semanas
+                      {weeks} semanas ({course.duration} clases)
                     </span>
                   </div>
                   <h3 className="font-bold text-lg mb-1 line-clamp-1">{course.title}</h3>

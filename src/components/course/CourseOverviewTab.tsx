@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { calculateCourseWeeks } from '../../lib/utils';
 import type { CourseWithRelations } from '@shared/validators/courses';
 
 interface CourseOverviewTabProps {
@@ -7,6 +8,7 @@ interface CourseOverviewTabProps {
 
 export function CourseOverviewTab({ course }: CourseOverviewTabProps) {
   const { t } = useTranslation('course');
+  const weeks = calculateCourseWeeks(course.duration, course.schedules);
 
   return (
     <div className="space-y-8">
@@ -28,8 +30,8 @@ export function CourseOverviewTab({ course }: CourseOverviewTabProps) {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4">
         <div className="p-4 rounded-xl border border-outline-variant text-center bg-surface-container-low">
           <span className="material-symbols-outlined text-primary text-2xl mb-1">schedule</span>
-          <div className="text-xl font-black text-on-surface">{course.duration} sem</div>
-          <div className="text-xs text-on-surface-variant font-medium">Duración</div>
+          <div className="text-xl font-black text-on-surface">{weeks} sem</div>
+          <div className="text-xs text-on-surface-variant font-medium">Duración ({course.duration} clases)</div>
         </div>
         <div className="p-4 rounded-xl border border-outline-variant text-center bg-surface-container-low">
           <span className="material-symbols-outlined text-primary text-2xl mb-1">group</span>

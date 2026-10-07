@@ -1,24 +1,24 @@
-  import { useTranslation } from 'react-i18next';
-import { Badge } from '../ui/Badge';
+  import { Badge } from '../ui/Badge';
 import { Card } from '../ui/Card';
-import type { CourseInsertInput } from '@shared/validators/courses';
+import { calculateCourseWeeks } from '../../lib/utils';
+import type { CourseCreateInput } from '@shared/validators/courses';
 
 interface CoursePreviewProps {
-  course: Partial<CourseInsertInput>;
+  course: Partial<CourseCreateInput>;
   teacherName?: string;
 }
 
 export function CoursePreview({ course, teacherName }: CoursePreviewProps) {
-  const { t } = useTranslation('common');
-
   const title = course.title || 'Título del Programa';
   const description = course.description || 'Descripción detallada del curso que aparecerá para los estudiantes...';
   const imageUrl = course.imageUrl || 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80';
-  const duration = course.duration ?? 8;
+  const duration = course.duration ?? 16;
+  const calculatedWeeks = calculateCourseWeeks(duration, course.schedules);
   const format = course.format || 'hybrid';
   const badge = course.badge;
   const achievements = course.achievements || [];
   const pricing = course.pricing || {};
+  const schedules = course.schedules || [];
 
   return (
     <div className="sticky top-6 space-y-6">
@@ -60,7 +60,7 @@ export function CoursePreview({ course, teacherName }: CoursePreviewProps) {
           <div className="flex items-center gap-4 text-xs text-on-surface-variant pt-2 border-t border-outline-variant">
             <span className="flex items-center gap-1">
               <span className="material-symbols-outlined text-sm" aria-hidden="true">calendar_today</span>
-              {duration} {t('weeks', { defaultValue: 'semanas' })}
+              {calculatedWeeks} semanas ({duration} clases)
             </span>
             <span className="flex items-center gap-1 capitalize">
               <span className="material-symbols-outlined text-sm" aria-hidden="true">video_library</span>
@@ -73,6 +73,25 @@ export function CoursePreview({ course, teacherName }: CoursePreviewProps) {
               </span>
             )}
           </div>
+
+          {schedules.length > 0 && (
+            <div className="space-y-2 pt-2 border-t border-outline-variant">
+              <span className="text-xs font-bold text-on-surface-variant uppercase tracking-wider block">Grupos / Horarios</span>
+              {schedules.map((s: any, idx: number) => (
+                <div key={idx} className="p-2.5 rounded-lg bg-surface border border-outline-variant text-xs space-y-1">
+                  <div className="font-bold text-on-surface flex justify-between">
+                    <span>{s.name}</span>
+                    <span className="text-primary">Cap: {s.capacity}</span>
+                  </div>
+                  {s.sessions.map((sess: any, sIdx: number) => (
+                    <div key={sIdx} className="text-on-surface-variant">
+                      • {sess.day}: {sess.startTime} - {sess.endTime}hs
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          )}
 
           {/* Pricing Preview */}
           <div className="pt-4 border-t border-outline-variant flex items-center justify-between">
@@ -100,7 +119,7 @@ export function CoursePreview({ course, teacherName }: CoursePreviewProps) {
             Logros del Estudiante ({achievements.length})
           </h4>
           <ul className="space-y-2">
-            {achievements.map((ach, idx) => (
+            {achievements.map((ach: any, idx: number) => (
               <li key={idx} className="flex items-start gap-2 text-xs text-on-surface-variant">
                 <span className="material-symbols-outlined text-primary text-base shrink-0">
                   {ach.icon || 'check_circle'}

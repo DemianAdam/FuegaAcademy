@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Badge } from '../ui/Badge';
-import { cn } from '../../lib/utils';
+import { cn, calculateCourseWeeks } from '../../lib/utils';
 import type { CourseWithRelations } from '@shared/validators/courses';
 
 interface CourseCardProps {
@@ -10,6 +10,7 @@ interface CourseCardProps {
 
 export function CourseCard({ course }: CourseCardProps) {
   const { t } = useTranslation('home');
+  const weeks = calculateCourseWeeks(course.duration, course.schedules);
 
   return (
     <Link
@@ -37,7 +38,7 @@ export function CourseCard({ course }: CourseCardProps) {
         <div className="flex items-center gap-4 text-xs text-on-surface-variant mb-6">
           <span className="flex items-center gap-1">
             <span className="material-symbols-outlined text-sm" aria-hidden="true">calendar_today</span>
-            {course.duration} semanas
+            {weeks} semanas ({course.duration} clases)
           </span>
           <span className="flex items-center gap-1">
             <span className="material-symbols-outlined text-sm" aria-hidden="true">video_library</span>

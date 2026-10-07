@@ -107,7 +107,7 @@ export function CourseSidebar({ course }: CourseSidebarProps) {
                     </span>
                   </div>
                   <div className="space-y-1">
-                    {sched.sessions.map((sess, idx) => (
+                    {sched.sessions.map((sess: any, idx: number) => (
                       <div key={idx} className="flex items-center gap-1.5 text-xs text-on-surface-variant">
                         <span className="material-symbols-outlined text-xs text-primary">event</span>
                         <span className="font-medium text-on-surface">{sess.day}:</span>

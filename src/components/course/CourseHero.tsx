@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { PolaroidFrame } from '../shared/PolaroidFrame';
+import { calculateCourseWeeks } from '../../lib/utils';
 import type { CourseWithRelations } from '@shared/validators/courses';
 
 interface CourseHeroProps {
@@ -8,6 +9,7 @@ interface CourseHeroProps {
 
 export function CourseHero({ course }: CourseHeroProps) {
   const { t } = useTranslation('course');
+  const weeks = calculateCourseWeeks(course.duration, course.schedules);
 
   return (
     <section className="bg-surface-container-low border-b border-outline-variant py-16 px-4 md:px-margin-desktop">
@@ -25,7 +27,7 @@ export function CourseHero({ course }: CourseHeroProps) {
           <div className="flex flex-wrap gap-6 pt-2">
             <div className="flex items-center gap-2">
               <span className="material-symbols-outlined text-primary">schedule</span>
-              <span className="text-sm font-medium">{course.duration} semanas</span>
+              <span className="text-sm font-medium">{weeks} semanas ({course.duration} clases)</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="material-symbols-outlined text-primary">videocam</span>

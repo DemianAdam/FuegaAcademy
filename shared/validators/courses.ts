@@ -3,6 +3,7 @@ import { zid } from "convex-helpers/server/zod4";
 import type { Doc, Id } from "../../convex/_generated/dataModel";
 import type { TeacherDoc } from "./teachers";
 import type { ModuleDoc } from "./modules";
+import { scheduleValidator } from "./schedules";
 import type { ScheduleDoc } from "./schedules";
 
 export type CourseId = Id<"courses">;
@@ -27,6 +28,11 @@ export const pricingValidator = z.object({
   recorded: pricingTierValidator.optional(),
 });
 
+export const scheduleInputItemValidator = scheduleValidator.omit({
+  courseId: true,
+  enrolledCount: true,
+});
+
 export const courseInsertValidator = z.object({
   slug: z.string().min(1),
   title: z.string().min(1),
@@ -42,11 +48,17 @@ export const courseInsertValidator = z.object({
   pricing: pricingValidator,
 });
 
+export const courseCreateInputValidator = courseInsertValidator.extend({
+  schedules: z.array(scheduleInputItemValidator).optional(),
+});
+
+export type CourseCreateInput = z.infer<typeof courseCreateInputValidator>;
+
 export const courseValidator = courseInsertValidator;
 
 export const courseUpdateValidator = z.object({
   id: zid("courses"),
-  patch: courseInsertValidator.partial(),
+  patch: courseCreateInputValidator.partial(),
 });
 
 export const courseRemoveValidator = z.object({
