@@ -77,7 +77,6 @@ const TeacherFormContent: React.FC<TeacherFormContentProps> = ({
   const createTeacher = useMutation(api.teachers.mutations.create);
   const updateTeacher = useMutation(api.teachers.mutations.update);
 
-  const [slug, setSlug] = useState(teacher?.slug || '');
   const [name, setName] = useState(teacher?.name || '');
   const [title, setTitle] = useState(teacher?.title || '');
   const [imageUrl, setImageUrl] = useState(teacher?.imageUrl || '');
@@ -93,7 +92,6 @@ const TeacherFormContent: React.FC<TeacherFormContentProps> = ({
       .filter(Boolean);
 
     const data = {
-      slug,
       name,
       title,
       imageUrl,
@@ -117,27 +115,15 @@ const TeacherFormContent: React.FC<TeacherFormContentProps> = ({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 mt-4">
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <label className="text-sm font-medium">{t('teachers.name')}</label>
-          <Input
-            required
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="e.g. Chef Marco"
-            className="mt-1"
-          />
-        </div>
-        <div>
-          <label className="text-sm font-medium">{t('teachers.slug')}</label>
-          <Input
-            required
-            value={slug}
-            onChange={(e) => setSlug(e.target.value)}
-            placeholder="e.g. chef-marco"
-            className="mt-1"
-          />
-        </div>
+      <div>
+        <label className="text-sm font-medium">{t('teachers.name')}</label>
+        <Input
+          required
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="e.g. Chef Marco"
+          className="mt-1"
+        />
       </div>
 
       <div>

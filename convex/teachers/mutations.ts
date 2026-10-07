@@ -1,20 +1,34 @@
 import { zAdminMutation } from "../zod";
-import { teacherValidator, teacherUpdateValidator, teacherRemoveValidator } from "./validators";
+import { teacherInsertValidator, teacherUpdateValidator, teacherRemoveValidator } from "./validators";
+import type { TeacherDoc } from "./validators";
+
+function slugify(text: string): string {
+  return text
+    .toString()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/[\s_-]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
 
 export const create = zAdminMutation({
-  args: teacherValidator,
+  args: teacherInsertValidator,
   handler: async (ctx, args) => {
+    const slug = slugify(args.name);
     const existing = await ctx.db
       .query("teachers")
-      .withIndex("by_slug", (q) => q.eq("slug", args.slug))
+      .withIndex("by_slug", (q) => q.eq("slug", slug))
       .unique();
 
     if (existing) {
-      await ctx.db.patch(existing._id, args);
+      await ctx.db.patch(existing._id, { ...args, slug });
       return existing._id;
     }
 
-    return await ctx.db.insert("teachers", args);
+    return await ctx.db.insert("teachers", { ...args, slug });
   },
 });
 
@@ -26,7 +40,13 @@ export const update = zAdminMutation({
     if (!teacher) {
       throw new Error("Teacher not found");
     }
-    await ctx.db.patch(id, patch);
+
+    const updateData: Partial<TeacherDoc> = { ...patch };
+    if (patch.name) {
+      updateData.slug = slugify(patch.name);
+    }
+
+    await ctx.db.patch(id, updateData);
     return id;
   },
 });

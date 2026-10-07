@@ -22,11 +22,11 @@ export const teacherValidator = z.object({
   stats: z.array(teacherStatValidator).optional(),
 });
 
-export const teacherInsertValidator = teacherValidator;
+export const teacherInsertValidator = teacherValidator.omit({ slug: true });
 
 export const teacherUpdateValidator = z.object({
   id: zid("teachers"),
-  patch: teacherValidator.partial(),
+  patch: teacherInsertValidator.partial(),
 });
 
 export const teacherRemoveValidator = z.object({

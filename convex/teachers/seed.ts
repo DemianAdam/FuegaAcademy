@@ -1,5 +1,17 @@
 import { internalMutation } from "../_generated/server";
 
+function slugify(text: string): string {
+  return text
+    .toString()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/[\s_-]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
 const initialTeachers = [
   {
     slug: "magali-valles",
@@ -62,15 +74,17 @@ export const seedTeachers = internalMutation({
   args: {},
   handler: async (ctx) => {
     for (const teacher of initialTeachers) {
+      const slug = teacher.slug || slugify(teacher.name);
+      const teacherData = { ...teacher, slug };
       const existing = await ctx.db
         .query("teachers")
-        .withIndex("by_slug", (q) => q.eq("slug", teacher.slug))
+        .withIndex("by_slug", (q) => q.eq("slug", slug))
         .unique();
 
       if (!existing) {
-        await ctx.db.insert("teachers", teacher);
+        await ctx.db.insert("teachers", teacherData);
       } else {
-        await ctx.db.patch(existing._id, teacher);
+        await ctx.db.patch(existing._id, teacherData);
       }
     }
     return { success: true, count: initialTeachers.length };
