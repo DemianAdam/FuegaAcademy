@@ -1,5 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import { useAuthActions } from '@convex-dev/auth/react';
 import type { UserProfile } from '../../data/mockDashboardData';
 
 interface DashboardLayoutProps {
@@ -9,6 +11,17 @@ interface DashboardLayoutProps {
 
 export function DashboardLayout({ user, children }: DashboardLayoutProps) {
   const { t } = useTranslation('dashboard');
+  const { signOut } = useAuthActions();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      navigate('/');
+    } catch (err) {
+      console.error('Logout failed:', err);
+    }
+  };
 
   return (
     <div className="bg-surface text-on-surface font-body-md selection:bg-primary-container selection:text-on-primary-container overflow-x-hidden min-h-screen">
@@ -43,16 +56,24 @@ export function DashboardLayout({ user, children }: DashboardLayoutProps) {
               <span className="font-label-md text-label-md">{t('sidebar.profile')}</span>
             </a>
           </nav>
-          <div className="mt-auto pt-stack-lg border-t border-outline-variant/30">
+          <div className="mt-auto pt-stack-lg border-t border-outline-variant/30 space-y-4">
             <div className="flex items-center gap-3 p-2">
               <div className="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden border-2 border-surface">
                 <img className="w-full h-full object-cover" alt={user.name} src={user.avatarUrl} />
               </div>
-              <div>
-                <p className="font-bold text-sm">{user.name}</p>
-                <p className="text-xs text-on-surface-variant">{t('sidebar.role')}</p>
+              <div className="overflow-hidden">
+                <p className="font-bold text-sm truncate">{user.name}</p>
+                <p className="text-xs text-on-surface-variant truncate">{t('sidebar.role')}</p>
               </div>
             </div>
+            <button
+              onClick={handleLogout}
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-error hover:bg-error/10 transition-all font-medium text-sm"
+              type="button"
+            >
+              <span className="material-symbols-outlined text-base">logout</span>
+              <span>{t('sidebar.logout')}</span>
+            </button>
           </div>
         </aside>
 
@@ -65,9 +86,20 @@ export function DashboardLayout({ user, children }: DashboardLayoutProps) {
             </svg>
             <span className="font-display-lg text-headline-lg-mobile font-extrabold tracking-tighter text-on-surface uppercase">Fuega <span className="text-secondary">Academy</span></span>
           </div>
-          <button className="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-high" aria-label="Menu" type="button">
-            <span className="material-symbols-outlined">menu</span>
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleLogout}
+              className="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-high text-error hover:bg-error/10 transition-colors"
+              aria-label={t('sidebar.logout')}
+              type="button"
+              title={t('sidebar.logout')}
+            >
+              <span className="material-symbols-outlined text-base">logout</span>
+            </button>
+            <button className="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-high" aria-label="Menu" type="button">
+              <span className="material-symbols-outlined">menu</span>
+            </button>
+          </div>
         </header>
 
         {/* Main Content Canvas */}

@@ -5,7 +5,8 @@
     "calendar": "Calendario",
     "community": "Comunidad",
     "profile": "Perfil",
-    "role": "Creador Digital"
+    "role": "Creador Digital",
+    "logout": "Cerrar sesión"
   },
   "welcome": {
     "greeting": "¡Hola, {{name}}! 👋",
