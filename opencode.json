@@ -4,6 +4,13 @@
     "name": "fuega-academy",
     "framework": "react-vite-convex-tailwind"
   },
+  "mcp": {
+    "mercadopago-mcp-server": {
+      "type": "remote",
+      "url": "https://mcp.mercadopago.com/mcp",
+      "enabled": true
+    }
+  },
   "agents": {
     "frontend-component": {
       "mode": "all",
