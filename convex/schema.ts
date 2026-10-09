@@ -9,6 +9,7 @@ import { languageSchema } from "./languages/schema";
 import { translationSchema } from "./translations/schema";
 import { missingLanguageSchema } from "./languages/schema";
 import { enrollmentSchema } from "./enrollments/schema";
+import { orderSchema } from "./orders/schema";
 
 export default defineSchema({
   ...authTables,
@@ -21,4 +22,5 @@ export default defineSchema({
   translations: translationSchema,
   missingLanguages: missingLanguageSchema,
   enrollments: enrollmentSchema,
+  orders: orderSchema,
 });
