@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useMutation } from 'convex/react';
-import { useNavigate } from 'react-router-dom';
+import { useAction, useQuery, useConvexAuth } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
+import type { Id } from '../../../convex/_generated/dataModel';
 import { Button } from '../ui/Button';
+import { LocalizedLink } from '../shared/LocalizedLink';
 import type { CourseWithRelations } from '@shared/validators/courses';
 
 interface CourseSidebarProps {
@@ -12,33 +13,82 @@ interface CourseSidebarProps {
 
 export function CourseSidebar({ course }: CourseSidebarProps) {
   const { t } = useTranslation('course');
-  const navigate = useNavigate();
+  const { isAuthenticated } = useConvexAuth();
   const [formatType, setFormatType] = useState<'live' | 'recorded'>('live');
+
+  const enrollments = useQuery(
+    api.enrollments.queries.listMyEnrollments,
+    isAuthenticated ? {} : "skip"
+  );
+
+  const isEnrolled = enrollments !== undefined && enrollments.some(e => e.courseId === course._id);
 
   const defaultScheduleId = course.schedules?.find(s => s.enrolledCount < s.capacity)?._id || course.schedules?.[0]?._id || '';
   const [selectedScheduleId, setSelectedScheduleId] = useState(defaultScheduleId);
 
-  const enroll = useMutation(api.enrollments.mutations.enrollInCourse);
+  const createCheckoutSession = useAction(api.orders.actions.createCheckoutSession);
   const [isEnrolling, setIsEnrolling] = useState(false);
 
   const handleEnroll = async () => {
     try {
       setIsEnrolling(true);
-      await enroll({
+      const res = await createCheckoutSession({
         courseId: course._id,
-        scheduleId: formatType === 'live' && (selectedScheduleId || defaultScheduleId) ? (selectedScheduleId || defaultScheduleId) : undefined,
+        tier: formatType,
+        scheduleId: formatType === 'live' && (selectedScheduleId || defaultScheduleId) ? (selectedScheduleId || defaultScheduleId) as Id<"schedules"> : undefined,
       });
-      navigate('/dashboard');
-    } catch (err) {
-      console.error("Error enrolling in course:", err);
-      alert("Error al inscribirse. Asegúrate de haber iniciado sesión.");
+
+      if (res.initPoint) {
+        window.location.href = res.initPoint;
+      }
+    } catch (err: any) {
+      console.error("Error creating checkout session:", err);
+      alert(err?.message || "Error al iniciar el pago con Mercado Pago. Asegúrate de haber iniciado sesión.");
     } finally {
       setIsEnrolling(false);
     }
   };
 
-  const livePrice = course.pricing.live ? `$${course.pricing.live.amount}` : '$99';
-  const recordedPrice = course.pricing.recorded ? `$${course.pricing.recorded.amount}` : '$49';
+  const livePrice = course.pricing.live ? `$${course.pricing.live.amount.toLocaleString('es-AR')}` : '$99,000';
+  const recordedPrice = course.pricing.recorded ? `$${course.pricing.recorded.amount.toLocaleString('es-AR')}` : '$49,000';
+
+  if (isEnrolled) {
+    return (
+      <div className="sticky top-24 p-6 rounded-2xl border border-outline-variant bg-surface-container-low space-y-6 shadow-xl">
+        <div className="flex items-center justify-between">
+          <span className="font-bold text-lg text-on-surface">{t('pricing.enrollment')}</span>
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+            <span className="material-symbols-outlined text-sm">check_circle</span>
+            {t('enrollment.alreadyEnrolled')}
+          </span>
+        </div>
+
+        <div className="bg-surface p-4 rounded-xl border border-outline-variant space-y-2">
+          <p className="text-sm font-medium text-on-surface">
+            {course.title}
+          </p>
+          <p className="text-xs text-on-surface-variant">
+            {t('enrollment.enrolledDescription')}
+          </p>
+        </div>
+
+        <div className="space-y-3 pt-2">
+          <LocalizedLink to="/dashboard" className="block w-full">
+            <Button 
+              variant="primary" 
+              className="w-full py-4 font-bold text-base shadow-md flex items-center justify-center gap-2"
+            >
+              {t('enrollment.accessDashboard')}
+              <span className="material-symbols-outlined text-sm">arrow_forward</span>
+            </Button>
+          </LocalizedLink>
+          <p className="text-center text-xs text-on-surface-variant">
+            {t('details.lifetimeAccess')}
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="sticky top-24 p-6 rounded-2xl border border-outline-variant bg-surface-container-low space-y-6 shadow-xl">
@@ -66,7 +116,7 @@ export function CourseSidebar({ course }: CourseSidebarProps) {
 
       <div className="text-3xl font-black text-on-surface">
         {formatType === 'live' ? livePrice : recordedPrice}
-        <span className="text-xs font-normal text-on-surface-variant ml-2">{t('pricing.singlePayment')}</span>
+        <span className="text-xs font-normal text-on-surface-variant ml-2">ARS {t('pricing.singlePayment')}</span>
       </div>
 
       {formatType === 'live' && course.schedules && course.schedules.length > 0 && (
@@ -129,7 +179,7 @@ export function CourseSidebar({ course }: CourseSidebarProps) {
           onClick={handleEnroll}
           disabled={isEnrolling}
         >
-          {isEnrolling ? 'Inscribiendo...' : t('enrollment.button')}
+          {isEnrolling ? 'Conectando con Mercado Pago...' : 'Pagar con Mercado Pago'}
         </Button>
         <p className="text-center text-xs text-on-surface-variant">
           {t('enrollment.securePayment')}

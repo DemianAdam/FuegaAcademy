@@ -1,41 +1,59 @@
+/// <reference types="node" />
 import { action } from "../_generated/server";
 import { internal } from "../_generated/api";
 import { getAuthUserId } from "@convex-dev/auth/server";
-import { createCheckoutSessionValidator } from "./validators";
+import { v } from "convex/values";
+import type { CourseDoc } from "@shared/validators/courses";
+import type { Id } from "../_generated/dataModel";
 
 export const createCheckoutSession = action({
-  args: createCheckoutSessionValidator,
-  handler: async (ctx, args) => {
+  args: {
+    courseId: v.id("courses"),
+    scheduleId: v.optional(v.id("schedules")),
+    tier: v.union(v.literal("live"), v.literal("recorded")),
+  },
+  handler: async (ctx, args): Promise<{ initPoint: string; sandboxInitPoint?: string; orderId: string }> => {
     const userId = await getAuthUserId(ctx);
     if (!userId) {
       throw new Error("Unauthorized: Not logged in");
     }
 
-    const course = await ctx.runQuery(internal.orders.internal.getCourseById, {
+    const existingEnrollment = await ctx.runQuery(
+      internal.orders.internal.getEnrollmentByUserCourse,
+      {
+        userId,
+        courseId: args.courseId,
+      }
+    );
+
+    if (existingEnrollment) {
+      throw new Error("User is already enrolled in this course");
+    }
+
+    const course = (await ctx.runQuery(internal.orders.internal.getCourseById, {
       courseId: args.courseId,
-    });
+    })) as CourseDoc | null;
 
     if (!course) {
       throw new Error("Course not found");
     }
 
-    const pricingTier = course.pricing?.[args.tier];
+    const pricingTier = course.pricing?.[args.tier as "live" | "recorded"];
     if (!pricingTier) {
-      throw new Error(`Pricing tier ${args.tier} not found or price not set for this course.`);
+      throw new Error(`Pricing tier ${args.tier} not found for this course.`);
     }
 
-    const amount = pricingTier.amount;
-    const currency = "ARS";
+    const amount: number = pricingTier.amount;
 
     // 1. Create pending order
-    const orderId = await ctx.runMutation(internal.orders.internal.createPendingOrder, {
+    const orderId = (await ctx.runMutation(internal.orders.internal.createPendingOrder, {
       userId,
       courseId: args.courseId,
       scheduleId: args.scheduleId,
       tier: args.tier,
       amount,
-      currency,
-    });
+      currency: "ARS",
+    })) as Id<"orders">;
 
     const accessToken = process.env.MP_ACCESS_TOKEN;
     if (!accessToken) {
@@ -43,6 +61,9 @@ export const createCheckoutSession = action({
     }
 
     // 2. Call Mercado Pago Preferences API
+    const siteUrl = process.env.SITE_URL || "http://localhost:5173";
+    const convexSiteUrl = process.env.CONVEX_SITE_URL;
+
     const mpResponse = await fetch("https://api.mercadopago.com/checkout/preferences", {
       method: "POST",
       headers: {
@@ -53,6 +74,7 @@ export const createCheckoutSession = action({
         items: [
           {
             title: `${course.title} (${args.tier})`,
+            description: course.description,
             quantity: 1,
             currency_id: "ARS",
             unit_price: amount,
@@ -60,12 +82,12 @@ export const createCheckoutSession = action({
         ],
         external_reference: orderId,
         back_urls: {
-          success: `${process.env.SITE_URL || "http://localhost:5173"}/dashboard?status=success`,
-          failure: `${process.env.SITE_URL || "http://localhost:5173"}/dashboard?status=failure`,
-          pending: `${process.env.SITE_URL || "http://localhost:5173"}/dashboard?status=pending`,
+          success: `${siteUrl}/dashboard?payment=success`,
+          failure: `${siteUrl}/dashboard?payment=failure`,
+          pending: `${siteUrl}/dashboard?payment=pending`,
         },
         auto_return: "approved",
-        notification_url: process.env.CONVEX_SITE_URL ? `${process.env.CONVEX_SITE_URL}/mercadopago-webhook` : undefined,
+        ...(convexSiteUrl ? { notification_url: `${convexSiteUrl}/mercadopago-webhook` } : {}),
       }),
     });
 
@@ -74,7 +96,7 @@ export const createCheckoutSession = action({
       throw new Error(`Mercado Pago preference creation failed: ${mpResponse.status} - ${errText}`);
     }
 
-    const preference = await mpResponse.json();
+    const preference = (await mpResponse.json()) as any;
 
     // 3. Save external preference ID
     await ctx.runMutation(internal.orders.internal.updateOrderPreference, {

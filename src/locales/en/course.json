@@ -36,6 +36,9 @@
   },
   "enrollment": {
     "button": "Enroll Now",
-    "securePayment": "🔒 Secure payment via Stripe / PayPal. Guaranteed atomic spots."
+    "securePayment": "🔒 Secure payment via Stripe / PayPal. Guaranteed atomic spots.",
+    "alreadyEnrolled": "Already Enrolled",
+    "accessDashboard": "Go to Dashboard",
+    "enrolledDescription": "You have full access to all course materials and live sessions."
   }
 }

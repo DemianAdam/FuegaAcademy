@@ -36,6 +36,9 @@
   },
   "enrollment": {
     "button": "Inscreva-se Agora",
-    "securePayment": "🔒 Pagamento seguro via Stripe / PayPal. Vagas atômicas garantidas."
+    "securePayment": "🔒 Pagamento seguro via Mercado Pago. Vagas atômicas garantidas.",
+    "alreadyEnrolled": "Já Matriculado",
+    "accessDashboard": "Ir para o Painel",
+    "enrolledDescription": "Você tem acesso completo a todos os materiais e sessões deste curso."
   }
 }

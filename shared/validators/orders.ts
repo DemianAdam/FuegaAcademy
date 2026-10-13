@@ -11,10 +11,10 @@ export const orderValidator = z.object({
   courseId: zid("courses"),
   scheduleId: zid("schedules").optional(),
   tier: z.enum(["live", "recorded"]),
-  amount: z.number().positive(),
-  currency: z.literal("ARS"),
+  amount: z.number(),
+  currency: z.string(),
   status: z.enum(["pending", "approved", "rejected", "refunded"]),
-  provider: z.literal("mercadopago"),
+  provider: z.string(),
   externalPreferenceId: z.string().optional(),
   externalPaymentId: z.string().optional(),
 });

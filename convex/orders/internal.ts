@@ -1,15 +1,14 @@
 import { internalMutation, internalQuery } from "../_generated/server";
 import { v } from "convex/values";
-import { orderValidator } from "./validators";
 
 export const createPendingOrder = internalMutation({
   args: {
-    userId: orderValidator.shape.userId,
-    courseId: orderValidator.shape.courseId,
-    scheduleId: orderValidator.shape.scheduleId.optional(),
-    tier: orderValidator.shape.tier,
-    amount: orderValidator.shape.amount,
-    currency: orderValidator.shape.currency,
+    userId: v.id("users"),
+    courseId: v.id("courses"),
+    scheduleId: v.optional(v.id("schedules")),
+    tier: v.union(v.literal("live"), v.literal("recorded")),
+    amount: v.number(),
+    currency: v.string(),
   },
   handler: async (ctx, args) => {
     return await ctx.db.insert("orders", {
@@ -102,5 +101,20 @@ export const getCourseById = internalQuery({
   args: { courseId: v.id("courses") },
   handler: async (ctx, args) => {
     return await ctx.db.get(args.courseId);
+  },
+});
+
+export const getEnrollmentByUserCourse = internalQuery({
+  args: {
+    userId: v.id("users"),
+    courseId: v.id("courses"),
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db
+      .query("enrollments")
+      .withIndex("by_user_course", (q) =>
+        q.eq("userId", args.userId).eq("courseId", args.courseId)
+      )
+      .unique();
   },
 });
