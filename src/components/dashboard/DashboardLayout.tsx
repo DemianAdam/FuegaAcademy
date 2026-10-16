@@ -1,7 +1,8 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuthActions } from '@convex-dev/auth/react';
+import { LocalizedLink } from '../shared/LocalizedLink';
 import type { UserProfile } from '../../data/mockDashboardData';
 
 interface DashboardLayoutProps {
@@ -13,6 +14,10 @@ export function DashboardLayout({ user, children }: DashboardLayoutProps) {
   const { t } = useTranslation('dashboard');
   const { signOut } = useAuthActions();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const isCatalog = location.pathname.includes('/dashboard/courses');
+  const isDashboard = !isCatalog;
 
   const handleLogout = async () => {
     try {
@@ -39,10 +44,28 @@ export function DashboardLayout({ user, children }: DashboardLayoutProps) {
             </span>
           </div>
           <nav className="flex-1 space-y-unit">
-            <a className="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary-container text-on-primary-container font-bold transition-all" href="#">
-              <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>school</span>
+            <LocalizedLink
+              to="/dashboard"
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
+                isDashboard
+                  ? 'bg-primary-container text-on-primary-container font-bold'
+                  : 'text-on-surface-variant hover:bg-surface-container-high'
+              }`}
+            >
+              <span className="material-symbols-outlined" style={isDashboard ? { fontVariationSettings: "'FILL' 1" } : undefined}>school</span>
               <span className="font-label-md text-label-md">{t('sidebar.courses')}</span>
-            </a>
+            </LocalizedLink>
+            <LocalizedLink
+              to="/dashboard/courses"
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
+                isCatalog
+                  ? 'bg-primary-container text-on-primary-container font-bold'
+                  : 'text-on-surface-variant hover:bg-surface-container-high'
+              }`}
+            >
+              <span className="material-symbols-outlined" style={isCatalog ? { fontVariationSettings: "'FILL' 1" } : undefined}>explore</span>
+              <span className="font-label-md text-label-md">{t('sidebar.catalog')}</span>
+            </LocalizedLink>
             <a className="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
               <span className="material-symbols-outlined">calendar_today</span>
               <span className="font-label-md text-label-md">{t('sidebar.calendar')}</span>
@@ -120,10 +143,20 @@ export function DashboardLayout({ user, children }: DashboardLayoutProps) {
 
       {/* Mobile Bottom Nav */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-surface border-t border-outline-variant flex justify-around items-center py-3 px-2 z-50">
-        <a className="flex flex-col items-center gap-1 text-primary" href="#">
-          <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>school</span>
+        <LocalizedLink
+          to="/dashboard"
+          className={`flex flex-col items-center gap-1 ${isDashboard ? 'text-primary' : 'text-on-surface-variant'}`}
+        >
+          <span className="material-symbols-outlined" style={isDashboard ? { fontVariationSettings: "'FILL' 1" } : undefined}>school</span>
           <span className="text-[10px] font-bold">{t('sidebar.courses')}</span>
-        </a>
+        </LocalizedLink>
+        <LocalizedLink
+          to="/dashboard/courses"
+          className={`flex flex-col items-center gap-1 ${isCatalog ? 'text-primary' : 'text-on-surface-variant'}`}
+        >
+          <span className="material-symbols-outlined" style={isCatalog ? { fontVariationSettings: "'FILL' 1" } : undefined}>explore</span>
+          <span className="text-[10px] font-bold">{t('sidebar.catalog')}</span>
+        </LocalizedLink>
         <a className="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
           <span className="material-symbols-outlined">calendar_today</span>
           <span className="text-[10px]">{t('sidebar.calendar')}</span>
@@ -131,10 +164,6 @@ export function DashboardLayout({ user, children }: DashboardLayoutProps) {
         <a className="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
           <span className="material-symbols-outlined">diversity_3</span>
           <span className="text-[10px]">{t('sidebar.community')}</span>
-        </a>
-        <a className="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
-          <span className="material-symbols-outlined">person</span>
-          <span className="text-[10px]">{t('sidebar.profile')}</span>
         </a>
       </nav>
     </div>

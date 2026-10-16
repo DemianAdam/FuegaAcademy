@@ -12,6 +12,7 @@ import { CoursePage } from './pages/CoursePage';
 import { CoursesPage } from './pages/CoursesPage';
 import { TeachersPage } from './pages/TeachersPage';
 import { Dashboard } from './pages/Dashboard';
+import { DashboardCoursesPage } from './pages/DashboardCoursesPage';
 import { AuthPage } from './pages/AuthPage';
 import { AdminCourseCreatePage } from './pages/AdminCourseCreatePage';
 import { AdminPage } from './pages/AdminPage';
@@ -55,6 +56,8 @@ function RoutesContent() {
       <Route element={<ProtectedLayout allowedRole="student" />}>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/:lang/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard/courses" element={<DashboardCoursesPage />} />
+        <Route path="/:lang/dashboard/courses" element={<DashboardCoursesPage />} />
       </Route>
 
       {/* Admin Routes */}
