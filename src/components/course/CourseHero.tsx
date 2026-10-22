@@ -1,24 +1,23 @@
-import { useTranslation } from 'react-i18next';
 import { PolaroidFrame } from '../shared/PolaroidFrame';
 import { calculateCourseWeeks } from '../../lib/utils';
 import type { CourseWithRelations } from '@shared/validators/courses';
 
 interface CourseHeroProps {
   course: CourseWithRelations;
+  presentation?: 'public' | 'preview';
 }
 
-export function CourseHero({ course }: CourseHeroProps) {
-  const { t } = useTranslation('course');
+export function CourseHero({ course, presentation = 'public' }: CourseHeroProps) {
   const weeks = calculateCourseWeeks(course.duration, course.schedules);
 
   return (
-    <section className="bg-surface-container-low border-b border-outline-variant py-16 px-4 md:px-margin-desktop">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-        <div className="lg:col-span-7 space-y-6">
+    <section className={`course-hero course-hero--${presentation} bg-surface-container-low border-b border-outline-variant py-16 px-4`}>
+      <div className="course-hero-grid max-w-7xl mx-auto items-center">
+        <div className="course-hero-content space-y-6">
           <span className="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-bold uppercase tracking-wider">
-            {course.badge === 'most-chosen' ? t('badges.mostChosen') : course.badge === 'new' ? t('badges.new') : t('badges.popular')}
+            {course.badge === 'most-chosen' ? 'Más elegido' : course.badge === 'new' ? 'Nuevo' : 'Popular'}
           </span>
-          <h1 className="font-display-lg text-4xl md:text-5xl font-black tracking-tight text-on-surface">
+          <h1 className="course-hero-title font-display-lg text-4xl font-black tracking-tight text-on-surface">
             {course.title}
           </h1>
           <p className="text-on-surface-variant text-lg leading-relaxed">
@@ -35,11 +34,11 @@ export function CourseHero({ course }: CourseHeroProps) {
             </div>
             <div className="flex items-center gap-2">
               <span className="material-symbols-outlined text-primary">verified</span>
-              <span className="text-sm font-medium">{t('details.lifetimeAccess')}</span>
+              <span className="text-sm font-medium">Acceso de por vida</span>
             </div>
           </div>
         </div>
-        <div className="lg:col-span-5 flex justify-center">
+        <div className="course-hero-media flex justify-center">
           <PolaroidFrame
             src={course.polaroidImage}
             alt={course.title}

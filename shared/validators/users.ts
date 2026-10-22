@@ -1,10 +1,6 @@
-import { z } from "zod";
-import type { Doc, Id } from "../../convex/_generated/dataModel";
+import { z } from 'zod';
 
-export type UserId = Id<"users">;
-export type UserDoc = Doc<"users">;
-
-export const userRolesValidator = z.enum(["admin", "student"]);
+export const userRolesValidator = z.enum(['admin', 'student']);
 
 export const userValidator = z.object({
   name: z.string().optional(),
@@ -15,5 +11,5 @@ export const userValidator = z.object({
   isAnonymous: z.boolean().optional(),
   role: userRolesValidator.optional(),
 });
-  
-export const userInputValidator = userValidator;
+
+export type UserInput = z.infer<typeof userValidator>;

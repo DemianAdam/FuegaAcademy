@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from '../ui';
-import { LocalizedLink } from './LocalizedLink';
+import { AppLink } from './AppLink';
 
 interface PromoBannerProps {
   badge: string;
@@ -53,7 +53,7 @@ export const PromoBanner: React.FC<PromoBannerProps> = ({
   );
 
   if (to) {
-    return <LocalizedLink to={to} className="contents">{content}</LocalizedLink>;
+    return <AppLink to={to} className="contents">{content}</AppLink>;
   }
 
   return content;

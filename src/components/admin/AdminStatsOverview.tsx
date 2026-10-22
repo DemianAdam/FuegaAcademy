@@ -1,11 +1,9 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { useQuery } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
 
 export const AdminStatsOverview: React.FC = () => {
-  const { t } = useTranslation('admin');
   const stats = useQuery(api.analytics.queries.getDashboardStats);
 
   if (!stats) {
@@ -19,12 +17,15 @@ export const AdminStatsOverview: React.FC = () => {
   }
 
   const kpis = [
-    { label: t('stats.totalStudents'), value: stats.users.students },
-    { label: t('stats.totalCourses'), value: stats.courses.total },
-    { label: t('stats.totalInstructors'), value: stats.teachers.total },
-    { label: t('stats.totalEnrollments'), value: stats.enrollments.total },
-    { label: t('stats.estimatedRevenue'), value: `$${stats.financials.estimatedRevenue}` },
-    { label: t('stats.missingTranslations'), value: stats.missingLanguagesCount },
+    { label: 'Total de estudiantes', value: stats.users.students },
+    { label: 'Total de cursos', value: stats.courses.total },
+    { label: 'Total de profesores', value: stats.teachers.total },
+    { label: 'Total de inscripciones', value: stats.enrollments.total },
+    {
+      label: 'Ingresos estimados',
+      value: new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' })
+        .format(stats.financials.estimatedRevenueMinor / 100),
+    },
   ];
 
   return (

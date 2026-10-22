@@ -5,6 +5,7 @@ import { internalMutation, mutation as rawMutation, query as rawQuery } from "./
 import { customCtx } from "convex-helpers/server/customFunctions";
 import { triggersDB } from "./triggers";
 import { getAuthUserId } from "@convex-dev/auth/server";
+import { ConvexError } from 'convex/values';
 
 export const zQuery = zCustomQuery(rawQuery, NoOp);
 
@@ -19,11 +20,11 @@ const adminContext = {
   input: async (ctx: QueryCtx | MutationCtx, args: Record<string, unknown>) => {
     const userId = await getAuthUserId(ctx);
     if (!userId) {
-      throw new Error("Unauthorized: Not logged in");
+      throw new ConvexError({ code: 'UNAUTHENTICATED', message: 'Sign in to continue.' });
     }
     const user = await ctx.db.get(userId);
     if (!user || user.role !== "admin") {
-      throw new Error("Unauthorized: Admin access required");
+      throw new ConvexError({ code: 'FORBIDDEN', message: 'Administrator access is required.' });
     }
     return {
       ctx: { userId, user },
@@ -41,13 +42,15 @@ const studentContext = {
   args: {},
   input: async (ctx: QueryCtx | MutationCtx, args: Record<string, unknown>) => {
     const userId = await getAuthUserId(ctx);
-    console.log("userId", userId);
     if (!userId) {
-      throw new Error("Unauthorized: Not logged in");
+      throw new ConvexError({ code: 'UNAUTHENTICATED', message: 'Sign in to continue.' });
     }
     const user = await ctx.db.get(userId);
     if (!user) {
-      throw new Error("Unauthorized: User not found");
+      throw new ConvexError({ code: 'USER_NOT_FOUND', message: 'The authenticated user was not found.' });
+    }
+    if (user.role !== 'student') {
+      throw new ConvexError({ code: 'FORBIDDEN', message: 'Student access is required.' });
     }
     return {
       ctx: { userId, user },

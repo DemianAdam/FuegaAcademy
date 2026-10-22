@@ -1,19 +1,13 @@
-import { z } from "zod";
-import { zid } from "convex-helpers/server/zod4";
-import type { Doc, Id } from "../../convex/_generated/dataModel";
-
-export type EnrollmentId = Id<"enrollments">;
-export type EnrollmentDoc = Doc<"enrollments">;
-export type EnrollmentInput = Omit<EnrollmentDoc, "_id" | "_creationTime">;
+import { z } from 'zod';
+import { zid } from 'convex-helpers/server/zod4';
 
 export const enrollmentValidator = z.object({
-  userId: zid("users"),
-  courseId: zid("courses"),
-  scheduleId: zid("schedules").optional(),
-  completedClasses: z.number().min(0),
+  userId: zid('users'),
+  courseId: zid('courses'),
+  scheduleId: zid('schedules').optional(),
+  orderId: zid('orders').optional(),
+  completedClasses: z.number().int().min(0),
 });
 
-export const enrollInCourseValidator = z.object({
-  courseId: zid("courses"),
-  scheduleId: zid("schedules").optional(),
-});
+export type EnrollmentInput = z.infer<typeof enrollmentValidator>;
+

@@ -1,27 +1,25 @@
 import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useQuery, useMutation } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
-import type { Doc } from '../../../convex/_generated/dataModel';
+import type { Id } from '../../../convex/_generated/dataModel';
 import { Button, Card } from '@/components/ui';
-import { TeacherFormModal } from './TeacherFormModal';
+import { TeacherFormModal, type TeacherSummary } from './TeacherFormModal';
 
 export const TeacherManager: React.FC = () => {
-  const { t } = useTranslation('admin');
   const teachers = useQuery(api.teachers.queries.list);
   const removeTeacher = useMutation(api.teachers.mutations.remove);
 
-  const [editingTeacher, setEditingTeacher] = useState<Doc<'teachers'> | null>(null);
+  const [editingTeacher, setEditingTeacher] = useState<TeacherSummary | null>(null);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-  const handleDelete = async (id: Doc<'teachers'>['_id']) => {
-    if (window.confirm(t('teachers.confirmDelete'))) {
+  const handleDelete = async (id: Id<'teachers'>) => {
+    if (window.confirm('¿Archivar este profesor? Se conservarán las referencias de cursos existentes.')) {
       try {
         await removeTeacher({ id });
       } catch (err) {
-        console.error('Failed to delete teacher:', err);
-        alert('Failed to delete teacher');
+        console.error('No se pudo archivar el profesor:', err);
+        alert('No se pudo archivar el profesor');
       }
     }
   };
@@ -29,9 +27,9 @@ export const TeacherManager: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-xl font-bold">{t('teachers.title')}</h2>
+        <h2 className="text-xl font-bold">Gestión de profesores</h2>
         <Button onClick={() => setIsAddModalOpen(true)}>
-          + {t('teachers.addTeacher')}
+          + Agregar profesor
         </Button>
       </div>
 
@@ -57,7 +55,7 @@ export const TeacherManager: React.FC = () => {
         </div>
       ) : teachers.length === 0 ? (
         <Card className="p-8 text-center bg-surface-container text-on-surface-variant">
-          No instructors found.
+          No se encontraron profesores.
         </Card>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -94,7 +92,7 @@ export const TeacherManager: React.FC = () => {
                     setIsEditModalOpen(true);
                   }}
                 >
-                  Edit
+                  Editar
                 </Button>
                 <Button
                   variant="outline"
@@ -102,7 +100,7 @@ export const TeacherManager: React.FC = () => {
                   className="text-error hover:bg-error/10"
                   onClick={() => handleDelete(teacher._id)}
                 >
-                  Delete
+                  Archivar
                 </Button>
               </div>
             </Card>

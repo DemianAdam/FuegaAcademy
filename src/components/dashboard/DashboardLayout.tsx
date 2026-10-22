@@ -1,17 +1,15 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuthActions } from '@convex-dev/auth/react';
-import { LocalizedLink } from '../shared/LocalizedLink';
-import type { UserProfile } from '../../data/mockDashboardData';
+import { AppLink } from '../shared/AppLink';
+import type { DashboardUser } from '@/features/dashboard/types';
 
 interface DashboardLayoutProps {
-  user: UserProfile;
+  user: DashboardUser;
   children: React.ReactNode;
 }
 
 export function DashboardLayout({ user, children }: DashboardLayoutProps) {
-  const { t } = useTranslation('dashboard');
   const { signOut } = useAuthActions();
   const navigate = useNavigate();
   const location = useLocation();
@@ -44,7 +42,7 @@ export function DashboardLayout({ user, children }: DashboardLayoutProps) {
             </span>
           </div>
           <nav className="flex-1 space-y-unit">
-            <LocalizedLink
+            <AppLink
               to="/dashboard"
               className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
                 isDashboard
@@ -53,9 +51,9 @@ export function DashboardLayout({ user, children }: DashboardLayoutProps) {
               }`}
             >
               <span className="material-symbols-outlined" style={isDashboard ? { fontVariationSettings: "'FILL' 1" } : undefined}>school</span>
-              <span className="font-label-md text-label-md">{t('sidebar.courses')}</span>
-            </LocalizedLink>
-            <LocalizedLink
+              <span className="font-label-md text-label-md">Mis cursos</span>
+            </AppLink>
+            <AppLink
               to="/dashboard/courses"
               className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
                 isCatalog
@@ -64,19 +62,19 @@ export function DashboardLayout({ user, children }: DashboardLayoutProps) {
               }`}
             >
               <span className="material-symbols-outlined" style={isCatalog ? { fontVariationSettings: "'FILL' 1" } : undefined}>explore</span>
-              <span className="font-label-md text-label-md">{t('sidebar.catalog')}</span>
-            </LocalizedLink>
+              <span className="font-label-md text-label-md">Catálogo</span>
+            </AppLink>
             <a className="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
               <span className="material-symbols-outlined">calendar_today</span>
-              <span className="font-label-md text-label-md">{t('sidebar.calendar')}</span>
+              <span className="font-label-md text-label-md">Calendario</span>
             </a>
             <a className="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
               <span className="material-symbols-outlined">diversity_3</span>
-              <span className="font-label-md text-label-md">{t('sidebar.community')}</span>
+              <span className="font-label-md text-label-md">Comunidad</span>
             </a>
             <a className="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
               <span className="material-symbols-outlined">person</span>
-              <span className="font-label-md text-label-md">{t('sidebar.profile')}</span>
+              <span className="font-label-md text-label-md">Perfil</span>
             </a>
           </nav>
           <div className="mt-auto pt-stack-lg border-t border-outline-variant/30 space-y-4">
@@ -86,7 +84,7 @@ export function DashboardLayout({ user, children }: DashboardLayoutProps) {
               </div>
               <div className="overflow-hidden">
                 <p className="font-bold text-sm truncate">{user.name}</p>
-                <p className="text-xs text-on-surface-variant truncate">{t('sidebar.role')}</p>
+                <p className="text-xs text-on-surface-variant truncate">Creador digital</p>
               </div>
             </div>
             <button
@@ -95,7 +93,7 @@ export function DashboardLayout({ user, children }: DashboardLayoutProps) {
               type="button"
             >
               <span className="material-symbols-outlined text-base">logout</span>
-              <span>{t('sidebar.logout')}</span>
+              <span>Cerrar sesión</span>
             </button>
           </div>
         </aside>
@@ -113,9 +111,9 @@ export function DashboardLayout({ user, children }: DashboardLayoutProps) {
             <button
               onClick={handleLogout}
               className="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-high text-error hover:bg-error/10 transition-colors"
-              aria-label={t('sidebar.logout')}
+              aria-label="Cerrar sesión"
               type="button"
-              title={t('sidebar.logout')}
+              title="Cerrar sesión"
             >
               <span className="material-symbols-outlined text-base">logout</span>
             </button>
@@ -131,11 +129,11 @@ export function DashboardLayout({ user, children }: DashboardLayoutProps) {
 
           {/* Footer area */}
           <footer className="mt-24 pt-8 border-t border-outline-variant/30 flex flex-col md:flex-row justify-between items-center gap-4 text-on-surface-variant text-sm">
-            <p>{t('footer.copyright')}</p>
+            <p>© 2024 Fuega Academy. Aprendé, creá y viví de eso.</p>
             <div className="flex gap-6">
-              <a className="hover:text-primary transition-colors" href="#">{t('footer.privacy')}</a>
-              <a className="hover:text-primary transition-colors" href="#">{t('footer.support')}</a>
-              <a className="hover:text-primary transition-colors" href="#">{t('footer.community')}</a>
+              <a className="hover:text-primary transition-colors" href="#">Privacidad</a>
+              <a className="hover:text-primary transition-colors" href="#">Soporte</a>
+              <a className="hover:text-primary transition-colors" href="#">Comunidad</a>
             </div>
           </footer>
         </main>
@@ -143,27 +141,27 @@ export function DashboardLayout({ user, children }: DashboardLayoutProps) {
 
       {/* Mobile Bottom Nav */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-surface border-t border-outline-variant flex justify-around items-center py-3 px-2 z-50">
-        <LocalizedLink
+        <AppLink
           to="/dashboard"
           className={`flex flex-col items-center gap-1 ${isDashboard ? 'text-primary' : 'text-on-surface-variant'}`}
         >
           <span className="material-symbols-outlined" style={isDashboard ? { fontVariationSettings: "'FILL' 1" } : undefined}>school</span>
-          <span className="text-[10px] font-bold">{t('sidebar.courses')}</span>
-        </LocalizedLink>
-        <LocalizedLink
+          <span className="text-[10px] font-bold">Mis cursos</span>
+        </AppLink>
+        <AppLink
           to="/dashboard/courses"
           className={`flex flex-col items-center gap-1 ${isCatalog ? 'text-primary' : 'text-on-surface-variant'}`}
         >
           <span className="material-symbols-outlined" style={isCatalog ? { fontVariationSettings: "'FILL' 1" } : undefined}>explore</span>
-          <span className="text-[10px] font-bold">{t('sidebar.catalog')}</span>
-        </LocalizedLink>
+          <span className="text-[10px] font-bold">Catálogo</span>
+        </AppLink>
         <a className="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
           <span className="material-symbols-outlined">calendar_today</span>
-          <span className="text-[10px]">{t('sidebar.calendar')}</span>
+          <span className="text-[10px]">Calendario</span>
         </a>
         <a className="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
           <span className="material-symbols-outlined">diversity_3</span>
-          <span className="text-[10px]">{t('sidebar.community')}</span>
+          <span className="text-[10px]">Comunidad</span>
         </a>
       </nav>
     </div>

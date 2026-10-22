@@ -1,4 +1,4 @@
-export function formatCurrency(amount: number, currency: string = 'USD'): string {
+export function formatCurrency(amount: number, currency: string = 'ARS'): string {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency,
@@ -7,8 +7,8 @@ export function formatCurrency(amount: number, currency: string = 'USD'): string
   }).format(amount / 100);
 }
 
-export function formatDate(date: string | number | Date, locale: string = 'en-US'): string {
-  return new Intl.DateTimeFormat(locale, {
+export function formatDate(date: string | number | Date): string {
+  return new Intl.DateTimeFormat('es-AR', {
     dateStyle: 'medium',
     timeStyle: 'short',
   }).format(new Date(date));
@@ -18,7 +18,7 @@ export function cn(...classes: (string | boolean | undefined | null)[]): string 
   return classes.filter(Boolean).join(' ');
 }
 
-export function calculateCourseWeeks(duration: number, schedules?: Array<{ sessions: Array<any> }>): number {
+export function calculateCourseWeeks(duration: number, schedules?: Array<{ sessions: Array<unknown> }>): number {
   const totalSessions = duration || 16;
   const sessionsPerWeek = schedules && schedules.length > 0 && schedules[0]?.sessions?.length > 0
     ? schedules[0].sessions.length

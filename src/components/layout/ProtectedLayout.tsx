@@ -1,9 +1,8 @@
 import React from 'react';
-import { Outlet, Navigate, useParams } from 'react-router-dom';
+import { Outlet, Navigate } from 'react-router-dom';
 import { useAuth } from '@/lib/useAuth';
 import { AuthLoadingScreen } from '@/components/shared';
 import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
-import { mockDashboardData } from '@/data/mockDashboardData';
 
 interface ProtectedLayoutProps {
   allowedRole?: 'admin' | 'student';
@@ -11,25 +10,21 @@ interface ProtectedLayoutProps {
 
 export const ProtectedLayout: React.FC<ProtectedLayoutProps> = ({ allowedRole }) => {
   const { user, isLoading, isAuthenticated } = useAuth();
-  const { lang } = useParams<{ lang?: string }>();
 
   if (isLoading) {
     return <AuthLoadingScreen />;
   }
 
   if (!isAuthenticated) {
-    const authPath = lang ? `/${lang}/auth` : '/auth';
-    return <Navigate to={authPath} replace />;
+    return <Navigate to="/auth" replace />;
   }
 
   if (allowedRole === 'admin' && user?.role !== 'admin') {
-    const dashPath = lang ? `/${lang}/dashboard` : '/dashboard';
-    return <Navigate to={dashPath} replace />;
+    return <Navigate to="/dashboard" replace />;
   }
 
   if (allowedRole === 'student' && user?.role === 'admin') {
-    const adminPath = lang ? `/${lang}/admin` : '/admin';
-    return <Navigate to={adminPath} replace />;
+    return <Navigate to="/admin" replace />;
   }
 
   // If Admin Layout, delegate entirely to AdminPage
@@ -40,11 +35,11 @@ export const ProtectedLayout: React.FC<ProtectedLayoutProps> = ({ allowedRole })
   // If Student Layout
   if (allowedRole === 'student') {
     const dashboardUser = {
-      _id: user?._id || mockDashboardData.user._id,
-      _creationTime: user?._creationTime || mockDashboardData.user._creationTime,
-      name: user?.name || mockDashboardData.user.name,
-      role: user?.role || mockDashboardData.user.role,
-      avatarUrl: user?.image || mockDashboardData.user.avatarUrl,
+      _id: user?._id ?? '',
+      _creationTime: user?._creationTime ?? 0,
+      name: user?.name ?? user?.email ?? 'Fuega student',
+      role: user?.role ?? 'student',
+      avatarUrl: user?.image ?? '/favicon.svg',
     };
 
     return (

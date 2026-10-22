@@ -1,15 +1,13 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useAuthActions } from '@convex-dev/auth/react';
-import { Tabs, TabsList, TabsTrigger, TabsContent, LanguageSlider, ThemeToggle, Button } from '@/components/ui';
-import { LocalizedLink } from '@/components/shared';
+import { Tabs, TabsList, TabsTrigger, TabsContent, ThemeToggle, Button } from '@/components/ui';
+import { AppLink } from '@/components/shared';
 import { AdminStatsOverview } from '@/components/admin/AdminStatsOverview';
 import { TeacherManager } from '@/components/admin/TeacherManager';
 import { CourseManager } from '@/components/admin/CourseManager';
 
 export const AdminPage: React.FC = () => {
-  const { t } = useTranslation('admin');
   const { signOut } = useAuthActions();
   const navigate = useNavigate();
 
@@ -27,7 +25,7 @@ export const AdminPage: React.FC = () => {
       <header className="border-b border-outline-variant bg-surface-container/50 backdrop-blur sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center space-x-6">
-            <LocalizedLink to="/" className="flex items-center gap-2 shrink-0" aria-label="Fuega Academy">
+            <AppLink to="/" className="flex items-center gap-2 shrink-0" aria-label="Fuega Academy">
               <svg className="w-7 h-7 fill-lima" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <path d="M12 2C12 2 15 5.5 15 9.5C15 13.5 12 17 12 17C12 17 9 13.5 9 9.5C9 5.5 12 2 12 2Z" opacity="0.3"></path>
                 <path d="M12 6C12 6 14 8.5 14 11C14 13.5 12 16 12 16C12 16 10 13.5 10 11C10 8.5 12 6 12 6Z"></path>
@@ -35,12 +33,11 @@ export const AdminPage: React.FC = () => {
               <span className="font-display-lg text-base md:text-lg font-black tracking-tighter text-on-surface uppercase">
                 Fuega <span className="text-secondary">Academy</span>
               </span>
-            </LocalizedLink>
+            </AppLink>
             <span className="text-outline-variant">|</span>
-            <h1 className="text-lg font-bold tracking-tight">{t('title')}</h1>
+            <h1 className="text-lg font-bold tracking-tight">Panel de administración</h1>
           </div>
           <div className="flex items-center space-x-4">
-            <LanguageSlider />
             <ThemeToggle />
             <Button
               variant="outline"
@@ -59,13 +56,13 @@ export const AdminPage: React.FC = () => {
         <Tabs defaultValue="stats" className="space-y-6">
           <TabsList className="bg-surface-container p-1 rounded-2xl border border-outline-variant flex space-x-2">
             <TabsTrigger value="stats" className="rounded-xl px-4 py-2 font-medium">
-              {t('tabs.stats')}
+              Estadísticas
             </TabsTrigger>
             <TabsTrigger value="teachers" className="rounded-xl px-4 py-2 font-medium">
-              {t('tabs.teachers')}
+              Profesores
             </TabsTrigger>
             <TabsTrigger value="courses" className="rounded-xl px-4 py-2 font-medium">
-              {t('tabs.courses')}
+              Cursos
             </TabsTrigger>
           </TabsList>
 
@@ -80,6 +77,7 @@ export const AdminPage: React.FC = () => {
           <TabsContent value="courses" className="space-y-6">
             <CourseManager />
           </TabsContent>
+
         </Tabs>
       </main>
     </div>

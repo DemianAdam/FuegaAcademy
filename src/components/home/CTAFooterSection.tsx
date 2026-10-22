@@ -1,11 +1,9 @@
 import { motion } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
 import { Button } from '../ui/Button';
 import { Avatar, AvatarStack } from '../ui/Avatar';
 import { ArrowRight } from 'lucide-react';
 
 export function CTAFooterSection() {
-  const { t } = useTranslation('home');
 
   const avatarImages = [
     'https://lh3.googleusercontent.com/aida-public/AB6AXuCVgjwsARuQH9mHF5_DuicBFuneslReFmPrEllMsqqpk5q8Uw_I_3Vm5E3Xc6OjLfzQ022M1RS1evIj5gkS9FblZFRgSLnx0L7k6JqQW8t72mc4goOXyR4IOszZgayeoak5Pp9TcX7XNKpAGDOiUS_NJYIy2VWL2S8ZJ9RlUKcFsLG7BoiTzZOPsj9pW6ZZxpUWAb8j-atwrIu_zFZCQhA5PB53BQ1zPVWmciwY-HKMykvakqmEbA6evimNG6KMQC9WU-vr71g6SzI',
@@ -36,7 +34,7 @@ export function CTAFooterSection() {
             viewport={{ once: true }}
             className="text-lima font-bold text-xs uppercase tracking-widest mb-4"
           >
-            {t('ctaFooter.tag')}
+            Tu Futuro empieza hoy
           </motion.p>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -46,7 +44,7 @@ export function CTAFooterSection() {
             id="cta-footer-heading"
             className="text-white font-display-lg text-4xl md:text-5xl font-black leading-tight mb-6"
           >
-            {t('ctaFooter.title')}
+            ¿Listo para trabajar desde donde quieras?
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -55,7 +53,7 @@ export function CTAFooterSection() {
             transition={{ delay: 0.2 }}
             className="text-surface-dim mb-8"
           >
-            {t('ctaFooter.description')}
+            Sumate a Fuega Academy y empezá hoy.
           </motion.p>
         </motion.div>
 
@@ -66,7 +64,7 @@ export function CTAFooterSection() {
           className="flex flex-col items-center md:items-end gap-6"
         >
           <Button className="bg-lima text-on-background px-10 py-5 font-medium text-base rounded-full flex items-center gap-2 hover:scale-105 transition-transform shadow-[0_0_20px_rgba(204,255,0,0.3)]">
-            {t('ctaFooter.ctaLabel')}
+            Ver Cursos
             <ArrowRight className="w-5 h-5" aria-hidden="true" />
           </Button>
           <motion.div
@@ -81,7 +79,7 @@ export function CTAFooterSection() {
                 <Avatar key={index} src={src} alt={`Student ${index + 1}`} size="sm" />
               ))}
             </AvatarStack>
-            <span className="text-xs">{t('ctaFooter.studentsCount')}</span>
+            <span className="text-xs">+3000 alumnos ya estan aprendiendo</span>
           </motion.div>
         </motion.div>
       </div>

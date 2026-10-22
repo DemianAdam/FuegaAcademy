@@ -2,10 +2,10 @@ import { motion } from 'framer-motion';
 import { useQuery } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
 import { SectionHeader } from '../ui/SectionHeader';
-import { CourseCard } from '../shared/CourseCard';
+import { CourseCard } from '@/features/courses/components/CourseCard';
 
 export function CoursesSection() {
-  const courses = useQuery(api.courses.queries.list);
+  const courses = useQuery(api.courses.queries.listPublished, {});
 
   return (
     <motion.section
@@ -19,10 +19,10 @@ export function CoursesSection() {
     >
       <div className="mx-auto max-w-screen-2xl">
         <SectionHeader
-          tagKey="courses.sectionTag"
-          titleKey="courses.sectionTitle"
+          tag="Nuestros Cursos"
+          title="Eligí tu próximo paso."
           action={{
-            labelKey: 'courses.viewAll',
+            label: 'Ver todos los cursos',
             href: '/courses',
           }}
         />

@@ -6,5 +6,6 @@ export const orderSchema = defineTable(zodOutputToConvex(orderValidator))
   .index("by_user", ["userId"])
   .index("by_course", ["courseId"])
   .index("by_status", ["status"])
+  .index('by_user_course_status', ['userId', 'courseId', 'status'])
   .index("by_external_preference", ["externalPreferenceId"])
   .index("by_external_payment", ["externalPaymentId"]);

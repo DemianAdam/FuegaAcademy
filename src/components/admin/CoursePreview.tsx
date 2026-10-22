@@ -19,6 +19,8 @@ export function CoursePreview({ course, teacherName }: CoursePreviewProps) {
   const achievements = course.achievements || [];
   const pricing = course.pricing || {};
   const schedules = course.schedules || [];
+  const formatMoney = (amountMinor: number) =>
+    new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(amountMinor / 100);
 
   return (
     <div className="sticky top-6 space-y-6">
@@ -77,15 +79,15 @@ export function CoursePreview({ course, teacherName }: CoursePreviewProps) {
           {schedules.length > 0 && (
             <div className="space-y-2 pt-2 border-t border-outline-variant">
               <span className="text-xs font-bold text-on-surface-variant uppercase tracking-wider block">Grupos / Horarios</span>
-              {schedules.map((s: any, idx: number) => (
-                <div key={idx} className="p-2.5 rounded-lg bg-surface border border-outline-variant text-xs space-y-1">
+              {schedules.map((schedule, index) => (
+                <div key={schedule.id ?? index} className="p-2.5 rounded-lg bg-surface border border-outline-variant text-xs space-y-1">
                   <div className="font-bold text-on-surface flex justify-between">
-                    <span>{s.name}</span>
-                    <span className="text-primary">Cap: {s.capacity}</span>
+                    <span>{schedule.name}</span>
+                    <span className="text-primary">Cap: {schedule.capacity}</span>
                   </div>
-                  {s.sessions.map((sess: any, sIdx: number) => (
-                    <div key={sIdx} className="text-on-surface-variant">
-                      • {sess.day}: {sess.startTime} - {sess.endTime}hs
+                  {schedule.sessions.map((session, sessionIndex) => (
+                    <div key={sessionIndex} className="text-on-surface-variant">
+                      • {session.day}: {session.startTime} - {session.endTime}hs
                     </div>
                   ))}
                 </div>
@@ -98,13 +100,13 @@ export function CoursePreview({ course, teacherName }: CoursePreviewProps) {
             <div>
               <span className="text-xs text-on-surface-variant block">Precio en Vivo</span>
               <span className="text-lg font-bold text-primary">
-                {pricing.live ? `$${pricing.live.amount} ${pricing.live.currency}` : 'No definido'}
+                {pricing.live ? formatMoney(pricing.live.amountMinor) : 'No definido'}
               </span>
             </div>
             <div>
               <span className="text-xs text-on-surface-variant block">Grabado</span>
               <span className="text-lg font-bold text-on-surface">
-                {pricing.recorded ? `$${pricing.recorded.amount} ${pricing.recorded.currency}` : 'No definido'}
+                {pricing.recorded ? formatMoney(pricing.recorded.amountMinor) : 'No definido'}
               </span>
             </div>
           </div>
@@ -119,13 +121,13 @@ export function CoursePreview({ course, teacherName }: CoursePreviewProps) {
             Logros del Estudiante ({achievements.length})
           </h4>
           <ul className="space-y-2">
-            {achievements.map((ach: any, idx: number) => (
-              <li key={idx} className="flex items-start gap-2 text-xs text-on-surface-variant">
+            {achievements.map((achievement, index) => (
+              <li key={index} className="flex items-start gap-2 text-xs text-on-surface-variant">
                 <span className="material-symbols-outlined text-primary text-base shrink-0">
-                  {ach.icon || 'check_circle'}
+                  {achievement.icon || 'check_circle'}
                 </span>
-                <span className={ach.isHighlighted ? 'font-medium text-on-surface' : ''}>
-                  {ach.text || 'Logro sin descripción'}
+                <span className={achievement.isHighlighted ? 'font-medium text-on-surface' : ''}>
+                  {achievement.text || 'Logro sin descripción'}
                 </span>
               </li>
             ))}

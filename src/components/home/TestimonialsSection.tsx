@@ -16,8 +16,8 @@ export function TestimonialsSection() {
     >
       <div className="mx-auto max-w-screen-2xl">
         <SectionHeader
-          tagKey="testimonials.sectionTag"
-          titleKey="testimonials.sectionTitle"
+        tag="historias reales"
+        title="Ellos ya transformaron su carrera."
         />
         <motion.div
           initial={{ opacity: 0 }}

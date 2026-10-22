@@ -16,8 +16,8 @@ export function HowItWorksSection() {
     >
       <div className="mx-auto max-w-screen-2xl">
         <SectionHeader
-          tagKey="howItWorks.sectionTag"
-          titleKey="howItWorks.sectionTitle"
+        tag="COMO FUNCIONA"
+        title="Aprende en 3 pasos simples."
         />
         <motion.div
           initial={{ opacity: 0 }}

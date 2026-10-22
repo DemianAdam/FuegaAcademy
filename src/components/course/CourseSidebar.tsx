@@ -1,38 +1,38 @@
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useAction, useQuery, useConvexAuth } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
 import type { Id } from '../../../convex/_generated/dataModel';
 import { Button } from '../ui/Button';
-import { LocalizedLink } from '../shared/LocalizedLink';
+import { AppLink } from '../shared/AppLink';
 import type { CourseWithRelations } from '@shared/validators/courses';
 
 interface CourseSidebarProps {
   course: CourseWithRelations;
+  preview?: boolean;
 }
 
-export function CourseSidebar({ course }: CourseSidebarProps) {
-  const { t } = useTranslation('course');
+export function CourseSidebar({ course, preview = false }: CourseSidebarProps) {
   const { isAuthenticated } = useConvexAuth();
   const [formatType, setFormatType] = useState<'live' | 'recorded'>('live');
 
   const enrollments = useQuery(
     api.enrollments.queries.listMyEnrollments,
-    isAuthenticated ? {} : "skip"
+    isAuthenticated && !preview ? {} : 'skip',
   );
 
-  const isEnrolled = enrollments !== undefined && enrollments.some(e => e.courseId === course._id);
+  const isEnrolled = !preview && enrollments !== undefined && enrollments.some(e => e.courseId === course._id);
 
   const defaultScheduleId = course.schedules?.find(s => s.enrolledCount < s.capacity)?._id || course.schedules?.[0]?._id || '';
   const [selectedScheduleId, setSelectedScheduleId] = useState(defaultScheduleId);
 
-  const createCheckoutSession = useAction(api.orders.actions.createCheckoutSession);
+  const createPreference = useAction(api.checkout.actions.createPreference);
   const [isEnrolling, setIsEnrolling] = useState(false);
 
   const handleEnroll = async () => {
+    if (preview) return;
     try {
       setIsEnrolling(true);
-      const res = await createCheckoutSession({
+      const res = await createPreference({
         courseId: course._id,
         tier: formatType,
         scheduleId: formatType === 'live' && (selectedScheduleId || defaultScheduleId) ? (selectedScheduleId || defaultScheduleId) as Id<"schedules"> : undefined,
@@ -41,25 +41,30 @@ export function CourseSidebar({ course }: CourseSidebarProps) {
       if (res.initPoint) {
         window.location.href = res.initPoint;
       }
-    } catch (err: any) {
-      console.error("Error creating checkout session:", err);
-      alert(err?.message || "Error al iniciar el pago con Mercado Pago. Asegúrate de haber iniciado sesión.");
+    } catch (error: unknown) {
+      console.error('Error creating checkout preference:', error);
+      alert(error instanceof Error ? error.message : 'No se pudo iniciar el pago con Mercado Pago.');
     } finally {
       setIsEnrolling(false);
     }
   };
 
-  const livePrice = course.pricing.live ? `$${course.pricing.live.amount.toLocaleString('es-AR')}` : '$99,000';
-  const recordedPrice = course.pricing.recorded ? `$${course.pricing.recorded.amount.toLocaleString('es-AR')}` : '$49,000';
+  const priceFormatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'ARS' });
+  const livePrice = course.pricing.live
+    ? priceFormatter.format(course.pricing.live.amountMinor / 100)
+    : 'No disponible';
+  const recordedPrice = course.pricing.recorded
+    ? priceFormatter.format(course.pricing.recorded.amountMinor / 100)
+    : 'No disponible';
 
   if (isEnrolled) {
     return (
-      <div className="sticky top-24 p-6 rounded-2xl border border-outline-variant bg-surface-container-low space-y-6 shadow-xl">
+      <div className={`course-sidebar sticky top-24 p-6 rounded-2xl border border-outline-variant bg-surface-container-low space-y-6 shadow-xl ${preview ? 'course-sidebar--preview' : ''}`}>
         <div className="flex items-center justify-between">
-          <span className="font-bold text-lg text-on-surface">{t('pricing.enrollment')}</span>
+          <span className="font-bold text-lg text-on-surface">Inscripción</span>
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
             <span className="material-symbols-outlined text-sm">check_circle</span>
-            {t('enrollment.alreadyEnrolled')}
+            Ya estás inscripto
           </span>
         </div>
 
@@ -68,22 +73,22 @@ export function CourseSidebar({ course }: CourseSidebarProps) {
             {course.title}
           </p>
           <p className="text-xs text-on-surface-variant">
-            {t('enrollment.enrolledDescription')}
+            Tenés acceso a todos los materiales y clases en vivo.
           </p>
         </div>
 
         <div className="space-y-3 pt-2">
-          <LocalizedLink to="/dashboard" className="block w-full">
+          <AppLink to="/dashboard" className="block w-full">
             <Button 
               variant="primary" 
               className="w-full py-4 font-bold text-base shadow-md flex items-center justify-center gap-2"
             >
-              {t('enrollment.accessDashboard')}
+              Ir al panel
               <span className="material-symbols-outlined text-sm">arrow_forward</span>
             </Button>
-          </LocalizedLink>
+          </AppLink>
           <p className="text-center text-xs text-on-surface-variant">
-            {t('details.lifetimeAccess')}
+            Acceso de por vida
           </p>
         </div>
       </div>
@@ -91,9 +96,9 @@ export function CourseSidebar({ course }: CourseSidebarProps) {
   }
 
   return (
-    <div className="sticky top-24 p-6 rounded-2xl border border-outline-variant bg-surface-container-low space-y-6 shadow-xl">
+    <div className={`course-sidebar sticky top-24 p-6 rounded-2xl border border-outline-variant bg-surface-container-low space-y-6 shadow-xl ${preview ? 'course-sidebar--preview' : ''}`}>
       <div className="flex justify-between items-center">
-        <span className="font-bold text-lg text-on-surface">{t('pricing.enrollment')}</span>
+        <span className="font-bold text-lg text-on-surface">Inscripción</span>
         <div className="flex gap-1 bg-surface p-1 rounded-lg border border-outline-variant">
           <Button
             variant={formatType === 'live' ? 'primary' : 'ghost'}
@@ -101,7 +106,7 @@ export function CourseSidebar({ course }: CourseSidebarProps) {
             onClick={() => setFormatType('live')}
             className={formatType === 'live' ? 'shadow-sm' : 'text-on-surface-variant'}
           >
-            {t('pricing.live')}
+            En vivo
           </Button>
           <Button
             variant={formatType === 'recorded' ? 'primary' : 'ghost'}
@@ -109,23 +114,23 @@ export function CourseSidebar({ course }: CourseSidebarProps) {
             onClick={() => setFormatType('recorded')}
             className={formatType === 'recorded' ? 'shadow-sm' : 'text-on-surface-variant'}
           >
-            {t('pricing.recorded')}
+            Grabado
           </Button>
         </div>
       </div>
 
       <div className="text-3xl font-black text-on-surface">
         {formatType === 'live' ? livePrice : recordedPrice}
-        <span className="text-xs font-normal text-on-surface-variant ml-2">ARS {t('pricing.singlePayment')}</span>
+        <span className="text-xs font-normal text-on-surface-variant ml-2">ARS pago único</span>
       </div>
 
       {formatType === 'live' && course.schedules && course.schedules.length > 0 && (
         <div className="space-y-3">
           <div className="flex justify-between items-center">
             <label className="text-xs font-bold uppercase tracking-wider text-on-surface-variant">
-              {t('schedules.selectGroup')}
+              Elegí tu grupo y horario:
             </label>
-            <span className="text-xs text-primary font-medium">{t('schedules.limitedSpots')}</span>
+            <span className="text-xs text-primary font-medium">Cupos limitados</span>
           </div>
           <div className="space-y-2.5">
             {course.schedules.map((sched) => {
@@ -153,15 +158,15 @@ export function CourseSidebar({ course }: CourseSidebarProps) {
                     <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${
                       isFull ? 'bg-error/10 text-error' : 'bg-surface-container-high text-on-surface-variant'
                     }`}>
-                      {isFull ? t('schedules.full') : t('schedules.spotsFree', { count: sched.capacity - sched.enrolledCount })}
+                      {isFull ? 'Completo' : `${sched.capacity - sched.enrolledCount} cupos disponibles`}
                     </span>
                   </div>
                   <div className="space-y-1">
-                    {sched.sessions.map((sess: any, idx: number) => (
-                      <div key={idx} className="flex items-center gap-1.5 text-xs text-on-surface-variant">
+                    {sched.sessions.map((session, index) => (
+                      <div key={`${session.day}-${session.startTime}-${index}`} className="flex items-center gap-1.5 text-xs text-on-surface-variant">
                         <span className="material-symbols-outlined text-xs text-primary">event</span>
-                        <span className="font-medium text-on-surface">{sess.day}:</span>
-                        <span>{sess.startTime} - {sess.endTime}hs</span>
+                        <span className="font-medium text-on-surface">{session.day}:</span>
+                        <span>{session.startTime} - {session.endTime}</span>
                       </div>
                     ))}
                   </div>
@@ -177,12 +182,17 @@ export function CourseSidebar({ course }: CourseSidebarProps) {
           variant="primary" 
           className="w-full py-4 font-bold text-base shadow-md"
           onClick={handleEnroll}
-          disabled={isEnrolling}
+          disabled={
+            preview ||
+            isEnrolling ||
+            !course.pricing[formatType] ||
+            (formatType === 'live' && !selectedScheduleId && !defaultScheduleId)
+          }
         >
-          {isEnrolling ? 'Conectando con Mercado Pago...' : 'Pagar con Mercado Pago'}
+          {preview ? 'Vista previa: pago desactivado' : isEnrolling ? 'Conectando con Mercado Pago...' : 'Pagar con Mercado Pago'}
         </Button>
         <p className="text-center text-xs text-on-surface-variant">
-          {t('enrollment.securePayment')}
+          🔒 Pago seguro con Mercado Pago. Tu lugar se confirma tras verificar el pago.
         </p>
       </div>
     </div>

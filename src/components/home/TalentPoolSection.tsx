@@ -1,10 +1,8 @@
 import { motion } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
 import { Button } from '../ui/Button';
 import { talentPool } from '../../data/talentPool';
 
 export function TalentPoolSection() {
-  const { t } = useTranslation('home');
 
   return (
     <motion.section
@@ -48,7 +46,7 @@ export function TalentPoolSection() {
                 {talentPool.tagIcon}
               </span>
               <p className="text-lima font-bold text-xs uppercase tracking-widest">
-                {t('talentPool.tag')}
+                Oportunidad Exclusiva
               </p>
             </motion.div>
             <motion.h2
@@ -59,7 +57,7 @@ export function TalentPoolSection() {
               id="talent-pool-heading"
               className="text-white font-display-lg text-3xl md:text-4xl font-black leading-tight mb-4"
             >
-              {t('talentPool.title')}
+            Impulsa tu carrera con nuestro Pool de Talentos.
             </motion.h2>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -68,7 +66,7 @@ export function TalentPoolSection() {
               transition={{ delay: 0.2 }}
               className="text-surface-dim font-body-lg leading-relaxed"
             >
-              {t('talentPool.description')}
+              Al finalizar tus cursos, podés aplicar para formar parte de nuestra bolsa de creadores y profesionales. Te conectamos directamente con marcas globales para tus primeros proyectos reales.
             </motion.p>
           </motion.div>
 
@@ -82,7 +80,7 @@ export function TalentPoolSection() {
             <Button
               className="bg-lima text-on-background px-8 py-4 font-black rounded-full flex items-center gap-2 hover:scale-105 transition-transform shadow-[0_0_20px_rgba(204,255,0,0.3)]"
             >
-              {t('talentPool.ctaLabel')}
+              Conocé más sobre el Talent Pool
               <span className="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
             </Button>
           </motion.div>

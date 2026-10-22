@@ -1,69 +1,87 @@
 /// <reference types="node" />
-import { httpRouter } from "convex/server";
-import { httpAction } from "./_generated/server";
-import { internal } from "./_generated/api";
-import { auth } from "./auth";
+import { httpRouter } from 'convex/server';
+import { httpAction } from './_generated/server';
+import { internal } from './_generated/api';
+import { auth } from './auth';
+import { verifyMercadoPagoSignature } from '@shared/payments/mercadoPagoWebhook';
+
+interface MercadoPagoNotification {
+  type?: string;
+  topic?: string;
+  data?: { id?: string | number };
+  resource?: string;
+}
+
+interface MercadoPagoPayment {
+  id?: string | number;
+  status?: string;
+  external_reference?: string;
+  transaction_amount?: number;
+  currency_id?: string;
+  preference_id?: string;
+  payer?: { email?: string };
+}
 
 const http = httpRouter();
-
 auth.addHttpRoutes(http);
 
 http.route({
-  path: "/mercadopago-webhook",
-  method: "POST",
+  path: '/mercadopago-webhook',
+  method: 'POST',
   handler: httpAction(async (ctx, request) => {
+    const webhookSecret = process.env.MP_WEBHOOK_SECRET;
+    if (!webhookSecret) return new Response('Webhook is not configured', { status: 503 });
+
+    const url = new URL(request.url);
+    const dataId = url.searchParams.get('data.id') ?? url.searchParams.get('id');
+    const isAuthentic = await verifyMercadoPagoSignature({
+      signatureHeader: request.headers.get('x-signature'),
+      requestId: request.headers.get('x-request-id'),
+      dataId,
+      secret: webhookSecret,
+    });
+    if (!isAuthentic) return new Response('Invalid signature', { status: 401 });
+
     try {
-      const url = new URL(request.url);
-      const id = url.searchParams.get("id") || url.searchParams.get("data.id");
-
-      let paymentId: string | null = id;
-
-      const body = (await request.json().catch(() => null)) as any;
-      if (body) {
-        if (body.type === "payment" && body.data?.id) {
-          paymentId = String(body.data.id);
-        } else if (body.topic === "payment" && body.resource) {
-          const parts = body.resource.split("/");
-          paymentId = parts[parts.length - 1];
-        }
+      const body = (await request.json().catch(() => ({}))) as MercadoPagoNotification;
+      if (body.type && body.type !== 'payment' && body.topic !== 'payment') {
+        return new Response('Ignored', { status: 200 });
       }
-
-      if (!paymentId) {
-        return new Response("Webhook received without payment ID", { status: 200 });
-      }
+      const resourcePaymentId = body.resource?.split('/').at(-1);
+      const paymentId = String(dataId ?? body.data?.id ?? resourcePaymentId ?? '');
+      if (!paymentId) return new Response('Missing payment ID', { status: 400 });
 
       const accessToken = process.env.MP_ACCESS_TOKEN;
-      if (!accessToken) {
-        console.error("Missing MP_ACCESS_TOKEN in webhook handler");
-        return new Response("Server configuration error", { status: 500 });
+      if (!accessToken) return new Response('Payment provider is not configured', { status: 503 });
+      const paymentResponse = await fetch(
+        `https://api.mercadopago.com/v1/payments/${encodeURIComponent(paymentId)}`,
+        { headers: { Authorization: `Bearer ${accessToken}` } },
+      );
+      if (!paymentResponse.ok) return new Response('Could not verify payment', { status: 502 });
+      const payment = (await paymentResponse.json()) as MercadoPagoPayment;
+      if (
+        !payment.id ||
+        !payment.status ||
+        !payment.external_reference ||
+        typeof payment.transaction_amount !== 'number' ||
+        !payment.currency_id
+      ) {
+        return new Response('Incomplete payment', { status: 400 });
       }
 
-      const paymentRes = await fetch(`https://api.mercadopago.com/v1/payments/${paymentId}`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
+      await ctx.runMutation(internal.orders.internal.reconcilePayment, {
+        orderId: payment.external_reference,
+        externalPaymentId: String(payment.id),
+        externalPreferenceId: payment.preference_id,
+        status: payment.status,
+        amountMinor: Math.round(payment.transaction_amount * 100),
+        currency: payment.currency_id,
+        payerEmail: payment.payer?.email,
       });
-
-      if (!paymentRes.ok) {
-        console.error(`Failed to fetch payment ${paymentId} from Mercado Pago`);
-        return new Response("Failed to verify payment", { status: 400 });
-      }
-
-      const payment = (await paymentRes.json()) as any;
-      const orderId = payment.external_reference;
-      const status = payment.status; // 'approved', 'pending', 'rejected', etc.
-
-      if (orderId && status === "approved") {
-        await ctx.runMutation(internal.orders.internal.fulfillOrderInternal, {
-          orderId,
-          externalPaymentId: String(payment.id),
-        });
-      }
-
-      return new Response("OK", { status: 200 });
+      return new Response('OK', { status: 200 });
     } catch (error) {
-      console.error("Error processing Mercado Pago webhook:", error);
-      return new Response("Internal Server Error", { status: 500 });
+      console.error('Mercado Pago webhook reconciliation failed', error);
+      return new Response('Webhook reconciliation failed', { status: 500 });
     }
   }),
 });

@@ -1,17 +1,12 @@
 import { useState } from 'react';
-import { useNavigate, useLocation, useParams } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuthActions } from '@convex-dev/auth/react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '../components/ui/Tabs';
 import { Input } from '../components/ui/Input';
 import { Button } from '../components/ui/Button';
 import { Card } from '../components/ui/Card';
-import { useLanguage } from '../lib/useLanguage';
 
 export function AuthPage() {
-  const { t } = useTranslation('common');
-  const { language } = useLanguage();
-  const { lang } = useParams<{ lang?: string }>();
   const location = useLocation();
   const navigate = useNavigate();
   const { signIn } = useAuthActions();
@@ -25,8 +20,7 @@ export function AuthPage() {
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-  const targetLang = lang || language;
-  const dashboardPath = targetLang && targetLang !== 'en' ? `/${targetLang}/dashboard` : '/dashboard';
+  const dashboardPath = '/dashboard';
 
   const handleSubmit = async (e: React.FormEvent, flow: 'signIn' | 'signUp') => {
     e.preventDefault();
@@ -34,20 +28,20 @@ export function AuthPage() {
     setSuccessMessage(null);
 
     if (!email || !password) {
-      setError(t('auth.errorGeneric'));
+      setError('Ocurrió un error de autenticación. Revisá tus datos.');
       return;
     }
 
     try {
       setLoading(true);
       await signIn('password', { email, password, flow });
-      setSuccessMessage(flow === 'signIn' ? t('auth.successSignIn') : t('auth.successSignUp'));
+      setSuccessMessage(flow === 'signIn' ? 'Ingresaste correctamente. Redirigiendo…' : 'Cuenta creada correctamente. Redirigiendo…');
       setTimeout(() => {
         navigate(dashboardPath);
       }, 1000);
     } catch (err: unknown) {
       console.error(err);
-      setError((err as { message?: string })?.message || t('auth.errorGeneric'));
+      setError((err as { message?: string })?.message || 'Ocurrió un error de autenticación. Revisá tus datos.');
     } finally {
       setLoading(false);
     }
@@ -61,7 +55,7 @@ export function AuthPage() {
       await signIn('google', { redirectTo: `${frontendUrl}${dashboardPath}` });
     } catch (err: unknown) {
       console.error(err);
-      setError((err as { message?: string })?.message || t('auth.errorGeneric'));
+      setError((err as { message?: string })?.message || 'Ocurrió un error de autenticación. Revisá tus datos.');
       setLoading(false);
     }
   };
@@ -71,10 +65,10 @@ export function AuthPage() {
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
           <h2 className="font-display-lg text-3xl font-black text-on-surface tracking-tight">
-            {activeTab === 'signIn' ? t('auth.signInTitle') : t('auth.signUpTitle')}
+            {activeTab === 'signIn' ? 'Bienvenido de nuevo' : 'Creá tu cuenta'}
           </h2>
           <p className="mt-2 text-sm text-on-surface-variant">
-            {activeTab === 'signIn' ? t('auth.signInSubtitle') : t('auth.signUpSubtitle')}
+            {activeTab === 'signIn' ? 'Ingresá para acceder a tus cursos.' : 'Sumate a Fuega Academy y empezá a aprender.'}
           </p>
         </div>
 
@@ -82,10 +76,10 @@ export function AuthPage() {
           <Tabs value={activeTab} onValueChange={(val) => setActiveTab(val as 'signIn' | 'signUp')}>
             <TabsList className="grid grid-cols-2 w-full mb-6">
               <TabsTrigger value="signIn" className="text-center justify-center">
-                {t('auth.tabSignIn')}
+                Ingresar
               </TabsTrigger>
               <TabsTrigger value="signUp" className="text-center justify-center">
-                {t('auth.tabSignUp')}
+                Registrarme
               </TabsTrigger>
             </TabsList>
 
@@ -128,13 +122,13 @@ export function AuthPage() {
                     d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
                   />
                 </svg>
-                <span className="font-medium text-on-surface">{t('auth.googleButton')}</span>
+                <span className="font-medium text-on-surface">Continuar con Google</span>
               </Button>
 
               <div className="relative flex py-2 items-center">
                 <div className="flex-grow border-t border-outline-variant"></div>
                 <span className="flex-shrink mx-4 text-xs uppercase tracking-widest text-on-surface-variant">
-                  {t('auth.orDivider')}
+                  o
                 </span>
                 <div className="flex-grow border-t border-outline-variant"></div>
               </div>
@@ -143,26 +137,26 @@ export function AuthPage() {
             <TabsContent value="signIn">
               <form onSubmit={(e) => handleSubmit(e, 'signIn')} className="space-y-4">
                 <Input
-                  label={t('auth.emailLabel')}
+                  label="Correo electrónico"
                   type="email"
                   required
-                  placeholder={t('auth.emailPlaceholder')}
+                  placeholder="nombre@ejemplo.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   disabled={loading}
                 />
                 <Input
-                  label={t('auth.passwordLabel')}
+                  label="Contraseña"
                   type="password"
                   required
-                  placeholder={t('auth.passwordPlaceholder')}
+                  placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   disabled={loading}
                 />
                 <div className="pt-2">
                   <Button type="submit" variant="primary" size="full" loading={loading}>
-                    {t('auth.signInButton')}
+                    Ingresar
                   </Button>
                 </div>
               </form>
@@ -171,26 +165,26 @@ export function AuthPage() {
             <TabsContent value="signUp">
               <form onSubmit={(e) => handleSubmit(e, 'signUp')} className="space-y-4">
                 <Input
-                  label={t('auth.emailLabel')}
+                  label="Correo electrónico"
                   type="email"
                   required
-                  placeholder={t('auth.emailPlaceholder')}
+                  placeholder="nombre@ejemplo.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   disabled={loading}
                 />
                 <Input
-                  label={t('auth.passwordLabel')}
+                  label="Contraseña"
                   type="password"
                   required
-                  placeholder={t('auth.passwordPlaceholder')}
+                  placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   disabled={loading}
                 />
                 <div className="pt-2">
                   <Button type="submit" variant="primary" size="full" loading={loading}>
-                    {t('auth.signUpButton')}
+                    Crear cuenta
                   </Button>
                 </div>
               </form>

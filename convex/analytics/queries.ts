@@ -7,7 +7,10 @@ export const getDashboardStats = zAdminQuery({
     const courses = await ctx.db.query("courses").collect();
     const teachers = await ctx.db.query("teachers").collect();
     const enrollments = await ctx.db.query("enrollments").collect();
-    const missingLanguages = await ctx.db.query("missingLanguages").collect();
+    const approvedOrders = await ctx.db
+      .query('orders')
+      .withIndex('by_status', (query) => query.eq('status', 'approved'))
+      .collect();
 
     const totalUsers = users.length;
     const adminCount = users.filter((u) => u.role === "admin").length;
@@ -21,18 +24,10 @@ export const getDashboardStats = zAdminQuery({
     const totalTeachers = teachers.length;
     const totalEnrollments = enrollments.length;
 
-    // Calculate approximate MRR / revenue from pricing tiers if available
-    let estimatedRevenue = 0;
-    for (const enrollment of enrollments) {
-      // Find course
-      const course = courses.find((c) => c._id === enrollment.courseId);
-      if (course && course.pricing) {
-        const pricing = course.pricing;
-        // Check if live or recorded
-        const amount = pricing.live?.amount || pricing.recorded?.amount || 0;
-        estimatedRevenue += amount;
-      }
-    }
+    const estimatedRevenueMinor = approvedOrders.reduce(
+      (total, order) => total + (order.amountMinor ?? Math.round((order.amount ?? 0) * 100)),
+      0,
+    );
 
     return {
       users: {
@@ -53,9 +48,8 @@ export const getDashboardStats = zAdminQuery({
         total: totalEnrollments,
       },
       financials: {
-        estimatedRevenue,
+        estimatedRevenueMinor,
       },
-      missingLanguagesCount: missingLanguages.length,
     };
   },
 });

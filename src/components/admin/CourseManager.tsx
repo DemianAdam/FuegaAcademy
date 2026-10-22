@@ -1,24 +1,22 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { useQuery, useMutation } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
 import type { Doc } from '../../../convex/_generated/dataModel';
 import { Button, Card, Badge } from '@/components/ui';
-import { LocalizedLink } from '@/components/shared';
+import { AppLink } from '@/components/shared';
 import { calculateCourseWeeks } from '@/lib/utils';
 
 export const CourseManager: React.FC = () => {
-  const { t } = useTranslation('admin');
   const courses = useQuery(api.courses.queries.list);
   const removeCourse = useMutation(api.courses.mutations.remove);
 
   const handleDelete = async (id: Doc<'courses'>['_id']) => {
-    if (window.confirm('Are you sure you want to delete this course?')) {
+    if (window.confirm('¿Archivar este curso y sus horarios?')) {
       try {
         await removeCourse({ id });
       } catch (err) {
-        console.error('Failed to delete course:', err);
-        alert('Failed to delete course');
+        console.error('No se pudo archivar el curso:', err);
+        alert('No se pudo archivar el curso');
       }
     }
   };
@@ -27,14 +25,14 @@ export const CourseManager: React.FC = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center bg-surface-container/60 p-6 rounded-2xl border border-outline-variant">
         <div>
-          <h3 className="text-xl font-bold">{t('courses.title')}</h3>
+          <h3 className="text-xl font-bold">Gestión de cursos</h3>
           <p className="text-sm text-on-surface-variant mt-1">
-            Create and manage live, recorded, and hybrid masterclasses.
+            Creá y administrá masterclasses en vivo, grabadas e híbridas.
           </p>
         </div>
-        <LocalizedLink to="/admin/courses/new">
-          <Button>+ {t('courses.addNew')}</Button>
-        </LocalizedLink>
+        <AppLink to="/admin/courses/new">
+          <Button>+ Crear curso</Button>
+        </AppLink>
       </div>
 
       {!courses ? (
@@ -45,7 +43,7 @@ export const CourseManager: React.FC = () => {
         </div>
       ) : courses.length === 0 ? (
         <Card className="p-8 text-center bg-surface-container text-on-surface-variant">
-          No courses found.
+          No se encontraron cursos.
         </Card>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -57,11 +55,11 @@ export const CourseManager: React.FC = () => {
                 : course.format === 'recorded'
                 ? 'Grabado'
                 : 'Híbrido';
-            const priceLive = course.pricing?.live?.amount
-              ? `$${course.pricing.live.amount} ${course.pricing.live.currency || 'USD'}`
+            const priceLive = course.pricing?.live
+              ? new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(course.pricing.live.amountMinor / 100)
               : null;
-            const priceRecorded = course.pricing?.recorded?.amount
-              ? `$${course.pricing.recorded.amount} ${course.pricing.recorded.currency || 'USD'}`
+            const priceRecorded = course.pricing?.recorded
+              ? new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(course.pricing.recorded.amountMinor / 100)
               : null;
 
             return (
@@ -105,28 +103,28 @@ export const CourseManager: React.FC = () => {
                   {course.teacher && (
                     <p className="text-xs text-on-surface font-medium mb-3 flex items-center gap-1.5">
                       <span className="material-symbols-outlined text-sm">person</span>
-                      Instructor: {course.teacher.name}
+                      Profesor: {course.teacher.name}
                     </p>
                   )}
                   <div className="text-xs font-bold text-primary mb-4 flex gap-3">
-                    {priceLive && <span>Live: {priceLive}</span>}
-                    {priceRecorded && <span>Recorded: {priceRecorded}</span>}
+                    {priceLive && <span>En vivo: {priceLive}</span>}
+                    {priceRecorded && <span>Grabado: {priceRecorded}</span>}
                   </div>
                 </div>
 
                 <div className="flex justify-end space-x-2 pt-3 border-t border-outline-variant/40">
-                  <LocalizedLink to="/admin/courses/new">
+                  <AppLink to={`/admin/courses/${course._id}/edit`}>
                     <Button variant="outline" size="sm">
-                      Edit
+                      Editar
                     </Button>
-                  </LocalizedLink>
+                  </AppLink>
                   <Button
                     variant="outline"
                     size="sm"
                     className="text-error hover:bg-error/10"
                     onClick={() => handleDelete(course._id)}
                   >
-                    Delete
+                    Archivar
                   </Button>
                 </div>
               </Card>

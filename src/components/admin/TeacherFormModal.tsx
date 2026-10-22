@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useMutation } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
-import type { Doc } from '../../../convex/_generated/dataModel';
+import type { Id } from '../../../convex/_generated/dataModel';
 import {
   Dialog,
   DialogContent,
@@ -14,10 +13,20 @@ import {
 } from '@/components/ui';
 
 interface TeacherFormModalProps {
-  teacher?: Doc<'teachers'> | null;
+  teacher?: TeacherSummary | null;
   trigger?: React.ReactNode;
   isOpen?: boolean;
   onClose?: () => void;
+}
+
+export interface TeacherSummary {
+  _id: Id<'teachers'>;
+  name: string;
+  title: string;
+  imageUrl: string;
+  bio: string;
+  skills: string[];
+  quote?: string;
 }
 
 export const TeacherFormModal: React.FC<TeacherFormModalProps> = ({
@@ -26,7 +35,6 @@ export const TeacherFormModal: React.FC<TeacherFormModalProps> = ({
   isOpen: externalIsOpen,
   onClose: externalOnClose,
 }) => {
-  const { t } = useTranslation('admin');
   const [internalIsOpen, setInternalIsOpen] = useState(false);
 
   const isControlled = externalIsOpen !== undefined;
@@ -47,7 +55,7 @@ export const TeacherFormModal: React.FC<TeacherFormModalProps> = ({
       <DialogContent className="max-w-xl bg-surface border border-outline-variant rounded-3xl p-6 text-on-surface">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold">
-            {teacher ? t('teachers.editTeacher') : t('teachers.addTeacher')}
+            {teacher ? 'Editar profesor' : 'Agregar profesor'}
           </DialogTitle>
         </DialogHeader>
 
@@ -63,7 +71,7 @@ export const TeacherFormModal: React.FC<TeacherFormModalProps> = ({
 };
 
 interface TeacherFormContentProps {
-  teacher?: Doc<'teachers'> | null;
+  teacher?: TeacherSummary | null;
   onSubmitted: () => void;
   onCancel: () => void;
 }
@@ -73,7 +81,6 @@ const TeacherFormContent: React.FC<TeacherFormContentProps> = ({
   onSubmitted,
   onCancel,
 }) => {
-  const { t } = useTranslation('admin');
   const createTeacher = useMutation(api.teachers.mutations.create);
   const updateTeacher = useMutation(api.teachers.mutations.update);
 
@@ -116,7 +123,7 @@ const TeacherFormContent: React.FC<TeacherFormContentProps> = ({
   return (
     <form onSubmit={handleSubmit} className="space-y-4 mt-4">
       <div>
-        <label className="text-sm font-medium">{t('teachers.name')}</label>
+        <label className="text-sm font-medium">Nombre</label>
         <Input
           required
           value={name}
@@ -127,7 +134,7 @@ const TeacherFormContent: React.FC<TeacherFormContentProps> = ({
       </div>
 
       <div>
-        <label className="text-sm font-medium">{t('teachers.professionalTitle')}</label>
+        <label className="text-sm font-medium">Título profesional</label>
         <Input
           required
           value={title}
@@ -138,7 +145,7 @@ const TeacherFormContent: React.FC<TeacherFormContentProps> = ({
       </div>
 
       <div>
-        <label className="text-sm font-medium">{t('teachers.imageUrl')}</label>
+        <label className="text-sm font-medium">URL del avatar</label>
         <Input
           required
           value={imageUrl}
@@ -149,7 +156,7 @@ const TeacherFormContent: React.FC<TeacherFormContentProps> = ({
       </div>
 
       <div>
-        <label className="text-sm font-medium">{t('teachers.skills')}</label>
+        <label className="text-sm font-medium">Habilidades (separadas por coma)</label>
         <Input
           required
           value={skillsInput}
@@ -160,7 +167,7 @@ const TeacherFormContent: React.FC<TeacherFormContentProps> = ({
       </div>
 
       <div>
-        <label className="text-sm font-medium">{t('teachers.bio')}</label>
+        <label className="text-sm font-medium">Biografía</label>
         <textarea
           required
           rows={3}
@@ -172,7 +179,7 @@ const TeacherFormContent: React.FC<TeacherFormContentProps> = ({
       </div>
 
       <div>
-        <label className="text-sm font-medium">{t('teachers.quote')}</label>
+        <label className="text-sm font-medium">Cita</label>
         <Input
           value={quote}
           onChange={(e) => setQuote(e.target.value)}
@@ -187,9 +194,9 @@ const TeacherFormContent: React.FC<TeacherFormContentProps> = ({
           variant="outline"
           onClick={onCancel}
         >
-          {t('teachers.cancel')}
+          Cancelar
         </Button>
-        <Button type="submit">{t('teachers.save')}</Button>
+        <Button type="submit">Guardar profesor</Button>
       </div>
     </form>
   );

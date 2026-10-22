@@ -1,7 +1,8 @@
 import { zStudentQuery } from "../zod";
+import { z } from 'zod';
 
 export const listMyEnrollments = zStudentQuery({
-  args: {},
+  args: z.object({}),
   handler: async (ctx) => {
     const userId = ctx.userId;
 
@@ -17,14 +18,12 @@ export const listMyEnrollments = zStudentQuery({
           enrollment.scheduleId ? ctx.db.get(enrollment.scheduleId) : Promise.resolve(null),
         ]);
 
-        const teacher = course ? await ctx.db.get(course.teacherId) : null;
-
         const totalClasses = course?.duration || 1;
         const progressPercent = Math.min(100, Math.round((enrollment.completedClasses / totalClasses) * 100));
 
         return {
           ...enrollment,
-          course: course ? { ...course, teacher, mentor: teacher } : null,
+          course,
           schedule,
           progressPercent,
           totalClasses,

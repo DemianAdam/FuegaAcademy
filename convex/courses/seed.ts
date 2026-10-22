@@ -1,110 +1,23 @@
-import { internalMutation } from "../_generated/server";
-import { courses as mockCourses } from "../../src/data/courses";
+import { internalMutation } from '../_generated/server';
 
-export const seedCourses = internalMutation({
-  args: {},
-  handler: async (ctx) => {
-    let count = 0;
+const courses = [{ slug: 'ugc-creator', title: 'UGC Content Creator', description: 'Build an authentic content portfolio and learn to work independently with global brands.', teacherSlug: 'yago-balbi', imageUrl: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=1200&q=80', polaroidImage: 'https://images.unsplash.com/photo-1536240478700-b869070f9279?auto=format&fit=crop&w=800&q=80', polaroidCaption: 'Your next creative brief.', duration: 18, achievements: [{ icon: 'video_camera_front', text: 'Produce a professional UGC portfolio', isHighlighted: true }], modules: [{ title: 'UGC foundations', items: ['Audience and positioning', 'Creative briefs'] }, { title: 'Production workflow', items: ['Scripting', 'Shooting and editing'] }] }, { slug: 'paid-media', title: 'Paid Media Strategy', description: 'Plan, launch, and improve measurable paid-media campaigns with a practical framework.', teacherSlug: 'magali-valles', imageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80', polaroidImage: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80', polaroidCaption: 'Make every campaign measurable.', duration: 16, achievements: [{ icon: 'monitoring', text: 'Launch a complete acquisition campaign', isHighlighted: true }], modules: [{ title: 'Campaign strategy', items: ['Objectives', 'Audiences and offers'] }, { title: 'Measurement', items: ['Attribution basics', 'Optimization loops'] }] }] as const;
 
-    for (const mockCourse of mockCourses) {
-      const teacher = await ctx.db
-        .query("teachers")
-        .withIndex("by_slug", (q) => q.eq("slug", mockCourse.mentor.name.toLowerCase().replace(/\s+/g, "-")))
-        .unique();
-
-      const fallbackTeacher = teacher || (await ctx.db.query("teachers").first());
-
-      if (!fallbackTeacher) {
-        console.warn(`No teacher found for course ${mockCourse.id}`);
-        continue;
-      }
-
-      const courseData = {
-        slug: mockCourse.id,
-        title: mockCourse.title,
-        description: mockCourse.description,
-        imageUrl: mockCourse.imageUrl,
-        polaroidImage: mockCourse.polaroidImage,
-        polaroidCaption: mockCourse.polaroidCaption,
-        badge: mockCourse.badge,
-        duration: mockCourse.duration,
-        format: "hybrid" as const,
-        teacherId: fallbackTeacher._id,
-        achievements: mockCourse.achievements.map((a) => ({
-          icon: a.icon,
-          text: a.text,
-          isHighlighted: a.bold,
-        })),
-        pricing: {
-          live: { amount: 10000000, currency: "ars" },
-          recorded: { amount: 8000000, currency: "ars" },
-        },
-      };
-
-      let courseId;
-      const existing = await ctx.db
-        .query("courses")
-        .withIndex("by_slug", (q) => q.eq("slug", courseData.slug))
-        .unique();
-
-      if (existing) {
-        await ctx.db.patch(existing._id, courseData);
-        courseId = existing._id;
-      } else {
-        courseId = await ctx.db.insert("courses", courseData);
-      }
-
-      // Sync modules
-      const existingModules = await ctx.db
-        .query("modules")
-        .withIndex("by_course", (q) => q.eq("courseId", courseId))
-        .collect();
-      for (const m of existingModules) {
-        await ctx.db.delete(m._id);
-      }
-      for (const mod of mockCourse.modules) {
-        await ctx.db.insert("modules", {
-          courseId,
-          title: mod.title,
-          items: mod.items,
-        });
-      }
-
-      // Sync schedules
-      const existingSchedules = await ctx.db
-        .query("schedules")
-        .withIndex("by_course", (q) => q.eq("courseId", courseId))
-        .collect();
-      for (const s of existingSchedules) {
-        await ctx.db.delete(s._id);
-      }
-      const dayMap: Record<string, number> = {
-        lunes: 1,
-        martes: 2,
-        miércoles: 3,
-        miercoles: 3,
-        jueves: 4,
-        viernes: 5,
-        sábado: 6,
-        sabado: 6,
-        domingo: 7,
-      };
-      for (const sched of mockCourse.schedules) {
-        await ctx.db.insert("schedules", {
-          courseId,
-          name: sched.name,
-          sessions: sched.sessions.map((s) => ({
-            ...s,
-            day: typeof s.day === "number" ? s.day : (dayMap[s.day.toLowerCase()] || 1),
-          })),
-          capacity: sched.capacity,
-          enrolledCount: sched.enrolledCount,
-        });
-      }
-
-      count++;
+export const seedCourses = internalMutation({ args: {}, handler: async (ctx) => {
+  let count = 0;
+  for (const fixture of courses) {
+    const teacher = await ctx.db.query('teachers').withIndex('by_slug', (query) => query.eq('slug', fixture.teacherSlug)).unique();
+    if (!teacher) continue;
+    const value = { slug: fixture.slug, title: fixture.title, description: fixture.description, imageUrl: fixture.imageUrl, polaroidImage: fixture.polaroidImage, polaroidCaption: fixture.polaroidCaption, badge: 'popular', duration: fixture.duration, format: 'hybrid' as const, teacherId: teacher._id, achievements: fixture.achievements.map((achievement) => ({ ...achievement })), pricing: { live: { amountMinor: 10000000, currency: 'ARS' as const }, recorded: { amountMinor: 8000000, currency: 'ARS' as const } }, status: 'published' as const };
+    const course = await ctx.db.query('courses').withIndex('by_slug', (query) => query.eq('slug', fixture.slug)).unique();
+    const courseId = course?._id ?? await ctx.db.insert('courses', value);
+    if (course) await ctx.db.patch(courseId, value);
+    const existingModules = await ctx.db.query('modules').withIndex('by_course', (query) => query.eq('courseId', courseId)).collect();
+    for (const [order, module] of fixture.modules.entries()) {
+      const existing = existingModules.find((item) => item.order === order);
+      const moduleValue = { courseId, order, title: module.title, items: [...module.items] };
+      if (existing) await ctx.db.patch(existing._id, moduleValue); else await ctx.db.insert('modules', moduleValue);
     }
-
-    return { success: true, count };
-  },
-});
+    count += 1;
+  }
+  return { success: true, count };
+} });

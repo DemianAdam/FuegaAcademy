@@ -1,9 +1,11 @@
 import { motion } from 'framer-motion';
+import { useQuery } from 'convex/react';
+import { api } from '../../../convex/_generated/api';
 import { SectionHeader } from '../ui/SectionHeader';
-import { TeacherCard } from '../shared/TeacherCard';
-import { teachers } from '../../data/teachers';
+import { TeacherCard } from '@/features/teachers/components/TeacherCard';
 
 export function TeachersSection() {
+  const teachers = useQuery(api.teachers.queries.listPublished, {});
   return (
     <motion.section
       initial={{ opacity: 0, y: 40 }}
@@ -16,10 +18,10 @@ export function TeachersSection() {
     >
       <div className="mx-auto max-w-screen-2xl">
         <SectionHeader
-          tagKey="teachers.sectionTag"
-          titleKey="teachers.sectionTitle"
+          tag="Aprende de quienes hacen"
+          title="Conocé a tus profesores."
           action={{
-            labelKey: 'teachers.viewAll',
+            label: 'View all teachers',
             href: '/teachers',
           }}
         />
@@ -30,9 +32,9 @@ export function TeachersSection() {
           variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.1 } } }}
           className="grid md:grid-cols-3 gap-8"
         >
-          {teachers.map((teacher) => (
+          {(teachers ?? []).slice(0, 3).map((teacher) => (
             <motion.div
-              key={teacher.id}
+              key={teacher._id}
               variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
             >
               <TeacherCard teacher={teacher} />

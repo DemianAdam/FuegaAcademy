@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
 import { cn } from '../../lib/utils';
 import type { StatData } from '../../data/stats';
 import { stats } from '../../data/stats';
@@ -31,11 +30,10 @@ function StatCard({ stat, index }: StatCardProps) {
 }
 
 export function StatsBar() {
-  const { t } = useTranslation('home');
 
   const translatedStats = stats.map((stat, index) => ({
     ...stat,
-    label: t(`stats.${index === 0 ? 'students' : index === 1 ? 'rating' : index === 2 ? 'companies' : 'online'}`),
+    label: index === 0 ? 'alumnos en toda la comunidad' : index === 1 ? 'calificación promedio' : index === 2 ? 'empresas contrataron alumnos' : 'online y desde cualquier lugar',
   }));
 
   return (
@@ -48,7 +46,7 @@ export function StatsBar() {
       aria-labelledby="stats-heading"
     >
       <div className="mx-auto max-w-screen-2xl">
-        <h2 id="stats-heading" className="sr-only">{t('stats.heading')}</h2>
+        <h2 id="stats-heading" className="sr-only">Nuestro impacto en números</h2>
         {/* grid-cols-2 forzado desde el inicio con un gap pequeño (gap-3) */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
           {translatedStats.map((stat, index) => (

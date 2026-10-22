@@ -1,38 +1,68 @@
-# Fuega Academy - Agent Instructions
+# Fuega Academy Agent Instructions
 
-## Commands & Verification
-- **Build & Typecheck:** `npm run build` (runs `tsc -b && vite build`)
-- **Linting:** `npm run lint` (runs `oxlint`)
-- **Development Server:** `npm run dev` (Vite dev server)
-- **Required Verification Order:** Always run `npm run build` after making changes to verify TypeScript strict mode and Vite bundling.
+## Communication
 
-## Tech Stack & Architecture
-- **Frontend:** React 19, TypeScript, Vite, Tailwind CSS v4, React Router v7.
-- **UI Primitives:** Radix UI primitives (`@radix-ui/react-accordion`, `tabs`, `dialog`, `dropdown-menu`, `tooltip`) wrapped in `src/components/ui/`.
-- **Backend / Database:** Convex (`convex/schema.ts`, client initialized via `src/lib/convex.ts`), Convex Auth (`@convex-dev/auth`) with Google and Password authentication, and admin role authorization guards (`zAdminQuery`, `zAdminMutation`).
-- **Internationalization (i18n) & Routing:** Hybrid i18n architecture combining bundled static English (`en`) JSON files for instant first paint, dynamic Convex-driven translation hydration via relational `languages` table (`languageId: zid("languages")`) and `translations` table, `localStorage` caching, `/:lang` route parameters (`/en`, `/es`, `/pt`), `<LocalizedLink>`, and missing language telemetry (`missingLanguages` table).
+- Always reply in English, even when the user writes in another language.
+- State assumptions and report verification results accurately. Never claim a check passed when it was not run or did not complete.
 
-## Key Directories
-- `shared/`: Centralized Zod validators, insert schemas, and shared TypeScript types acting as the source of truth for both Convex and Frontend.
-- `src/components/ui/`: Reusable primitive components (Button, Card, Accordion, Tabs, Dialog, DropdownMenu, Tooltip).
-- `src/components/shared/`: Shared feature components (CourseCard, PolaroidFrame, etc.).
-- `src/components/home/`: Landing page sections.
-- `src/components/dashboard/`: Student dashboard views and widgets.
-- `src/pages/`: Page entrypoints (`Home.tsx`, `CoursesPage.tsx`, `CoursePage.tsx`, `Dashboard.tsx`).
-- `src/locales/`: Translation resource JSON files (`common.json`, `home.json`, `dashboard.json`).
-- `convex/`: Backend schema and functions.
+## Spec-Driven Development
 
-## Agents & Subagents Routing
-Whenever a request is made related to a specific domain or topic, delegate to the corresponding specialized agent/subagent:
-- **`frontend-component`** (`.opencode/agents/frontend-component.md`): Use for any task involving building or refactoring React components. Enforces self-contained component architecture (direct Convex queries/mutations inside components to avoid prop drilling and optimize pricing/cost efficiency), Radix UI primitives, Tailwind v4 styling, and i18n parity (`en`, `es`, `pt`).
-- **`convex-architect`** (`.opencode/agents/convex-architect.md`): Use for any task involving Convex backend design, modular schemas (`zodOutputToConvex`), Zod v4 validators, custom query/mutation wrappers, relational triggers, and database indexing.
-- **`i18n-localization-agent`** (`.opencode/agents/i18n-localization-agent.md`): Use for tasks involving hybrid i18n, translation parity across `en`, `es`, `pt`, Convex translation hydration (`translations`), and missing language telemetry (`missingLanguages`).
+The repository follows the lifecycle `draft -> approved -> implemented -> verified`. The process and templates are defined in [`specs/README.md`](specs/README.md).
 
-## Conventions & Gotchas
-- **Path Aliases:** `@/` maps to `./src/`, `@shared/` maps to `./shared/` in Vite and TypeScript.
-- **Styling:** Tailwind CSS v4 with Material Design 3 tokens.
-- **i18n:** Ensure all new user-facing text is added across `en`, `es`, and `pt` translation JSON files.
-- **Schedules / Capacity:** Course schedules support multi-session weekly blocks with capacity and enrollment tracking (`schedules` table in Convex schema).
+Before changing product behavior, runtime code, schemas, APIs, or externally visible configuration:
 
-## Agent Interaction Rule: Code Review & Permission
-- **Always Show Code & Ask Permission:** Agents must **ALWAYS** present the proposed code/changes and explicitly ask for user permission before writing, editing, or implementing any piece of code.
+1. Read `specs/README.md` and the documents in `specs/_meta/`.
+2. Create a change package under `specs/changes/` from `specs/changes/_template/`.
+3. Keep the change in `draft` while its requirements, acceptance criteria, and design are being discussed. Do not implement it yet.
+4. Move it to `approved` only after explicit user or product-owner approval.
+5. Create or complete `tasks.md` from the change template to map approved requirements to ordered implementation and verification work.
+6. Implement against the approved requirements and tasks, and record any material design decision in `specs/decisions/`.
+7. Mark tasks complete only with linked implementation or verification evidence; then mark the change `implemented` when the code and applicable automated checks are complete.
+8. Mark it `verified` only after every requirement has recorded evidence in `verification.md`.
+
+Task files are implementation plans, not a substitute for requirements or verification evidence. Do not begin runtime implementation while the specification remains `draft`.
+
+Documentation-only maintenance that does not change product behavior may be performed directly when explicitly requested. If implementation needs to depart from an approved spec, return the spec to `draft`, document the change, and obtain approval again.
+
+## Current Product and Architecture
+
+- The MVP is a Spanish-only course platform for students and administrators.
+- The frontend uses React 19, TypeScript, Vite, React Router, Tailwind CSS, and Radix UI primitives.
+- `src/app/` owns application composition, providers, routing, guards, and top-level error handling.
+- `src/features/` owns feature behavior and feature-specific UI.
+- `src/components/ui/` contains reusable UI primitives; generic frontend helpers belong in `src/shared/` or `src/lib/` as appropriate.
+- `shared/` contains transport-safe Zod schemas, types, and domain utilities shared by the frontend and Convex.
+- `convex/` contains the backend schema, queries, mutations, actions, HTTP handlers, authentication, and internal functions.
+- `@/` resolves to `src/`, and `@shared/` resolves to `shared/`.
+
+Do not restore the removed multilingual URL, translation-table, or `.opencode` agent architecture unless a newly approved specification explicitly reintroduces it.
+
+## Backend and Commerce Invariants
+
+- Enforce authorization on the server. Client-side route guards are not a security boundary.
+- Mercado Pago is the only payment provider in the current scope.
+- Prices and immutable order snapshots use integer ARS minor units.
+- Never grant enrollment from a browser return URL. Enrollment is created only after a signed webhook and authoritative payment reconciliation succeed.
+- Payment reconciliation must validate external reference, amount, currency, preference, payer, and approved status, and it must remain idempotent.
+- Never expose backend credentials through a `VITE_` variable or commit tokens, webhook secrets, OAuth state, or user-scoped MCP configuration.
+- Do not edit files under `convex/_generated/` manually; regenerate them through Convex tooling when an approved implementation requires it.
+
+## Commands and Verification
+
+- Development server: `npm run dev`
+- ESLint: `npm run lint`
+- Oxlint: `npm run lint:ox`
+- Unit tests: `npm run test`
+- Typecheck and production build: `npm run build`
+- Bundle budget: `npm run test:bundle`
+- End-to-end tests: `npm run test:e2e`
+- Deterministic aggregate gate: `npm run check`
+
+Run the smallest relevant checks while iterating and the full applicable gate before declaring a change implemented. Playwright requires a reachable development Convex deployment and must never perform a real payment.
+
+## Working Safely
+
+- Preserve unrelated user changes in a dirty worktree.
+- Keep shared contracts in `shared/` synchronized with their Convex consumers.
+- Prefer feature ownership over adding new behavior to generic component directories.
+- Record durable, cross-cutting architectural choices as ADRs; do not use ADRs for routine implementation details.
