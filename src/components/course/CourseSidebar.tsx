@@ -5,6 +5,7 @@ import type { Id } from '../../../convex/_generated/dataModel';
 import { Button } from '../ui/Button';
 import { AppLink } from '../shared/AppLink';
 import type { CourseWithRelations } from '@shared/validators/courses';
+import { activeTiersForFormat, type CourseTier } from '@shared/courseCommerce';
 
 interface CourseSidebarProps {
   course: CourseWithRelations;
@@ -13,7 +14,9 @@ interface CourseSidebarProps {
 
 export function CourseSidebar({ course, preview = false }: CourseSidebarProps) {
   const { isAuthenticated } = useConvexAuth();
-  const [formatType, setFormatType] = useState<'live' | 'recorded'>('live');
+  const tiers = activeTiersForFormat(course.format);
+  const [formatType, setFormatType] = useState<CourseTier>(() => tiers[0]);
+  const selectedTier = tiers.includes(formatType) ? formatType : tiers[0];
 
   const enrollments = useQuery(
     api.enrollments.queries.listMyEnrollments,
@@ -34,8 +37,8 @@ export function CourseSidebar({ course, preview = false }: CourseSidebarProps) {
       setIsEnrolling(true);
       const res = await createPreference({
         courseId: course._id,
-        tier: formatType,
-        scheduleId: formatType === 'live' && (selectedScheduleId || defaultScheduleId) ? (selectedScheduleId || defaultScheduleId) as Id<"schedules"> : undefined,
+        tier: selectedTier,
+        scheduleId: selectedTier === 'live' && (selectedScheduleId || defaultScheduleId) ? (selectedScheduleId || defaultScheduleId) as Id<"schedules"> : undefined,
       });
 
       if (res.initPoint) {
@@ -99,32 +102,32 @@ export function CourseSidebar({ course, preview = false }: CourseSidebarProps) {
     <div className={`course-sidebar sticky top-24 p-6 rounded-2xl border border-outline-variant bg-surface-container-low space-y-6 shadow-xl ${preview ? 'course-sidebar--preview' : ''}`}>
       <div className="flex justify-between items-center">
         <span className="font-bold text-lg text-on-surface">Inscripción</span>
-        <div className="flex gap-1 bg-surface p-1 rounded-lg border border-outline-variant">
+        {tiers.length > 1 && <div className="flex gap-1 bg-surface p-1 rounded-lg border border-outline-variant">
           <Button
-            variant={formatType === 'live' ? 'primary' : 'ghost'}
+            variant={selectedTier === 'live' ? 'primary' : 'ghost'}
             size="sm"
             onClick={() => setFormatType('live')}
-            className={formatType === 'live' ? 'shadow-sm' : 'text-on-surface-variant'}
+            className={selectedTier === 'live' ? 'shadow-sm' : 'text-on-surface-variant'}
           >
             En vivo
           </Button>
           <Button
-            variant={formatType === 'recorded' ? 'primary' : 'ghost'}
+            variant={selectedTier === 'recorded' ? 'primary' : 'ghost'}
             size="sm"
             onClick={() => setFormatType('recorded')}
-            className={formatType === 'recorded' ? 'shadow-sm' : 'text-on-surface-variant'}
+            className={selectedTier === 'recorded' ? 'shadow-sm' : 'text-on-surface-variant'}
           >
             Grabado
           </Button>
-        </div>
+        </div>}
       </div>
 
       <div className="text-3xl font-black text-on-surface">
-        {formatType === 'live' ? livePrice : recordedPrice}
+        {selectedTier === 'live' ? livePrice : recordedPrice}
         <span className="text-xs font-normal text-on-surface-variant ml-2">ARS pago único</span>
       </div>
 
-      {formatType === 'live' && course.schedules && course.schedules.length > 0 && (
+      {selectedTier === 'live' && course.schedules && course.schedules.length > 0 && (
         <div className="space-y-3">
           <div className="flex justify-between items-center">
             <label className="text-xs font-bold uppercase tracking-wider text-on-surface-variant">
@@ -185,8 +188,8 @@ export function CourseSidebar({ course, preview = false }: CourseSidebarProps) {
           disabled={
             preview ||
             isEnrolling ||
-            !course.pricing[formatType] ||
-            (formatType === 'live' && !selectedScheduleId && !defaultScheduleId)
+            !course.pricing[selectedTier] ||
+            (selectedTier === 'live' && !selectedScheduleId && !defaultScheduleId)
           }
         >
           {preview ? 'Vista previa: pago desactivado' : isEnrolling ? 'Conectando con Mercado Pago...' : 'Pagar con Mercado Pago'}

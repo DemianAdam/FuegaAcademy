@@ -7,6 +7,7 @@ import {
   courseListPublishedValidator,
 } from '@shared/validators/courses';
 import { normalizeModuleLessons } from '@shared/validators/modules';
+import { normalizeCoursePricing } from '@shared/courseCommerce';
 
 export const listPublished = zQuery({
   args: courseListPublishedValidator,
@@ -14,8 +15,7 @@ export const listPublished = zQuery({
     const courses = await ctx.db.query('courses').collect();
     const published = courses.filter(
       (course) =>
-        course.status !== 'draft' &&
-        course.status !== 'archived' &&
+        course.status === 'published' &&
         (!args.format || course.format === args.format),
     );
     return await Promise.all(published.map((course) => getCourse(ctx, course)));
@@ -30,7 +30,7 @@ export const getPublishedBySlug = zQuery({
       .withIndex('by_slug', (query) => query.eq('slug', args.slug))
       .unique();
 
-    if (!course || course.status === 'draft' || course.status === 'archived') return null;
+    if (!course || course.status !== 'published') return null;
     return await getCourse(ctx, course);
   },
 });
@@ -57,7 +57,15 @@ export const getAdminById = zAdminQuery({
         .collect(),
       ctx.db.query('modules').withIndex('by_course', (query) => query.eq('courseId', id)).collect(),
     ]);
-    return { course, schedules, modules };
+    return {
+      course: {
+        ...course,
+        imageUrl: await imageUrl(ctx, course.image, course.imageUrl),
+        polaroidImage: await imageUrl(ctx, course.polaroid, course.polaroidImage),
+      },
+      schedules,
+      modules,
+    };
   },
 });
 
@@ -69,19 +77,36 @@ async function getCourse(ctx: QueryCtx, course: Doc<'courses'>) {
   ]);
   return {
     ...course,
-    pricing: {
+    imageUrl: await imageUrl(ctx, course.image, course.imageUrl),
+    polaroidImage: await imageUrl(ctx, course.polaroid, course.polaroidImage),
+    pricing: normalizeCoursePricing(course.format, {
       live: course.pricing.live && { amountMinor: course.pricing.live.amountMinor ?? Math.round((course.pricing.live.amount ?? 0) * 100), currency: 'ARS' as const },
       recorded: course.pricing.recorded && { amountMinor: course.pricing.recorded.amountMinor ?? Math.round((course.pricing.recorded.amount ?? 0) * 100), currency: 'ARS' as const },
-    },
-    teacher: teacher?.status === 'archived' ? null : teacher,
-    mentor: teacher?.status === 'archived' ? null : teacher,
+    }),
+    teacher: teacher?.status === 'archived' ? null : teacher ? await teacherWithImage(ctx, teacher) : null,
+    mentor: teacher?.status === 'archived' ? null : teacher ? await teacherWithImage(ctx, teacher) : null,
     modules: modules.map((module) => ({
       _id: module._id,
       title: module.title,
       order: module.order ?? 0,
       lessons: normalizeModuleLessons(module),
     })).sort((left, right) => left.order - right.order),
-    schedules: schedules.filter((schedule) => !schedule.isArchived),
+    schedules: course.format === 'recorded' ? [] : schedules.filter((schedule) => !schedule.isArchived),
   };
+}
+
+async function teacherWithImage(ctx: QueryCtx, teacher: Doc<'teachers'>) {
+  const imageUrl = teacher.image?.kind === 'external'
+    ? teacher.image.url
+    : teacher.image?.kind === 'storage'
+      ? (await ctx.storage.getUrl(teacher.image.storageId)) ?? teacher.imageUrl ?? ''
+      : teacher.imageUrl ?? '';
+  return { ...teacher, imageUrl };
+}
+
+async function imageUrl(ctx: QueryCtx, source: Doc<'courses'>['image'] | undefined, legacyUrl: string | undefined) {
+  if (source?.kind === 'external') return source.url;
+  if (source?.kind === 'storage') return (await ctx.storage.getUrl(source.storageId)) ?? legacyUrl ?? '';
+  return legacyUrl ?? '';
 }
 

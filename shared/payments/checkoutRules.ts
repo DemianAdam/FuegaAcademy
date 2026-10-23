@@ -8,7 +8,7 @@ export interface CheckoutSchedule {
 
 export interface CheckoutRuleInput {
   courseId: string;
-  courseStatus?: 'draft' | 'published' | 'archived';
+  courseStatus?: 'published' | 'archived';
   tier: 'live' | 'recorded';
   amountMinor: number;
   currency: string;
@@ -24,7 +24,7 @@ export type CheckoutRuleError =
   | 'INVALID_SCHEDULE';
 
 export function validateCheckoutRules(input: CheckoutRuleInput): CheckoutRuleError | null {
-  if (input.courseStatus === 'draft' || input.courseStatus === 'archived') {
+  if (input.courseStatus === 'archived') {
     return 'COURSE_UNAVAILABLE';
   }
   if (input.currency !== 'ARS' || !Number.isSafeInteger(input.amountMinor) || input.amountMinor <= 0) {

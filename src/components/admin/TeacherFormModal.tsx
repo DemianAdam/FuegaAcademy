@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useMutation } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
 import type { Id } from '../../../convex/_generated/dataModel';
+import type { ImageSource } from '@shared/validators/media';
+import { ImageSourceField } from '@/features/admin/media/ImageSourceField';
 import {
   Dialog,
   DialogContent,
@@ -24,6 +26,7 @@ export interface TeacherSummary {
   name: string;
   title: string;
   imageUrl: string;
+  image?: ImageSource;
   bio: string;
   skills: string[];
   quote?: string;
@@ -86,7 +89,7 @@ const TeacherFormContent: React.FC<TeacherFormContentProps> = ({
 
   const [name, setName] = useState(teacher?.name || '');
   const [title, setTitle] = useState(teacher?.title || '');
-  const [imageUrl, setImageUrl] = useState(teacher?.imageUrl || '');
+  const [image, setImage] = useState<ImageSource>(teacher?.image ?? { kind: 'external', url: teacher?.imageUrl || '' });
   const [bio, setBio] = useState(teacher?.bio || '');
   const [skillsInput, setSkillsInput] = useState(teacher?.skills?.join(', ') || '');
   const [quote, setQuote] = useState(teacher?.quote || '');
@@ -101,7 +104,7 @@ const TeacherFormContent: React.FC<TeacherFormContentProps> = ({
     const data = {
       name,
       title,
-      imageUrl,
+      image,
       bio,
       skills,
       quote: quote ? quote : undefined,
@@ -144,16 +147,7 @@ const TeacherFormContent: React.FC<TeacherFormContentProps> = ({
         />
       </div>
 
-      <div>
-        <label className="text-sm font-medium">URL del avatar</label>
-        <Input
-          required
-          value={imageUrl}
-          onChange={(e) => setImageUrl(e.target.value)}
-          placeholder="https://images.unsplash.com/..."
-          className="mt-1"
-        />
-      </div>
+      <ImageSourceField label="Avatar" value={image} onChange={setImage} />
 
       <div>
         <label className="text-sm font-medium">Habilidades (separadas por coma)</label>

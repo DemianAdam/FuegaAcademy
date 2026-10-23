@@ -35,7 +35,7 @@ export function AdminCourseCreatePage() {
   );
   const createCourse = useMutation(api.courses.mutations.create);
   const updateCourse = useMutation(api.courses.mutations.update);
-  const { course, setCourse, update } = useCourseEditor();
+  const { course, setCourse, update, updateFormat, achievementIds, setAchievementIds } = useCourseEditor();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isPreviewFocused, setIsPreviewFocused] = useState(false);
@@ -49,8 +49,8 @@ export function AdminCourseCreatePage() {
     setCourse({
       title: stored.title,
       description: stored.description,
-      imageUrl: stored.imageUrl,
-      polaroidImage: stored.polaroidImage,
+      image: stored.image ?? { kind: 'external', url: stored.imageUrl },
+      polaroid: stored.polaroid ?? { kind: 'external', url: stored.polaroidImage },
       polaroidCaption: stored.polaroidCaption,
       badge: stored.badge,
       duration: stored.duration,
@@ -61,7 +61,6 @@ export function AdminCourseCreatePage() {
         live: normalizeTier(stored.pricing.live),
         recorded: normalizeTier(stored.pricing.recorded),
       },
-      status: stored.status === 'draft' ? 'draft' : 'published',
       schedules: existing.schedules
         .filter((schedule) => !schedule.isArchived)
         .map((schedule) => ({
@@ -76,8 +75,9 @@ export function AdminCourseCreatePage() {
         lessons: normalizeModuleLessons(module),
       })),
     });
+    setAchievementIds(stored.achievements.map(() => crypto.randomUUID()));
     loadedKey.current = key;
-  }, [existing, setCourse]);
+  }, [existing, setAchievementIds, setCourse]);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -126,11 +126,12 @@ export function AdminCourseCreatePage() {
               course={course}
               teachers={teachers}
               onChange={update}
+              onFormatChange={updateFormat}
             />
             <CourseMediaSection course={course} onChange={update} />
-            <CourseAchievementsSection course={course} onChange={update} />
+            <CourseAchievementsSection course={course} onChange={update} achievementIds={achievementIds} onAchievementIdsChange={setAchievementIds} />
             <CourseCurriculumSection course={course} onChange={update} />
-            <ScheduleEditor schedules={course.schedules} onChange={(schedules) => update('schedules', schedules)} />
+            {course.format !== 'recorded' && <ScheduleEditor schedules={course.schedules} onChange={(schedules) => update('schedules', schedules)} />}
             <CoursePricingSection course={course} onChange={update} />
             </CourseEditorSections>
             <div className="flex justify-end gap-3">

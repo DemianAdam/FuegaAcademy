@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { zid } from 'convex-helpers/server/zod4';
+import { imageSourceValidator } from './media';
 
 export const teacherStatValidator = z.object({
   label: z.string(),
@@ -7,7 +8,9 @@ export const teacherStatValidator = z.object({
 });
 
 export const teacherValidator = z.object({
-  imageUrl: z.string().min(1),
+  // `imageUrl` remains a fallback for catalog data created before image sources.
+  imageUrl: z.string().min(1).optional(),
+  image: imageSourceValidator.optional(),
   status: z.enum(['draft', 'published', 'archived']).optional(),
   stats: z.array(teacherStatValidator).optional(),
   slug: z.string().min(1),
@@ -21,7 +24,7 @@ export const teacherValidator = z.object({
 export const teacherInsertValidator = z.object({
   name: z.string().min(1),
   title: z.string().min(1),
-  imageUrl: z.string().min(1),
+  image: imageSourceValidator,
   skills: z.array(z.string()),
   bio: z.string().min(1),
   quote: z.string().optional(),

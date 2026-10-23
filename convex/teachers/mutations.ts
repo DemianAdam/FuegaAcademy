@@ -1,6 +1,7 @@
 import { ConvexError } from 'convex/values';
 import { zAdminMutation } from '../zod';
 import { teacherInsertValidator, teacherRemoveValidator, teacherUpdateValidator } from './validators';
+import { assertAndAttachImageSource, releaseImageSourceIfUnused } from '../media/mutations';
 
 function slugify(text: string) {
   return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim().replace(/[^a-z0-9\s-]/g, '').replace(/[\s_-]+/g, '-').replace(/^-+|-+$/g, '');
@@ -12,7 +13,9 @@ export const create = zAdminMutation({
     const slug = slugify(args.name);
     const existing = await ctx.db.query('teachers').withIndex('by_slug', (query) => query.eq('slug', slug)).unique();
     if (existing) throw new ConvexError({ code: 'TEACHER_SLUG_EXISTS', message: 'This instructor name is already in use.' });
-    return await ctx.db.insert('teachers', { ...args, slug, status: args.status ?? 'published' });
+    const teacherId = await ctx.db.insert('teachers', { ...args, slug, status: args.status ?? 'published' });
+    await assertAndAttachImageSource(ctx, ctx.userId, args.image);
+    return teacherId;
   },
 });
 
@@ -27,6 +30,10 @@ export const update = zAdminMutation({
       if (existing && existing._id !== args.id) throw new ConvexError({ code: 'TEACHER_SLUG_EXISTS', message: 'This instructor name is already in use.' });
     }
     await ctx.db.patch(args.id, { ...args.patch, ...(slug ? { slug } : {}) });
+    if (args.patch.image) {
+      await assertAndAttachImageSource(ctx, ctx.userId, args.patch.image);
+      if (args.patch.image !== teacher.image) await releaseImageSourceIfUnused(ctx, teacher.image);
+    }
     return args.id;
   },
 });

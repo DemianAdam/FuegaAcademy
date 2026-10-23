@@ -1,15 +1,21 @@
 import { useState } from 'react';
 import type { Id } from '../../../../convex/_generated/dataModel';
 import type { CourseCreateInput } from '@shared/validators/courses';
+import { normalizeCoursePricing, type CourseFormat } from '@shared/courseCommerce';
+import type { ImageSource } from '@shared/validators/media';
 
 export type CourseEditorState = CourseCreateInput;
+
+function newAchievementIds(count: number): string[] {
+  return Array.from({ length: count }, () => crypto.randomUUID());
+}
 
 export function createEmptyCourse(): CourseEditorState {
   return {
     title: '',
     description: '',
-    imageUrl: '',
-    polaroidImage: '',
+    image: { kind: 'external', url: '' } as ImageSource,
+    polaroid: { kind: 'external', url: '' } as ImageSource,
     polaroidCaption: '',
     badge: 'popular',
     duration: 16,
@@ -26,7 +32,6 @@ export function createEmptyCourse(): CourseEditorState {
       live: { amountMinor: 49900, currency: 'ARS' },
       recorded: { amountMinor: 29900, currency: 'ARS' },
     },
-    status: 'draft',
     schedules: [
       {
         name: 'Primary cohort',
@@ -50,11 +55,19 @@ export function useCourseEditor() {
   const [course, setCourse] = useState<CourseEditorState>(() =>
     createEmptyCourse(),
   );
+  const [achievementIds, setAchievementIds] = useState(() => newAchievementIds(createEmptyCourse().achievements.length));
 
   const update = <Key extends keyof CourseEditorState>(
     key: Key,
     value: CourseEditorState[Key],
   ) => setCourse((current) => ({ ...current, [key]: value }));
 
-  return { course, setCourse, update };
+  const updateFormat = (format: CourseFormat) => setCourse((current) => ({
+    ...current,
+    format,
+    pricing: normalizeCoursePricing(format, current.pricing),
+    schedules: format === 'recorded' ? [] : current.schedules,
+  }));
+
+  return { course, setCourse, update, updateFormat, achievementIds, setAchievementIds };
 }

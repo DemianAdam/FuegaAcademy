@@ -7,6 +7,7 @@ import { teacherSchema } from "./teachers/schema";
 import { userSchema } from "./users/schema";
 import { enrollmentSchema } from "./enrollments/schema";
 import { orderSchema } from "./orders/schema";
+import { mediaAssetSchema } from './media/schema';
 
 export default defineSchema({
   ...authTables,
@@ -17,4 +18,5 @@ export default defineSchema({
   teachers: teacherSchema,
   enrollments: enrollmentSchema,
   orders: orderSchema,
+  mediaAssets: mediaAssetSchema,
 });

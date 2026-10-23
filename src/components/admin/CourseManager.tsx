@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useQuery, useMutation } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
 import type { Doc } from '../../../convex/_generated/dataModel';
@@ -9,15 +9,28 @@ import { calculateCourseWeeks } from '@/lib/utils';
 export const CourseManager: React.FC = () => {
   const courses = useQuery(api.courses.queries.list);
   const removeCourse = useMutation(api.courses.mutations.remove);
+  const restoreCourse = useMutation(api.courses.mutations.restore);
+  const [pendingCourseId, setPendingCourseId] = useState<Doc<'courses'>['_id'] | null>(null);
+  const [actionError, setActionError] = useState<string | null>(null);
 
-  const handleDelete = async (id: Doc<'courses'>['_id']) => {
-    if (window.confirm('¿Archivar este curso y sus horarios?')) {
-      try {
-        await removeCourse({ id });
-      } catch (err) {
-        console.error('No se pudo archivar el curso:', err);
-        alert('No se pudo archivar el curso');
-      }
+  const handleStatusChange = async (course: Doc<'courses'>) => {
+    const isArchived = course.status === 'archived';
+    const confirmation = isArchived
+      ? '¿Poner este curso online y reactivar sus horarios?'
+      : '¿Archivar este curso y sus horarios?';
+    if (!window.confirm(confirmation)) return;
+    setPendingCourseId(course._id);
+    setActionError(null);
+    try {
+      if (isArchived) await restoreCourse({ id: course._id });
+      else await removeCourse({ id: course._id });
+    } catch (err) {
+      console.error(isArchived ? 'No se pudo poner online el curso:' : 'No se pudo archivar el curso:', err);
+      setActionError(isArchived
+        ? 'No se pudo poner online el curso. Verificá que tenga precios válidos y horarios activos antes de restaurarlo.'
+        : 'No se pudo archivar el curso.');
+    } finally {
+      setPendingCourseId(null);
     }
   };
 
@@ -34,6 +47,8 @@ export const CourseManager: React.FC = () => {
           <Button>+ Crear curso</Button>
         </AppLink>
       </div>
+
+      {actionError && <p role="alert" className="rounded-xl border border-error/20 bg-error/10 p-4 text-sm text-error">{actionError}</p>}
 
       {!courses ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-pulse">
@@ -96,6 +111,7 @@ export const CourseManager: React.FC = () => {
                       {weeks} semanas ({course.duration} clases)
                     </span>
                   </div>
+                  {course.status === 'archived' && <span className="mb-2 inline-flex rounded-full bg-error/10 px-2.5 py-1 text-xs font-semibold uppercase text-error">Archivado</span>}
                   <h3 className="font-bold text-lg mb-1 line-clamp-1">{course.title}</h3>
                   <p className="text-xs text-on-surface-variant line-clamp-2 mb-4">
                     {course.description}
@@ -121,10 +137,11 @@ export const CourseManager: React.FC = () => {
                   <Button
                     variant="outline"
                     size="sm"
-                    className="text-error hover:bg-error/10"
-                    onClick={() => handleDelete(course._id)}
+                    disabled={pendingCourseId === course._id}
+                    className={course.status === 'archived' ? 'text-primary hover:bg-primary/10' : 'text-error hover:bg-error/10'}
+                    onClick={() => handleStatusChange(course)}
                   >
-                    Archivar
+                    {pendingCourseId === course._id ? 'Guardando…' : course.status === 'archived' ? 'Poner online' : 'Archivar'}
                   </Button>
                 </div>
               </Card>

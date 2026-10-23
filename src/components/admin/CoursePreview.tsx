@@ -11,7 +11,7 @@ interface CoursePreviewProps {
 export function CoursePreview({ course, teacherName }: CoursePreviewProps) {
   const title = course.title || 'Título del Programa';
   const description = course.description || 'Descripción detallada del curso que aparecerá para los estudiantes...';
-  const imageUrl = course.imageUrl || 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80';
+  const imageUrl = course.image?.kind === 'external' ? course.image.url : 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80';
   const duration = course.duration ?? 16;
   const calculatedWeeks = calculateCourseWeeks(duration, course.schedules);
   const format = course.format || 'hybrid';
@@ -136,9 +136,9 @@ export function CoursePreview({ course, teacherName }: CoursePreviewProps) {
       )}
 
       {/* Polaroid Preview */}
-      {course.polaroidImage && (
+      {course.polaroid?.kind === 'external' && (
         <div className="bg-white dark:bg-surface-container p-4 rounded-xl border border-outline-variant shadow-md rotate-1 transform max-w-xs mx-auto">
-          <img src={course.polaroidImage} alt="Polaroid" className="w-full h-36 object-cover rounded-lg mb-2" />
+          <img src={course.polaroid.url} alt="Polaroid" className="w-full h-36 object-cover rounded-lg mb-2" />
           <p className="text-center font-handwriting text-xs text-on-surface font-medium">
             {course.polaroidCaption || 'Caption polaroid...'}
           </p>

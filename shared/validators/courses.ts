@@ -3,6 +3,7 @@ import { zid } from 'convex-helpers/server/zod4';
 import type { GenericId } from 'convex/values';
 import { scheduleInputItemValidator } from './schedules';
 import { lessonValidator, moduleEditorInputValidator } from './modules';
+import { imageSourceValidator } from './media';
 
 export const achievementValidator = z.object({
   icon: z.string(),
@@ -27,14 +28,17 @@ export const pricingValidator = z.object({
 });
 
 export const courseValidator = z.object({
-  imageUrl: z.string().min(1),
-  polaroidImage: z.string().min(1),
+  // Legacy fields are kept only for existing URL-backed records.
+  imageUrl: z.string().min(1).optional(),
+  polaroidImage: z.string().min(1).optional(),
+  image: imageSourceValidator.optional(),
+  polaroid: imageSourceValidator.optional(),
   badge: z.string().optional(),
   duration: z.number().int().positive(),
   format: z.enum(['live', 'recorded', 'hybrid']),
   teacherId: zid('teachers'),
   pricing: pricingValidator,
-  status: z.enum(['draft', 'published', 'archived']).optional(),
+  status: z.enum(['published', 'archived']),
   slug: z.string().min(1),
   title: z.string().min(1),
   description: z.string().min(1),
@@ -50,8 +54,8 @@ export const pricingEditorValidator = z.object({
 export const courseCreateInputValidator = z.object({
   title: z.string().min(1),
   description: z.string().min(1),
-  imageUrl: z.string().min(1),
-  polaroidImage: z.string().min(1),
+  image: imageSourceValidator,
+  polaroid: imageSourceValidator,
   polaroidCaption: z.string(),
   badge: z.string().optional(),
   duration: z.number().int().positive(),
@@ -59,7 +63,6 @@ export const courseCreateInputValidator = z.object({
   teacherId: zid('teachers'),
   achievements: z.array(achievementValidator),
   pricing: pricingEditorValidator,
-  status: z.enum(['draft', 'published']).optional(),
   schedules: z.array(scheduleInputItemValidator).optional(),
   modules: z.array(moduleEditorInputValidator).optional(),
 });
@@ -70,6 +73,7 @@ export const courseUpdateValidator = z.object({
 });
 
 export const courseRemoveValidator = z.object({ id: zid('courses') });
+export const courseRestoreValidator = z.object({ id: zid('courses') });
 export const courseBySlugValidator = z.object({ slug: z.string().min(1) });
 export const courseListPublishedValidator = z.object({
   format: z.enum(['live', 'recorded', 'hybrid']).optional(),
@@ -77,6 +81,7 @@ export const courseListPublishedValidator = z.object({
 
 export type CourseInput = z.infer<typeof courseValidator>;
 export type CourseCreateInput = z.infer<typeof courseCreateInputValidator>;
+export type CourseStatus = z.infer<typeof courseValidator>['status'];
 export type Money = z.infer<typeof moneyValidator>;
 
 export interface PublicTeacher {

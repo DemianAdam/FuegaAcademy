@@ -4,6 +4,7 @@ import { ConvexError, v } from 'convex/values';
 import { action } from '../_generated/server';
 import { internal } from '../_generated/api';
 import { validateCheckoutRules } from '@shared/payments/checkoutRules';
+import { tierIsActive } from '@shared/courseCommerce';
 
 interface MercadoPagoPreference {
   id: string;
@@ -38,6 +39,9 @@ export const createPreference = action({
     }
     if (checkout.enrollment) {
       throw new ConvexError({ code: 'ALREADY_ENROLLED', message: 'You are already enrolled.' });
+    }
+    if (!tierIsActive(checkout.course.format, args.tier)) {
+      throw new ConvexError({ code: 'TIER_UNAVAILABLE', message: 'Tier is unavailable for this course format.' });
     }
     const tier = checkout.course.pricing[args.tier];
     if (!tier) throw new ConvexError({ code: 'TIER_UNAVAILABLE', message: 'Tier is unavailable.' });

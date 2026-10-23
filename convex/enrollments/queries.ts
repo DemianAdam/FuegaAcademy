@@ -23,7 +23,14 @@ export const listMyEnrollments = zStudentQuery({
 
         return {
           ...enrollment,
-          course,
+          course: course ? {
+            ...course,
+            imageUrl: course.image?.kind === 'external'
+              ? course.image.url
+              : course.image?.kind === 'storage'
+                ? (await ctx.storage.getUrl(course.image.storageId)) ?? course.imageUrl ?? ''
+                : course.imageUrl ?? '',
+          } : null,
           schedule,
           progressPercent,
           totalClasses,

@@ -22,7 +22,7 @@ export function ScheduleEditor({ schedules = [], onChange }: ScheduleEditorProps
         <div>
           <h2 className="text-lg font-bold">Horarios</h2>
           <p className="text-sm text-on-surface-variant">
-            Las cohortes existentes conservan su identidad. Al quitarlas se archivan al guardar.
+            Quitar un horario guardado lo oculta para nuevas inscripciones, pero conserva su historial de alumnos. Los horarios nuevos que quites desaparecen al guardar.
           </p>
         </div>
         <Button
