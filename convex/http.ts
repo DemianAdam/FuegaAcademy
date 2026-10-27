@@ -4,22 +4,13 @@ import { httpAction } from './_generated/server';
 import { internal } from './_generated/api';
 import { auth } from './auth';
 import { verifyMercadoPagoSignature } from '@shared/payments/mercadoPagoWebhook';
+import { fetchPaymentWithPreference } from './checkout/mercadoPago';
 
 interface MercadoPagoNotification {
   type?: string;
   topic?: string;
   data?: { id?: string | number };
   resource?: string;
-}
-
-interface MercadoPagoPayment {
-  id?: string | number;
-  status?: string;
-  external_reference?: string;
-  transaction_amount?: number;
-  currency_id?: string;
-  preference_id?: string;
-  payer?: { email?: string };
 }
 
 const http = httpRouter();
@@ -53,12 +44,7 @@ http.route({
 
       const accessToken = process.env.MP_ACCESS_TOKEN;
       if (!accessToken) return new Response('Payment provider is not configured', { status: 503 });
-      const paymentResponse = await fetch(
-        `https://api.mercadopago.com/v1/payments/${encodeURIComponent(paymentId)}`,
-        { headers: { Authorization: `Bearer ${accessToken}` } },
-      );
-      if (!paymentResponse.ok) return new Response('Could not verify payment', { status: 502 });
-      const payment = (await paymentResponse.json()) as MercadoPagoPayment;
+      const { payment, preferenceId } = await fetchPaymentWithPreference(accessToken, paymentId);
       if (
         !payment.id ||
         !payment.status ||
@@ -69,15 +55,18 @@ http.route({
         return new Response('Incomplete payment', { status: 400 });
       }
 
-      await ctx.runMutation(internal.orders.internal.reconcilePayment, {
+      const reconciliation = await ctx.runMutation(internal.orders.internal.reconcilePayment, {
         orderId: payment.external_reference,
         externalPaymentId: String(payment.id),
-        externalPreferenceId: payment.preference_id,
+        externalPreferenceId: preferenceId,
         status: payment.status,
         amountMinor: Math.round(payment.transaction_amount * 100),
         currency: payment.currency_id,
         payerEmail: payment.payer?.email,
       });
+      if (reconciliation.closePreference) {
+        await ctx.scheduler.runAfter(0, internal.checkout.actions.closePreference, { orderId: reconciliation.orderId });
+      }
       return new Response('OK', { status: 200 });
     } catch (error) {
       console.error('Mercado Pago webhook reconciliation failed', error);

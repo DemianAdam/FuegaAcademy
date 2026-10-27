@@ -47,14 +47,13 @@ export interface PaymentReconciliationInput {
   expectedAmountMinor: number;
   expectedCurrency: string;
   expectedPreferenceId?: string;
-  expectedPayerEmail?: string;
   amountMinor: number;
   currency: string;
   preferenceId?: string;
   payerEmail?: string;
 }
 
-export type PaymentMismatch = 'PAYMENT_MISMATCH' | 'PREFERENCE_MISMATCH' | 'PAYER_MISMATCH';
+export type PaymentMismatch = 'PAYMENT_MISMATCH' | 'PREFERENCE_MISMATCH' | 'PAYER_MISSING';
 
 export function getPaymentMismatch(input: PaymentReconciliationInput): PaymentMismatch | null {
   if (input.amountMinor !== input.expectedAmountMinor || input.currency !== input.expectedCurrency) {
@@ -63,11 +62,6 @@ export function getPaymentMismatch(input: PaymentReconciliationInput): PaymentMi
   if (input.expectedPreferenceId && input.preferenceId !== input.expectedPreferenceId) {
     return 'PREFERENCE_MISMATCH';
   }
-  if (
-    input.expectedPayerEmail &&
-    input.payerEmail?.toLowerCase() !== input.expectedPayerEmail.toLowerCase()
-  ) {
-    return 'PAYER_MISMATCH';
-  }
+  if (!input.payerEmail?.trim()) return 'PAYER_MISSING';
   return null;
 }

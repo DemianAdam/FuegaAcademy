@@ -7,6 +7,9 @@ export const enrollmentValidator = z.object({
   scheduleId: zid('schedules').optional(),
   orderId: zid('orders').optional(),
   completedClasses: z.number().int().min(0),
+  status: z.enum(['active', 'completed']).optional(),
+  completedAt: z.number().int().positive().optional(),
+  finalProjectResubmissionOpen: z.boolean().optional(),
 });
 
 export type EnrollmentInput = z.infer<typeof enrollmentValidator>;

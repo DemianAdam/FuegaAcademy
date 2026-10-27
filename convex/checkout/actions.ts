@@ -1,10 +1,11 @@
 /// <reference types="node" />
 import { getAuthUserId } from '@convex-dev/auth/server';
 import { ConvexError, v } from 'convex/values';
-import { action } from '../_generated/server';
+import { action, internalAction } from '../_generated/server';
 import { internal } from '../_generated/api';
 import { validateCheckoutRules } from '@shared/payments/checkoutRules';
 import { tierIsActive } from '@shared/courseCommerce';
+import { fetchPaymentWithPreference } from './mercadoPago';
 
 interface MercadoPagoPreference {
   id: string;
@@ -37,7 +38,7 @@ export const createPreference = action({
     if (checkout.user.role !== 'student') {
       throw new ConvexError({ code: 'FORBIDDEN', message: 'Only student accounts can enroll.' });
     }
-    if (checkout.enrollment) {
+    if (checkout.activeEnrollment || (checkout.completedEnrollment && !checkout.course.requiresFinalProject)) {
       throw new ConvexError({ code: 'ALREADY_ENROLLED', message: 'You are already enrolled.' });
     }
     if (!tierIsActive(checkout.course.format, args.tier)) {
@@ -55,12 +56,12 @@ export const createPreference = action({
       scheduleId: args.scheduleId ? String(args.scheduleId) : undefined,
       schedule: checkout.schedule
         ? {
-            id: String(checkout.schedule._id),
-            courseId: String(checkout.schedule.courseId),
-            isArchived: checkout.schedule.isArchived,
-            enrolledCount: checkout.schedule.enrolledCount,
-            capacity: checkout.schedule.capacity,
-          }
+          id: String(checkout.schedule._id),
+          courseId: String(checkout.schedule.courseId),
+          isArchived: checkout.schedule.isArchived,
+          enrolledCount: checkout.schedule.enrolledCount,
+          capacity: checkout.schedule.capacity,
+        }
         : null,
     });
     if (checkoutError) {
@@ -76,7 +77,8 @@ export const createPreference = action({
 
     const title = checkout.course.title;
     const slug = checkout.course.slug;
-    const orderId = await ctx.runMutation(internal.orders.internal.createPendingOrder, {
+    const expiresAt = Date.now() + 24 * 60 * 60 * 1000;
+    const reservation = await ctx.runMutation(internal.orders.internal.reserveCheckout, {
       userId,
       courseId: args.courseId,
       scheduleId: args.scheduleId,
@@ -85,8 +87,13 @@ export const createPreference = action({
       currency: 'ARS',
       courseTitle: title,
       courseSlug: slug,
-      payerEmail: checkout.user.email,
+      expiresAt,
     });
+    const orderId = reservation.orderId;
+    if (reservation.checkoutUrl) {
+      console.log('Resuming existing checkout', { orderId: String(orderId), checkoutUrl: reservation.checkoutUrl });
+      return { initPoint: reservation.checkoutUrl, orderId: String(orderId) };
+    }
 
     const accessToken = process.env.MP_ACCESS_TOKEN;
     if (!accessToken) {
@@ -95,6 +102,30 @@ export const createPreference = action({
         failureReason: 'Mercado Pago is not configured.',
       });
       throw new ConvexError({ code: 'PAYMENT_NOT_CONFIGURED', message: 'Payment is unavailable.' });
+    }
+
+    if (reservation.externalPreferenceId) {
+      const existingResponse = await fetch(
+        `https://api.mercadopago.com/checkout/preferences/${encodeURIComponent(reservation.externalPreferenceId)}`,
+        { headers: { Authorization: `Bearer ${accessToken}` } },
+      );
+      if (existingResponse.ok) {
+        const existingPreference = (await existingResponse.json()) as MercadoPagoPreference;
+        const existingCheckoutUrl = existingPreference.init_point ?? existingPreference.sandbox_init_point;
+        if (existingCheckoutUrl) {
+          await ctx.runMutation(internal.orders.internal.updateOrderPreference, {
+            orderId,
+            externalPreferenceId: reservation.externalPreferenceId,
+            checkoutUrl: existingCheckoutUrl,
+          });
+          console.log('Resuming existing Mercado Pago preference', {
+            orderId: String(orderId),
+            preferenceId: reservation.externalPreferenceId,
+          });
+          return { initPoint: existingCheckoutUrl, orderId: String(orderId) };
+        }
+      }
+      throw new ConvexError({ code: 'PAYMENT_PROVIDER_ERROR', message: 'Could not resume checkout.' });
     }
 
     const siteUrl = (process.env.SITE_URL ?? 'http://localhost:3000').replace(/\/$/, '');
@@ -116,7 +147,6 @@ export const createPreference = action({
             unit_price: amountMinor / 100,
           },
         ],
-        payer: checkout.user.email ? { email: checkout.user.email } : undefined,
         metadata: {
           order_id: String(orderId),
           user_id: String(userId),
@@ -124,11 +154,14 @@ export const createPreference = action({
         },
         external_reference: String(orderId),
         back_urls: {
-          success: `${siteUrl}/dashboard?payment=success&order=${orderId}`,
-          failure: `${siteUrl}/dashboard?payment=failure&order=${orderId}`,
-          pending: `${siteUrl}/dashboard?payment=pending&order=${orderId}`,
+          success: `${siteUrl}/checkout/${orderId}`,
+          failure: `${siteUrl}/checkout/${orderId}`,
+          pending: `${siteUrl}/checkout/${orderId}`,
         },
         auto_return: 'approved',
+        expires: true,
+        expiration_date_from: new Date(Date.now()).toISOString(),
+        expiration_date_to: new Date(reservation.expiresAt).toISOString(),
         ...(convexSiteUrl
           ? { notification_url: `${convexSiteUrl}/mercadopago-webhook` }
           : {}),
@@ -136,6 +169,10 @@ export const createPreference = action({
     });
 
     if (!response.ok) {
+      console.error('Mercado Pago preference creation failed', {
+        orderId: String(orderId),
+        status: response.status,
+      });
       await ctx.runMutation(internal.orders.internal.markOrderRejected, {
         orderId,
         failureReason: `Preference creation failed (${response.status}).`,
@@ -145,22 +182,101 @@ export const createPreference = action({
 
     const preference = (await response.json()) as MercadoPagoPreference;
     if (!preference.id || !preference.init_point) {
+      console.error('Mercado Pago returned an incomplete preference', {
+        orderId: String(orderId),
+        preferenceId: preference.id,
+      });
       await ctx.runMutation(internal.orders.internal.markOrderRejected, {
         orderId,
         failureReason: 'Mercado Pago returned an invalid preference.',
       });
       throw new ConvexError({ code: 'PAYMENT_PROVIDER_ERROR', message: 'Could not start checkout.' });
     }
-    await ctx.runMutation(internal.orders.internal.updateOrderPreference, {
+    const checkoutUrl = await ctx.runMutation(internal.orders.internal.updateOrderPreference, {
       orderId,
       externalPreferenceId: preference.id,
+      checkoutUrl: preference.init_point,
+    });
+    console.info('Mercado Pago preference created', {
+      orderId: String(orderId),
+      preferenceId: preference.id,
+      expiresAt: reservation.expiresAt,
     });
 
+    console.log("PREFERENCE CREATED");
+
+
     return {
-      initPoint: preference.init_point,
+      initPoint: checkoutUrl,
       sandboxInitPoint: preference.sandbox_init_point,
       orderId: String(orderId),
     };
+  },
+});
+
+export const closePreference = internalAction({
+  args: { orderId: v.id('orders') },
+  handler: async (ctx, args) => {
+    const order = await ctx.runQuery(internal.orders.internal.getProviderOrder, args);
+    const accessToken = process.env.MP_ACCESS_TOKEN;
+    if (!order || order.closedAt || !accessToken) return;
+    try {
+      const response = await fetch(
+        `https://api.mercadopago.com/checkout/preferences/${encodeURIComponent(order.preferenceId)}`,
+        {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` },
+          body: JSON.stringify({ expires: true, expiration_date_to: new Date().toISOString() }),
+        },
+      );
+      if (!response.ok) {
+        console.warn('Mercado Pago preference closure failed', { orderId: String(args.orderId), status: response.status });
+        return;
+      }
+      await ctx.runMutation(internal.orders.internal.markPreferenceClosed, args);
+    } catch (error) {
+      console.warn('Mercado Pago preference closure failed', { orderId: String(args.orderId), error: error instanceof Error ? error.message : 'unknown' });
+    }
+  },
+});
+
+export const retryOpenPreferenceClosures = internalAction({
+  args: {},
+  handler: async (ctx) => {
+    const orderIds = await ctx.runQuery(internal.orders.internal.listOpenApprovedPreferences, {});
+    for (const orderId of orderIds) await ctx.scheduler.runAfter(0, internal.checkout.actions.closePreference, { orderId });
+  },
+});
+
+export const reconcilePaymentById = action({
+  args: { paymentId: v.string() },
+  handler: async (ctx, args): Promise<{ orderId: string; status: string; enrolled: boolean; closePreference: boolean }> => {
+    const userId = await getAuthUserId(ctx);
+    if (!userId || await ctx.runQuery(internal.orders.internal.getUserRole, { userId }) !== 'admin') {
+      throw new ConvexError({ code: 'FORBIDDEN', message: 'Administrator access is required.' });
+    }
+    const accessToken = process.env.MP_ACCESS_TOKEN;
+    if (!accessToken) throw new ConvexError({ code: 'PAYMENT_NOT_CONFIGURED', message: 'Payment is unavailable.' });
+    let payment: Awaited<ReturnType<typeof fetchPaymentWithPreference>>['payment'];
+    let preferenceId: string;
+    try {
+      ({ payment, preferenceId } = await fetchPaymentWithPreference(accessToken, args.paymentId));
+    } catch (error) {
+      throw new ConvexError({
+        code: 'PAYMENT_PROVIDER_ERROR',
+        message: error instanceof Error ? error.message : 'Could not retrieve the payment.',
+      });
+    }
+    if (!payment.id || !payment.status || !payment.external_reference || typeof payment.transaction_amount !== 'number' || !payment.currency_id) {
+      throw new ConvexError({ code: 'PAYMENT_PROVIDER_ERROR', message: 'Mercado Pago returned incomplete payment data.' });
+    }
+    const reconciliation = await ctx.runMutation(internal.orders.internal.reconcilePayment, {
+      orderId: payment.external_reference, externalPaymentId: String(payment.id), externalPreferenceId: preferenceId,
+      status: payment.status, amountMinor: Math.round(payment.transaction_amount * 100), currency: payment.currency_id,
+      payerEmail: payment.payer?.email, allowReviewReplay: true,
+    });
+    if (reconciliation.closePreference) await ctx.scheduler.runAfter(0, internal.checkout.actions.closePreference, { orderId: reconciliation.orderId });
+    return reconciliation;
   },
 });
 

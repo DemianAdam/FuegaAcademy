@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAction, useQuery, useConvexAuth } from 'convex/react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { api } from '../../../convex/_generated/api';
 import type { Id } from '../../../convex/_generated/dataModel';
 import { Button } from '../ui/Button';
@@ -14,6 +15,8 @@ interface CourseSidebarProps {
 
 export function CourseSidebar({ course, preview = false }: CourseSidebarProps) {
   const { isAuthenticated } = useConvexAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
   const tiers = activeTiersForFormat(course.format);
   const [formatType, setFormatType] = useState<CourseTier>(() => tiers[0]);
   const selectedTier = tiers.includes(formatType) ? formatType : tiers[0];
@@ -23,30 +26,40 @@ export function CourseSidebar({ course, preview = false }: CourseSidebarProps) {
     isAuthenticated && !preview ? {} : 'skip',
   );
 
-  const isEnrolled = !preview && enrollments !== undefined && enrollments.some(e => e.courseId === course._id);
+  const isEnrolled = !preview && enrollments !== undefined && enrollments.some(e => e.courseId === course._id && e.status !== 'completed');
 
   const defaultScheduleId = course.schedules?.find(s => s.enrolledCount < s.capacity)?._id || course.schedules?.[0]?._id || '';
   const [selectedScheduleId, setSelectedScheduleId] = useState(defaultScheduleId);
 
   const createPreference = useAction(api.checkout.actions.createPreference);
   const [isEnrolling, setIsEnrolling] = useState(false);
+  const [checkoutError, setCheckoutError] = useState<string | null>(null);
+  const liveSchedules = course.schedules ?? [];
+  const allLiveSchedulesFull = selectedTier === 'live' && liveSchedules.length > 0 && liveSchedules.every((schedule) => schedule.enrolledCount >= schedule.capacity);
 
   const handleEnroll = async () => {
     if (preview) return;
+    if (!isAuthenticated) {
+      navigate(`/login?returnTo=${encodeURIComponent(`${location.pathname}${location.search}`)}`);
+      return;
+    }
     try {
       setIsEnrolling(true);
+      setCheckoutError(null);
       const res = await createPreference({
         courseId: course._id,
         tier: selectedTier,
         scheduleId: selectedTier === 'live' && (selectedScheduleId || defaultScheduleId) ? (selectedScheduleId || defaultScheduleId) as Id<"schedules"> : undefined,
       });
 
+      console.log(res);
+
       if (res.initPoint) {
         window.location.href = res.initPoint;
       }
     } catch (error: unknown) {
       console.error('Error creating checkout preference:', error);
-      alert(error instanceof Error ? error.message : 'No se pudo iniciar el pago con Mercado Pago.');
+      setCheckoutError(error instanceof Error ? error.message : 'No se pudo iniciar el pago con Mercado Pago.');
     } finally {
       setIsEnrolling(false);
     }
@@ -189,11 +202,12 @@ export function CourseSidebar({ course, preview = false }: CourseSidebarProps) {
             preview ||
             isEnrolling ||
             !course.pricing[selectedTier] ||
-            (selectedTier === 'live' && !selectedScheduleId && !defaultScheduleId)
+            (selectedTier === 'live' && (!selectedScheduleId && !defaultScheduleId || allLiveSchedulesFull))
           }
         >
-          {preview ? 'Vista previa: pago desactivado' : isEnrolling ? 'Conectando con Mercado Pago...' : 'Pagar con Mercado Pago'}
+          {preview ? 'Vista previa: pago desactivado' : !isAuthenticated ? 'Ingresá para pagar' : isEnrolling ? 'Conectando con Mercado Pago...' : allLiveSchedulesFull ? 'No hay cupos disponibles' : 'Pagar con Mercado Pago'}
         </Button>
+        {checkoutError && <p role="alert" className="rounded-xl border border-error/20 bg-error/10 p-3 text-center text-xs text-error">{checkoutError}</p>}
         <p className="text-center text-xs text-on-surface-variant">
           🔒 Pago seguro con Mercado Pago. Tu lugar se confirma tras verificar el pago.
         </p>

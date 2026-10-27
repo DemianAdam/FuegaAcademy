@@ -12,6 +12,10 @@ export function AuthPage() {
   const { signIn } = useAuthActions();
 
   const isRegisterRoute = location.pathname.includes('register') || location.pathname.includes('signUp');
+  const requestedReturnTo = new URLSearchParams(location.search).get('returnTo');
+  const returnTo = requestedReturnTo && requestedReturnTo.startsWith('/') && !requestedReturnTo.startsWith('//') && !requestedReturnTo.startsWith('/auth')
+    ? requestedReturnTo
+    : '/dashboard';
   const [activeTab, setActiveTab] = useState<'signIn' | 'signUp'>(isRegisterRoute ? 'signUp' : 'signIn');
 
   const [email, setEmail] = useState('');
@@ -19,8 +23,6 @@ export function AuthPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
-
-  const dashboardPath = '/dashboard';
 
   const handleSubmit = async (e: React.FormEvent, flow: 'signIn' | 'signUp') => {
     e.preventDefault();
@@ -37,7 +39,7 @@ export function AuthPage() {
       await signIn('password', { email, password, flow });
       setSuccessMessage(flow === 'signIn' ? 'Ingresaste correctamente. Redirigiendo…' : 'Cuenta creada correctamente. Redirigiendo…');
       setTimeout(() => {
-        navigate(dashboardPath);
+        navigate(returnTo);
       }, 1000);
     } catch (err: unknown) {
       console.error(err);
@@ -52,7 +54,7 @@ export function AuthPage() {
       setError(null);
       setLoading(true);
       const frontendUrl = window.location.origin;
-      await signIn('google', { redirectTo: `${frontendUrl}${dashboardPath}` });
+      await signIn('google', { redirectTo: `${frontendUrl}${returnTo}` });
     } catch (err: unknown) {
       console.error(err);
       setError((err as { message?: string })?.message || 'Ocurrió un error de autenticación. Revisá tus datos.');

@@ -7,6 +7,7 @@ import {
   InProgressCoursesSection,
 } from '../components/dashboard';
 import type { InProgressCourse } from '@/features/dashboard/types';
+import { FinalProjectPanel } from '@/components/dashboard/FinalProjectPanel';
 
 export function Dashboard() {
   const { user: authUser } = useAuth();
@@ -55,6 +56,7 @@ export function Dashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-stack-lg">
         <div className="lg:col-span-8 space-y-stack-lg">
           <InProgressCoursesSection courses={courses} />
+          <FinalProjectPanel enrollments={(enrollments ?? [])} />
         </div>
         <div className="lg:col-span-4">
           <aside className="rounded-2xl border border-dashed border-outline-variant bg-surface-container-low p-6 text-on-surface-variant">

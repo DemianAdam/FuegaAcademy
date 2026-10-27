@@ -47,21 +47,20 @@ describe('payment reconciliation comparisons', () => {
     expectedAmountMinor: 100_000,
     expectedCurrency: 'ARS',
     expectedPreferenceId: 'preference-1',
-    expectedPayerEmail: 'student@example.com',
     amountMinor: 100_000,
     currency: 'ARS',
     preferenceId: 'preference-1',
-    payerEmail: 'Student@example.com',
+    payerEmail: 'guest@example.com',
   };
 
   it('accepts authoritative values that match the immutable order snapshot', () => {
     expect(getPaymentMismatch(expected)).toBeNull();
   });
 
-  it('rejects amount, currency, preference, and payer mismatches', () => {
+  it('rejects amount, currency, preference, and missing payer evidence', () => {
     expect(getPaymentMismatch({ ...expected, amountMinor: 99_999 })).toBe('PAYMENT_MISMATCH');
     expect(getPaymentMismatch({ ...expected, currency: 'USD' })).toBe('PAYMENT_MISMATCH');
     expect(getPaymentMismatch({ ...expected, preferenceId: undefined })).toBe('PREFERENCE_MISMATCH');
-    expect(getPaymentMismatch({ ...expected, payerEmail: undefined })).toBe('PAYER_MISMATCH');
+    expect(getPaymentMismatch({ ...expected, payerEmail: undefined })).toBe('PAYER_MISSING');
   });
 });

@@ -48,6 +48,7 @@ export function createEmptyCourse(): CourseEditorState {
         lessons: [{ title: 'Introducción', durationMinutes: 30, description: '' }],
       },
     ],
+    requiresFinalProject: false,
   };
 }
 

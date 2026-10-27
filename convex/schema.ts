@@ -8,6 +8,7 @@ import { userSchema } from "./users/schema";
 import { enrollmentSchema } from "./enrollments/schema";
 import { orderSchema } from "./orders/schema";
 import { mediaAssetSchema } from './media/schema';
+import { finalProjectSubmissionSchema } from './finalProjects/schema';
 
 export default defineSchema({
   ...authTables,
@@ -19,4 +20,5 @@ export default defineSchema({
   enrollments: enrollmentSchema,
   orders: orderSchema,
   mediaAssets: mediaAssetSchema,
+  finalProjectSubmissions: finalProjectSubmissionSchema,
 });

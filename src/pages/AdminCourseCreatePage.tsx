@@ -74,6 +74,7 @@ export function AdminCourseCreatePage() {
         title: module.title,
         lessons: normalizeModuleLessons(module),
       })),
+      requiresFinalProject: stored.requiresFinalProject ?? false,
     });
     setAchievementIds(stored.achievements.map(() => crypto.randomUUID()));
     loadedKey.current = key;

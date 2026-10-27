@@ -77,7 +77,7 @@ function assertPublishedCommerce(format: CourseCreateInput['format'], pricing: C
 }
 
 function courseData(args: CourseCreateInput, slug: string, pricing: CoursePricing) {
-  return { slug, title: args.title, description: args.description, image: args.image, polaroid: args.polaroid, polaroidCaption: args.polaroidCaption, badge: args.badge, duration: args.duration, format: args.format, teacherId: args.teacherId, achievements: args.achievements, pricing, status: 'published' as const };
+  return { slug, title: args.title, description: args.description, image: args.image, polaroid: args.polaroid, polaroidCaption: args.polaroidCaption, badge: args.badge, duration: args.duration, format: args.format, teacherId: args.teacherId, achievements: args.achievements, requiresFinalProject: args.requiresFinalProject, pricing, status: 'published' as const };
 }
 
 export const create = zAdminMutation({

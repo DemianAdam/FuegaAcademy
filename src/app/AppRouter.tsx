@@ -10,6 +10,7 @@ const CoursePage = lazy(() => import('@/pages/CoursePage').then((module) => ({ d
 const TeachersPage = lazy(() => import('@/pages/TeachersPage').then((module) => ({ default: module.TeachersPage })));
 const Dashboard = lazy(() => import('@/pages/Dashboard').then((module) => ({ default: module.Dashboard })));
 const DashboardCoursesPage = lazy(() => import('@/pages/DashboardCoursesPage').then((module) => ({ default: module.DashboardCoursesPage })));
+const CheckoutStatusPage = lazy(() => import('@/pages/CheckoutStatusPage').then((module) => ({ default: module.CheckoutStatusPage })));
 const AuthPage = lazy(() => import('@/pages/AuthPage').then((module) => ({ default: module.AuthPage })));
 const AdminPage = lazy(() => import('@/pages/AdminPage').then((module) => ({ default: module.AdminPage })));
 const AdminCourseCreatePage = lazy(() => import('@/pages/AdminCourseCreatePage').then((module) => ({ default: module.AdminCourseCreatePage })));
@@ -25,7 +26,7 @@ export function AppRouter() {
       <Route index element={<Home />} /><Route path="courses" element={<CoursesPage />} /><Route path="teachers" element={<TeachersPage />} /><Route path="course/:slug" element={<CoursePage />} />
       <Route element={<AuthEntryRoute />}><Route path="auth" element={<AuthPage />} /><Route path="login" element={<AuthPage />} /><Route path="register" element={<AuthPage />} /></Route>
     </Route>
-    <Route element={<ProtectedLayout allowedRole="student" />}><Route path="dashboard" element={<Dashboard />} /><Route path="dashboard/courses" element={<DashboardCoursesPage />} /></Route>
+    <Route element={<ProtectedLayout allowedRole="student" />}><Route path="dashboard" element={<Dashboard />} /><Route path="dashboard/courses" element={<DashboardCoursesPage />} /><Route path="checkout/:orderId" element={<CheckoutStatusPage />} /></Route>
     <Route element={<ProtectedLayout allowedRole="admin" />}><Route path="admin" element={<AdminPage />} /><Route path="admin/courses/new" element={<AdminCourseCreatePage />} /><Route path="admin/courses/:courseId/edit" element={<AdminCourseCreatePage />} /></Route>
     <Route path="*" element={<Navigate to="/" replace />} />
   </Routes></Suspense>;

@@ -44,6 +44,7 @@ export const courseValidator = z.object({
   description: z.string().min(1),
   polaroidCaption: z.string(),
   achievements: z.array(achievementValidator),
+  requiresFinalProject: z.boolean().optional(),
 });
 
 export const pricingEditorValidator = z.object({
@@ -65,6 +66,7 @@ export const courseCreateInputValidator = z.object({
   pricing: pricingEditorValidator,
   schedules: z.array(scheduleInputItemValidator).optional(),
   modules: z.array(moduleEditorInputValidator).optional(),
+  requiresFinalProject: z.boolean().default(false),
 });
 
 export const courseUpdateValidator = z.object({
@@ -124,6 +126,7 @@ export interface CourseWithRelations {
   duration: number;
   format: 'live' | 'recorded' | 'hybrid';
   achievements: Array<z.infer<typeof achievementValidator>>;
+  requiresFinalProject?: boolean;
   pricing: { live?: Money; recorded?: Money };
   teacher: PublicTeacher | null;
   mentor: PublicTeacher | null;

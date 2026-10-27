@@ -14,6 +14,34 @@ npm run dev
 
 Copy `.env.example` to `.env.local` and set only browser-safe values there. Payment credentials are backend-only Convex environment variables and must never use a `VITE_` prefix.
 
+### Stable public development URL
+
+Mercado Pago return URLs must remain stable while testing. Reserve an ngrok static development domain in your ngrok account, then set its hostname (without `https://`) in your local shell profile:
+
+```powershell
+setx NGROK_STATIC_DOMAIN "fuega-dev.ngrok-free.app"
+```
+
+Open a new terminal after running `setx`. Start the application and tunnel in separate terminals:
+
+```powershell
+npm run dev
+npm run tunnel
+```
+
+If Windows terminals do not inherit the saved variable, add `NGROK_STATIC_DOMAIN=fuega-dev.ngrok-free.app` to your ignored `.env.local`; `npm run dev:public` reads it automatically.
+
+For the easiest all-in-one workflow, open a new terminal after setting `NGROK_STATIC_DOMAIN` and run:
+
+```powershell
+npm run dev:public
+```
+
+This starts Vite, waits for `http://localhost:3000`, starts ngrok with the reserved hostname, and stops both processes when you press `Ctrl+C`.
+It requires port 3000 to be free; stop any separately running Vite process first.
+
+Set the Convex development deployment's `SITE_URL` once to `https://fuega-dev.ngrok-free.app`. The tunnel targets this project's configured Vite port, `3000`. Do not commit an ngrok auth token or the static hostname into application runtime configuration. The `tunnel` script refuses URLs, paths, and non-ngrok hostnames so the command cannot accidentally expose an arbitrary target.
+
 Required runtime configuration:
 
 - `VITE_CONVEX_URL`: public Convex client URL used by the browser.

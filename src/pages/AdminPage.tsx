@@ -6,6 +6,8 @@ import { AppLink } from '@/components/shared';
 import { AdminStatsOverview } from '@/components/admin/AdminStatsOverview';
 import { TeacherManager } from '@/components/admin/TeacherManager';
 import { CourseManager } from '@/components/admin/CourseManager';
+import { FinalProjectReviewQueue } from '@/components/admin/FinalProjectReviewQueue';
+import { PaymentReviewQueue } from '@/components/admin/PaymentReviewQueue';
 
 export const AdminPage: React.FC = () => {
   const { signOut } = useAuthActions();
@@ -64,6 +66,7 @@ export const AdminPage: React.FC = () => {
             <TabsTrigger value="courses" className="rounded-xl px-4 py-2 font-medium">
               Cursos
             </TabsTrigger>
+            <TabsTrigger value="reviews" className="rounded-xl px-4 py-2 font-medium">Revisiones</TabsTrigger>
           </TabsList>
 
           <TabsContent value="stats" className="space-y-6">
@@ -77,6 +80,7 @@ export const AdminPage: React.FC = () => {
           <TabsContent value="courses" className="space-y-6">
             <CourseManager />
           </TabsContent>
+          <TabsContent value="reviews" className="space-y-8"><section><h2 className="mb-3 text-lg font-bold">Proyectos finales</h2><FinalProjectReviewQueue /></section><section><h2 className="mb-3 text-lg font-bold">Pagos para revisar</h2><PaymentReviewQueue /></section></TabsContent>
 
         </Tabs>
       </main>

@@ -1,1 +1,1 @@
-//export const modules = import.meta.glob('./**/*.ts');
+export const modules = import.meta.glob('./**/*.ts');

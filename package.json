@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:public": "node scripts/start-public-dev.mjs",
+    "tunnel": "node scripts/start-tunnel.mjs",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "lint:ox": "oxlint",

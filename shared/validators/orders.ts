@@ -9,14 +9,18 @@ export const orderValidator = z.object({
   amountMinor: z.number().int().min(0).optional(),
   amount: z.number().min(0).optional(),
   currency: z.string(),
-  status: z.enum(['pending', 'approved', 'rejected', 'refunded']),
+  status: z.enum(['pending', 'approved', 'review', 'rejected', 'expired', 'refunded', 'charged_back']),
   provider: z.literal('mercadopago'),
   courseTitle: z.string().optional(),
   courseSlug: z.string().optional(),
   payerEmail: z.string().optional(),
   externalPreferenceId: z.string().optional(),
+  checkoutUrl: z.string().url().optional(),
+  expiresAt: z.number().int().positive().optional(),
   externalPaymentId: z.string().optional(),
   failureReason: z.string().optional(),
+  preferenceClosureStatus: z.enum(['pending', 'closed']).optional(),
+  preferenceClosedAt: z.number().int().positive().optional(),
 });
 
 export const createCheckoutPreferenceValidator = z.object({
