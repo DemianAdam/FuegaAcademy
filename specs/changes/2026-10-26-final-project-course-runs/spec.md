@@ -39,3 +39,7 @@ Approval must mark that enrollment completed. Only a completed enrollment for a 
 ## Open Questions
 
 None.
+
+
+## Replacement
+Behavior superseded by ../2026-10-27-simple-course-purchases/spec.md, explicitly approved 2026-10-27.

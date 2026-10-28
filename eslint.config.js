@@ -27,4 +27,5 @@ export default tseslint.config(
       '@typescript-eslint/no-explicit-any': 'warn',
     },
   },
+  { files: ['e2e/fixture/**'], rules: { 'react-refresh/only-export-components': 'off' } },
 )
