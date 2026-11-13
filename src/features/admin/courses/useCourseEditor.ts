@@ -1,8 +1,11 @@
-import { useState } from 'react';
-import type { Id } from '../../../../convex/_generated/dataModel';
-import type { CourseCreateInput } from '@shared/validators/courses';
-import { normalizeCoursePricing, type CourseFormat } from '@shared/courseCommerce';
-import type { ImageSource } from '@shared/validators/media';
+import { useState } from "react";
+import type { Id } from "../../../../convex/_generated/dataModel";
+import type { CourseCreateInput } from "@shared/validators/courses";
+import {
+  normalizeCoursePricing,
+  type CourseFormat,
+} from "@shared/courseCommerce";
+import type { ImageSource } from "@shared/validators/media";
 
 export type CourseEditorState = CourseCreateInput;
 
@@ -12,43 +15,50 @@ function newAchievementIds(count: number): string[] {
 
 export function createEmptyCourse(): CourseEditorState {
   return {
-    title: '',
-    description: '',
-    image: { kind: 'external', url: '' } as ImageSource,
-    polaroid: { kind: 'external', url: '' } as ImageSource,
-    polaroidCaption: '',
-    badge: 'popular',
+    title: "",
+    description: "",
+    image: { kind: "external", url: "" } as ImageSource,
+    polaroid: { kind: "external", url: "" } as ImageSource,
+    polaroidCaption: "",
+    badge: "popular",
     duration: 16,
-    format: 'hybrid',
-    teacherId: '' as Id<'teachers'>,
+    format: "hybrid",
+    teacherId: "" as Id<"teachers">,
     achievements: [
       {
-        icon: 'check_circle',
-        text: 'Describe a concrete outcome for the student',
+        icon: "check_circle",
+        text: "Describe a concrete outcome for the student",
         isHighlighted: true,
       },
     ],
     pricing: {
-      live: { amountMinor: 49900, currency: 'ARS' },
-      recorded: { amountMinor: 29900, currency: 'ARS' },
+      live: { amountMinor: 49900, currency: "ARS" },
+      recorded: { amountMinor: 29900, currency: "ARS" },
     },
     schedules: [
       {
-        name: 'Primary cohort',
+        name: "Primary cohort",
         capacity: 30,
+        startsAt: Date.now() + 7 * 86400000,
         sessions: [
-          { day: 1, startTime: '18:00', endTime: '20:00' },
-          { day: 3, startTime: '18:00', endTime: '20:00' },
+          { day: 1, startTime: "18:00", endTime: "20:00" },
+          { day: 3, startTime: "18:00", endTime: "20:00" },
         ],
       },
     ],
     modules: [
       {
-        title: 'Módulo 1',
-        lessons: [{ title: 'Introducción', durationMinutes: 30, description: '' }],
+        title: "Módulo 1",
+        lessons: [
+          {
+            id: crypto.randomUUID(),
+            title: "Introducción",
+            durationMinutes: 30,
+            description: "",
+          },
+        ],
       },
     ],
-    requiresFinalProject: false,
   };
 }
 
@@ -56,19 +66,29 @@ export function useCourseEditor() {
   const [course, setCourse] = useState<CourseEditorState>(() =>
     createEmptyCourse(),
   );
-  const [achievementIds, setAchievementIds] = useState(() => newAchievementIds(createEmptyCourse().achievements.length));
+  const [achievementIds, setAchievementIds] = useState(() =>
+    newAchievementIds(createEmptyCourse().achievements.length),
+  );
 
   const update = <Key extends keyof CourseEditorState>(
     key: Key,
     value: CourseEditorState[Key],
   ) => setCourse((current) => ({ ...current, [key]: value }));
 
-  const updateFormat = (format: CourseFormat) => setCourse((current) => ({
-    ...current,
-    format,
-    pricing: normalizeCoursePricing(format, current.pricing),
-    schedules: format === 'recorded' ? [] : current.schedules,
-  }));
+  const updateFormat = (format: CourseFormat) =>
+    setCourse((current) => ({
+      ...current,
+      format,
+      pricing: normalizeCoursePricing(format, current.pricing),
+      schedules: format === "recorded" ? [] : current.schedules,
+    }));
 
-  return { course, setCourse, update, updateFormat, achievementIds, setAchievementIds };
+  return {
+    course,
+    setCourse,
+    update,
+    updateFormat,
+    achievementIds,
+    setAchievementIds,
+  };
 }

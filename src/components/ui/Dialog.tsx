@@ -31,7 +31,7 @@ export const DialogContent = forwardRef<
     <RadixDialog.Content
       ref={ref}
       className={cn(
-        'fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg bg-surface p-6 rounded-2xl shadow-2xl z-50 outline-none border border-outline-variant',
+        'fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg text-on-surface bg-surface p-6 rounded-2xl shadow-2xl z-50 outline-none border border-outline-variant',
         className
       )}
       {...props}

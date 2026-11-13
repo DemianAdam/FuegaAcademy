@@ -7,7 +7,7 @@ interface TestimonialCardProps {
 export function TestimonialCard({ testimonial }: TestimonialCardProps) {
 
   return (
-    <div className="before-after-card rounded-2xl overflow-hidden shadow-md flex flex-col h-full bg-white dark:bg-surface-container border border-outline-variant">
+    <div className="before-after-card rounded-2xl overflow-hidden shadow-md flex flex-col h-full bg-card border border-outline-variant">
       <div className="flex h-48 border-b border-outline-variant">
         <div className="w-1/2 relative bg-surface-container-low/30">
           <img

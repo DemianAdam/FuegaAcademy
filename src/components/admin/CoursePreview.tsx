@@ -35,7 +35,7 @@ export function CoursePreview({ course, teacherName }: CoursePreviewProps) {
       </div>
 
       {/* Course Card Preview */}
-      <div className="bg-white dark:bg-surface-container border border-outline-variant rounded-2xl overflow-hidden shadow-xl transition-all">
+      <div className="bg-card border border-outline-variant rounded-2xl overflow-hidden shadow-xl transition-all">
         <div className="relative h-56 overflow-hidden bg-surface-dim">
           <img
             alt={title}
@@ -115,7 +115,7 @@ export function CoursePreview({ course, teacherName }: CoursePreviewProps) {
 
       {/* Achievements Preview */}
       {achievements.length > 0 && (
-        <Card className="p-5 space-y-3 bg-white dark:bg-surface-container border-outline-variant">
+        <Card className="p-5 space-y-3 bg-card border-outline-variant">
           <h4 className="font-semibold text-sm text-on-surface flex items-center gap-2">
             <span className="material-symbols-outlined text-primary text-sm">verified</span>
             Logros del Estudiante ({achievements.length})
@@ -137,7 +137,7 @@ export function CoursePreview({ course, teacherName }: CoursePreviewProps) {
 
       {/* Polaroid Preview */}
       {course.polaroid?.kind === 'external' && (
-        <div className="bg-white dark:bg-surface-container p-4 rounded-xl border border-outline-variant shadow-md rotate-1 transform max-w-xs mx-auto">
+        <div className="bg-card p-4 rounded-xl border border-outline-variant shadow-md rotate-1 transform max-w-xs mx-auto">
           <img src={course.polaroid.url} alt="Polaroid" className="w-full h-36 object-cover rounded-lg mb-2" />
           <p className="text-center font-handwriting text-xs text-on-surface font-medium">
             {course.polaroidCaption || 'Caption polaroid...'}

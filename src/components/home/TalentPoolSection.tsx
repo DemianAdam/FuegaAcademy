@@ -26,7 +26,7 @@ export function TalentPoolSection() {
             whileInView={{ scale: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2, type: 'spring', stiffness: 100 }}
-            className="absolute top-0 right-0 w-64 h-64 bg-lima/10 rounded-full -mr-32 -mt-32 blur-3xl pointer-events-none"
+            className="absolute top-0 right-0 w-64 h-64 bg-action/10 rounded-full -mr-32 -mt-32 blur-3xl pointer-events-none"
             aria-hidden="true"
           />
 
@@ -42,10 +42,10 @@ export function TalentPoolSection() {
               viewport={{ once: true }}
               className="flex items-center gap-2 mb-4"
             >
-              <span className="material-symbols-outlined text-lima" aria-hidden="true">
+              <span className="material-symbols-outlined text-action" aria-hidden="true">
                 {talentPool.tagIcon}
               </span>
-              <p className="text-lima font-bold text-xs uppercase tracking-widest">
+              <p className="text-action font-bold text-xs uppercase tracking-widest">
                 Oportunidad Exclusiva
               </p>
             </motion.div>
@@ -64,7 +64,7 @@ export function TalentPoolSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="text-surface-dim font-body-lg leading-relaxed"
+              className="text-promo-muted font-body-lg leading-relaxed"
             >
               Al finalizar tus cursos, podés aplicar para formar parte de nuestra bolsa de creadores y profesionales. Te conectamos directamente con marcas globales para tus primeros proyectos reales.
             </motion.p>
@@ -78,7 +78,7 @@ export function TalentPoolSection() {
             className="relative z-10 shrink-0"
           >
             <Button
-              className="bg-lima text-on-background px-8 py-4 font-black rounded-full flex items-center gap-2 hover:scale-105 transition-transform shadow-[0_0_20px_rgba(204,255,0,0.3)]"
+              className="bg-action text-on-action px-8 py-4 font-black rounded-full flex items-center gap-2 hover:scale-105 transition-transform action-shadow"
             >
               Conocé más sobre el Talent Pool
               <span className="material-symbols-outlined" aria-hidden="true">arrow_forward</span>

@@ -74,7 +74,7 @@ export function CourseCard({ course, actions, adminDetails, className, preview =
     return (
       <div
         className={cn(
-          'group course-card bg-white dark:bg-surface-container border border-outline-variant rounded-2xl overflow-hidden shadow-sm flex flex-col',
+          'group course-card bg-card border border-outline-variant rounded-2xl overflow-hidden shadow-sm flex flex-col',
           className,
         )}
       >
@@ -88,7 +88,7 @@ export function CourseCard({ course, actions, adminDetails, className, preview =
       to={`/course/${course.slug}`}
       aria-label={`Ver ${course.title}`}
       className={cn(
-        'group course-card bg-white dark:bg-surface-container border border-outline-variant rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-500 flex flex-col',
+        'group course-card bg-card border border-outline-variant rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-500 flex flex-col',
         className,
       )}
     >

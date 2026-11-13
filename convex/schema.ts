@@ -7,8 +7,14 @@ import { teacherSchema } from "./teachers/schema";
 import { userSchema } from "./users/schema";
 import { enrollmentSchema } from "./enrollments/schema";
 import { orderSchema } from "./orders/schema";
-import { mediaAssetSchema } from './media/schema';
-import { finalProjectSubmissionSchema } from './finalProjects/schema';
+import { mediaAssetSchema } from "./media/schema";
+import {
+  examSchema,
+  attemptSchema,
+  resourceSchema,
+  uploadSchema,
+} from "./learning/schema";
+import { paymentSchema, inboxSchema } from "./orders/paymentSchema";
 
 export default defineSchema({
   ...authTables,
@@ -20,5 +26,10 @@ export default defineSchema({
   enrollments: enrollmentSchema,
   orders: orderSchema,
   mediaAssets: mediaAssetSchema,
-  finalProjectSubmissions: finalProjectSubmissionSchema,
+  exams: examSchema,
+  examAttempts: attemptSchema,
+  courseResources: resourceSchema,
+  privateUploads: uploadSchema,
+  paymentAttempts: paymentSchema,
+  paymentInbox: inboxSchema,
 });

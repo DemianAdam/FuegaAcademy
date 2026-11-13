@@ -8,8 +8,8 @@ export const getDashboardStats = zAdminQuery({
     const teachers = await ctx.db.query("teachers").collect();
     const enrollments = await ctx.db.query("enrollments").collect();
     const approvedOrders = await ctx.db
-      .query('orders')
-      .withIndex('by_status', (query) => query.eq('status', 'approved'))
+      .query("orders")
+      .withIndex("by_status", (query) => query.eq("status", "approved"))
       .collect();
 
     const totalUsers = users.length;
@@ -18,14 +18,16 @@ export const getDashboardStats = zAdminQuery({
 
     const totalCourses = courses.length;
     const liveCourses = courses.filter((c) => c.format === "live").length;
-    const recordedCourses = courses.filter((c) => c.format === "recorded").length;
+    const recordedCourses = courses.filter(
+      (c) => c.format === "recorded",
+    ).length;
     const hybridCourses = courses.filter((c) => c.format === "hybrid").length;
 
     const totalTeachers = teachers.length;
     const totalEnrollments = enrollments.length;
 
     const estimatedRevenueMinor = approvedOrders.reduce(
-      (total, order) => total + (order.amountMinor ?? Math.round((order.amount ?? 0) * 100)),
+      (total, order) => total + order.amountMinor,
       0,
     );
 

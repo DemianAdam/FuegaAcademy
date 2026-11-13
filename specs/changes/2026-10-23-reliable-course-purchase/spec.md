@@ -42,3 +42,7 @@ The authenticated Academy student must receive the enrollment even when the Merc
 ### REQ-PURCHASE-007: Final payment state
 
 After an approved payment, the system must prevent another checkout or enrollment for that student's active run of the course. It must close the associated provider preference and route exceptional late duplicate payments to administrator review without creating access.
+
+
+## Replacement
+Behavior superseded by ../2026-10-27-simple-course-purchases/spec.md, explicitly approved 2026-10-27.

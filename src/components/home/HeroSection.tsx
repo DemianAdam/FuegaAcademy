@@ -61,14 +61,14 @@ export function HeroSection() {
         >
           <motion.button
             variants={{ hidden: { opacity: 0, x: -20 }, visible: { opacity: 1, x: 0 } }}
-            className="bg-lima text-on-background px-8 py-4 font-bold rounded-full flex items-center gap-2 hover:translate-x-2 transition-transform"
+            className="bg-action text-on-action px-8 py-4 font-bold rounded-full flex items-center gap-2 hover:translate-x-2 transition-transform"
           >
             Ver cursos
             <ArrowRight className="w-5 h-5" aria-hidden="true" />
           </motion.button>
           <motion.button
             variants={{ hidden: { opacity: 0, x: 20 }, visible: { opacity: 1, x: 0 } }}
-            className="bg-white/80 dark:bg-surface-container/80 backdrop-blur border border-outline-variant text-on-surface px-8 py-4 font-bold rounded-full flex items-center gap-2 hover:bg-white dark:hover:bg-surface-container transition-colors"
+            className="bg-card/80 backdrop-blur border border-outline-variant text-on-surface px-8 py-4 font-bold rounded-full flex items-center gap-2 hover:bg-card transition-colors"
           >
             Conocé más
             <PlayCircle className="w-5 h-5" aria-hidden="true" />

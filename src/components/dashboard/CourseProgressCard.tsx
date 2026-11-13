@@ -5,8 +5,8 @@ interface CourseProgressCardProps {
 }
 
 export function CourseProgressCard({ course }: CourseProgressCardProps) {
-  const badgeBg = course.category === 'MARKETING' ? 'bg-secondary-container text-on-secondary-container' : 'bg-primary-fixed text-on-primary-fixed';
-  const progressBg = course.category === 'MARKETING' ? 'bg-secondary-container' : 'bg-primary-fixed';
+  const badgeBg = course.category === 'MARKETING' ? 'bg-secondary-container text-on-secondary-container' : 'bg-action text-on-action';
+  const progressBg = course.category === 'MARKETING' ? 'bg-secondary-container' : 'bg-action';
   const categoryLabel = course.category === 'MARKETING' ? 'MARKETING' : 'ECONOMÍA CREATIVA';
 
   return (
