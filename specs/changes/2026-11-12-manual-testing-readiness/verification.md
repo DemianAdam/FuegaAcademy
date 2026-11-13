@@ -63,4 +63,10 @@ Owner-led password registration/login, Google consent/login, private uploads/dow
 
 ## Residual risks
 
+## Branch integration — 2026-11-13
+
+The owner explicitly requested merging all changes needed for manual testing. Integrated `codex/muted-blue-dark-mode` (`6eb97e0`) into `codex/simple-course-purchases`, preserving manual-testing fixtures, CLI, documentation and generated internal API bindings. Conflicting purchase UI files differ between branch tips only in approved theme presentation; retained the theme branch's combined versions. Older remote branches were already ancestors; a fresh `git fetch origin` confirmed no additional feature branch was missing. The other worktree had no uncommitted changes.
+
+Merged-tree verification: `npm run check` passed (95 tests in 12 files, both linters, build and 243661-byte entry bundle); `npx tsc --noEmit -p convex/tsconfig.json` passed; `npm run test:e2e -- --global-timeout=180000` passed all 17 Chromium scenarios in 1.3 minutes. No backend/shared-contract changes relative to the manual-testing branch, so no deployment or data mutation was needed. Restarted `npm run dev:public` (process session `82770`); the public URL returned HTTP 200 and included the merged `/theme-init.js` bootstrap. Owner-led transactions and acceptance cases remain pending. Integration was committed locally; no remote push was requested.
+
 Actual provider transactions and Google authorization are unobserved. Sample external links deliberately lead to example.com. Future cohorts eventually age out; use a new session instead of resetting records. The draft lifetime-access copy defect remains unresolved. Preparation is complete, but these facts prevent claiming end-to-end manual acceptance.

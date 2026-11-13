@@ -8,7 +8,8 @@ const deadline = Date.now() + 1800000;
 let version = 0;
 const listeners = new Set<() => void>();
 const state = {
-  authenticated: false,
+  authenticated: new URLSearchParams(location.search).has("role"),
+  role: new URLSearchParams(location.search).get("role") === "admin" ? "admin" : "student",
   status: "pending",
   runs: [] as Record<string, unknown>[],
   attempts: [] as Record<string, unknown>[],
@@ -99,6 +100,7 @@ export const controls = {
     emit();
   },
   approve,
+  rejected() { state.status = "rejected"; emit(); },
   reopen() {
     const run = state.runs.at(-1)!;
     run.retryOpen = true;
@@ -127,6 +129,7 @@ export const controls = {
   },
 };
 Object.assign(window, { purchaseTest: controls });
+if (new URLSearchParams(location.search).get("scenario") === "classroom") approve();
 export function useQuery(
   reference: FunctionReference<"query">,
   args?: Record<string, unknown> | "skip",
@@ -140,9 +143,27 @@ export function useQuery(
           _id: "student",
           _creationTime: 0,
           email: "student@example.com",
-          role: "student",
+          role: state.role,
         }
       : null;
+  if (name === "analytics/queries:getDashboardStats") return {
+    users: { students: 12 }, courses: { total: 3 }, teachers: { total: 2 },
+    enrollments: { total: 8 }, financials: { estimatedRevenueMinor: 80000 },
+  };
+  if (name === "orders/queries:listReviewQueue") return [{
+    _id: "review", courseTitle: course.title, studentEmail: "student@example.com", tier: "recorded",
+    amountMinor: 10000, currency: "ARS", failureReason: "PAYMENT_MISMATCH", externalPaymentId: "123",
+  }];
+  if (name === "orders/queries:failures") return { notifications: [], checkouts: [] };
+  if (name === "courses/queries:getAdminById") return {
+    course: { ...course, teacherId: "teacher" }, schedules: course.schedules, modules: course.modules,
+  };
+  if (name === "courses/queries:list") return [course];
+  if (name === "teachers/queries:list" || name === "teachers/queries:listPublished") return [{
+    _id: "teacher", slug: "ana-perez", _creationTime: 0, name: "Ana Pérez", title: "Diseñadora",
+    bio: "Aprendé con proyectos prácticos.", skills: ["Diseño", "Creatividad"],
+    imageUrl: course.imageUrl, image: { kind: "external", url: course.imageUrl },
+  }];
   if (name === "courses/queries:getPublishedBySlug") return course;
   if (name === "courses/queries:listPublished") return [course];
   if (name === "enrollments/queries:listMyEnrollments") return state.runs;

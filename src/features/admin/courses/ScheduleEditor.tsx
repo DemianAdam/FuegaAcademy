@@ -139,7 +139,7 @@ export function ScheduleEditor({
                       className="flex flex-wrap items-center gap-2"
                     >
                       <select
-                        className="rounded-xl border border-outline-variant bg-surface px-3 py-2 text-sm"
+                        className="rounded-xl border border-outline bg-surface px-3 py-2 text-sm"
                         value={session.day}
                         onChange={(event) =>
                           updateSchedule(scheduleIndex, {

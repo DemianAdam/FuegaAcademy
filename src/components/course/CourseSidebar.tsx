@@ -113,7 +113,7 @@ export function CourseSidebar({ course, preview = false }: CourseSidebarProps) {
       >
         <div className="flex items-center justify-between">
           <span className="font-bold text-lg text-on-surface">Inscripción</span>
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-success-container text-success border border-success/30">
             <span className="material-symbols-outlined text-sm">
               check_circle
             </span>

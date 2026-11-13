@@ -8,37 +8,37 @@ const statusCopy = {
   pending: {
     title: "Estamos verificando tu pago",
     body: "Tu inscripción se activará apenas Mercado Pago confirme el pago.",
-    tone: "text-amber-700",
+    tone: "text-warning",
   },
   approved: {
     title: "Tu inscripción está confirmada",
     body: "Ya podés acceder a tu curso desde tu panel.",
-    tone: "text-emerald-700",
+    tone: "text-success",
   },
   review: {
     title: "Tu pago está siendo revisado",
     body: "No se activará el acceso hasta que el equipo revise esta operación.",
-    tone: "text-amber-700",
+    tone: "text-warning",
   },
   rejected: {
     title: "No se pudo completar el pago",
     body: "Podés volver al curso e intentar nuevamente.",
-    tone: "text-red-700",
+    tone: "text-error",
   },
   expired: {
     title: "El checkout venció",
     body: "Volvé al curso para iniciar un nuevo pago.",
-    tone: "text-red-700",
+    tone: "text-error",
   },
   refunded: {
     title: "El pago fue reembolsado",
     body: "Tu acceso al curso fue desactivado.",
-    tone: "text-red-700",
+    tone: "text-error",
   },
   charged_back: {
     title: "El pago fue desconocido",
     body: "Tu acceso al curso fue desactivado.",
-    tone: "text-red-700",
+    tone: "text-error",
   },
 } as const;
 
@@ -75,7 +75,7 @@ export function CheckoutStatusPage() {
       ? {
           title: "Estamos preparando tu compra",
           body: "Esperá unos instantes. No vuelvas a pagar si ya completaste el pago.",
-          tone: "text-amber-700",
+          tone: "text-warning",
         }
       : statusCopy[order.status];
   const coursePath = order.courseSlug

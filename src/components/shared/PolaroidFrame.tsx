@@ -29,7 +29,7 @@ export function PolaroidFrame({
         transform: `rotate(${rotate}deg) scale(${scale})`,
       }}
     >
-      <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-amber-100/80 backdrop-blur-xs shadow-xs rotate-[-2deg] border border-amber-200/50 z-10" aria-hidden="true" />
+      <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-amber-100/80 dark:bg-secondary-accent/40 backdrop-blur-xs shadow-xs rotate-[-2deg] border border-amber-200/50 dark:border-secondary-accent/30 z-10" aria-hidden="true" />
       <div className="relative overflow-hidden aspect-[4/3] rounded-xs mb-2">
         <img
           src={src}

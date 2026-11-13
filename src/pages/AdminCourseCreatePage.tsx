@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useMutation, useQuery } from "convex/react";
 import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../../convex/_generated/api";
-import { Button } from "@/components/ui";
+import { Button, ThemeToggle } from "@/components/ui";
 import {
   CourseAchievementsSection,
   CourseBasicsSection,
@@ -133,7 +133,7 @@ export function AdminCourseCreatePage() {
   return (
     <main className="min-h-screen bg-surface px-4 py-10 text-on-surface md:px-8">
       <div className="mx-auto max-w-[1440px]">
-        <div className="mb-8 flex items-center justify-between gap-4 border-b border-outline-variant pb-4">
+        <div className="mb-8 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center border-b border-outline-variant pb-4">
           <div>
             <h1 className="text-3xl font-extrabold">
               {isEditing ? "Editar curso" : "Crear curso"}
@@ -142,9 +142,12 @@ export function AdminCourseCreatePage() {
               Administrá la información, horarios y precios en ARS del curso.
             </p>
           </div>
+          <div className="flex shrink-0 items-center gap-3">
+          <ThemeToggle />
           <Button variant="outline" onClick={() => navigate("/admin")}>
             Volver al panel
           </Button>
+          </div>
         </div>
 
         {errorMessage && (

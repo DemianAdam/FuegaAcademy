@@ -19,7 +19,7 @@ interface TeacherCardProps {
 
 export function TeacherCard({ teacher, showQuote = false, showStats = false }: TeacherCardProps) {
   return (
-    <div className="bg-white dark:bg-surface-container p-6 rounded-2xl border border-outline-variant flex flex-col justify-between">
+    <div className="bg-card p-6 rounded-2xl border border-outline-variant flex flex-col justify-between">
       <div>
         <div className="flex items-start gap-6 mb-6">
           <Avatar src={teacher.imageUrl} alt={teacher.name} size="md" />
@@ -30,7 +30,7 @@ export function TeacherCard({ teacher, showQuote = false, showStats = false }: T
               {teacher.skills.map((skill) => (
                 <span
                   key={skill}
-                  className="text-[10px] font-bold border px-2 rounded opacity-60 hover:opacity-100 hover:border-primary"
+                  className="text-[10px] font-bold border px-2 rounded text-on-surface-variant hover:border-primary"
                 >
                   {skill}
                 </span>

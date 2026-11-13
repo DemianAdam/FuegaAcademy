@@ -33,14 +33,14 @@ export const AdminPage: React.FC = () => {
     <div className="min-h-screen bg-surface text-on-surface transition-colors duration-300">
       <header className="border-b border-outline-variant bg-surface-container/50 backdrop-blur sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center space-x-6">
+          <div className="flex min-w-0 items-center gap-3 lg:gap-6">
             <AppLink
               to="/"
               className="flex items-center gap-2 shrink-0"
               aria-label="Fuega Academy"
             >
               <svg
-                className="w-7 h-7 fill-lima"
+                className="w-7 h-7 fill-action"
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
                 aria-hidden="true"
@@ -55,12 +55,12 @@ export const AdminPage: React.FC = () => {
                 Fuega <span className="text-secondary">Academy</span>
               </span>
             </AppLink>
-            <span className="text-outline-variant">|</span>
-            <h1 className="text-lg font-bold tracking-tight">
+            <span className="hidden lg:inline text-outline-variant">|</span>
+            <h1 className="sr-only lg:not-sr-only lg:text-lg font-bold tracking-tight">
               Panel de administración
             </h1>
           </div>
-          <div className="flex items-center space-x-4">
+          <div className="flex shrink-0 items-center gap-2 sm:gap-4">
             <ThemeToggle />
             <Button
               variant="outline"
@@ -79,7 +79,7 @@ export const AdminPage: React.FC = () => {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Tabs defaultValue="stats" className="space-y-6">
-          <TabsList className="bg-surface-container p-1 rounded-2xl border border-outline-variant flex space-x-2">
+          <TabsList className="bg-surface-container p-1 rounded-2xl border border-outline-variant flex space-x-2 overflow-x-auto">
             <TabsTrigger
               value="stats"
               className="rounded-xl px-4 py-2 font-medium"

@@ -16,7 +16,7 @@ export function TeachersPage() {
           </span>
           <h1 className="font-display-lg text-3xl md:text-5xl font-black tracking-tight text-on-surface">
             Conocé a{' '}
-            <span className="bg-primary-container px-2 py-0.5 rounded-sm">
+            <span className="bg-primary-container text-on-primary-container px-2 py-0.5 rounded-sm">
               nuestros profesores
             </span>
           </h1>

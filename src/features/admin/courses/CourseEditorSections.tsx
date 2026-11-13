@@ -97,7 +97,7 @@ export function CourseBasicsSection({
       <label className="block text-sm font-medium">
         Descripción
         <textarea
-          className="mt-1 w-full rounded-xl border border-outline-variant bg-surface px-4 py-3 text-sm"
+          className="mt-1 w-full rounded-xl border border-outline bg-surface px-4 py-3 text-sm"
           required
           rows={4}
           value={course.description}
@@ -120,7 +120,7 @@ export function CourseBasicsSection({
         <label className="text-sm font-medium">
           Modalidad
           <select
-            className="mt-1 w-full rounded-xl border border-outline-variant bg-surface px-4 py-2.5"
+            className="mt-1 w-full rounded-xl border border-outline bg-surface px-4 py-2.5"
             value={course.format}
             onChange={(e) =>
               onFormatChange(e.target.value as CourseEditorState["format"])
@@ -135,7 +135,7 @@ export function CourseBasicsSection({
       <label className="block text-sm font-medium">
         Profesor
         <select
-          className="mt-1 w-full rounded-xl border border-outline-variant bg-surface px-4 py-2.5"
+          className="mt-1 w-full rounded-xl border border-outline bg-surface px-4 py-2.5"
           required
           value={course.teacherId}
           onChange={(e) =>
@@ -527,7 +527,7 @@ export function CourseCurriculumSection({ course, onChange }: Props) {
                 />
               </div>
               <textarea
-                className="mt-2 w-full rounded-lg border border-outline-variant bg-surface px-3 py-2 text-sm"
+                className="mt-2 w-full rounded-lg border border-outline bg-surface px-3 py-2 text-sm"
                 rows={2}
                 placeholder="Descripción de la lección"
                 value={lesson.description}

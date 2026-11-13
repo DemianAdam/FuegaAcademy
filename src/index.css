@@ -3,6 +3,31 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
+  --inverse-surface: #30312e;
+  --inverse-on-surface: #f3f1ec;
+  --action: #ccff00;
+  --on-action: #161e00;
+  --action-hover: #c3f400;
+  --card: #ffffff;
+  --promo: #1b1c19;
+  --promo-muted: #dcdad5;
+  --secondary-accent: #c6b7ff;
+  --on-secondary-accent: #1e0e4e;
+  --tertiary: #5f5e5e;
+  --tertiary-container: #efeceb;
+  --on-tertiary: #ffffff;
+  --on-tertiary-container: #585656;
+  --error: #ba1a1a;
+  --error-container: #ffdad6;
+  --on-error: #ffffff;
+  --on-error-container: #93000a;
+  --success: #176747;
+  --success-container: #dbf4e6;
+  --warning: #795000;
+  --warning-container: #fff0cb;
+  --focus: #506600;
+  --action-shadow: 0 0 20px rgb(204 255 0 / 0.3);
+
   --surface: #fbf9f4;
   --surface-bright: #fbf9f4;
   --surface-dim: #dcdad5;
@@ -36,49 +61,82 @@
 }
 
 .dark {
-  --surface: #121310;
-  --surface-bright: #252722;
-  --surface-dim: #0d0e0c;
-  --surface-container: #1b1c19;
-  --surface-container-low: #161815;
-  --surface-container-high: #252722;
-  --surface-container-highest: #30322c;
-  --surface-tint: #c3f400;
-  --surface-variant: #30322c;
-
-  --on-surface: #e4e2dd;
-  --on-surface-variant: #c4c9ac;
-
-  --background: #121310;
-  --on-background: #e4e2dd;
-
-  --primary: #c3f400;
-  --primary-container: #3c4d00;
-  --primary-fixed: #c3f400;
-  --primary-fixed-dim: #abd600;
-  --on-primary: #161e00;
-  --on-primary-container: #ccff00;
-
-  --secondary: #ccbeff;
-  --secondary-container: #4a3d7c;
-  --on-secondary: #1e0e4e;
-  --on-secondary-container: #e7deff;
-
-  --outline: #8e9577;
-  --outline-variant: #444933;
+  --inverse-surface: #141517;
+  --inverse-on-surface: #e8eaed;
+  --surface: #0b0c0e;
+  --surface-bright: #1c1d20;
+  --surface-dim: #08090a;
+  --surface-container: #141517;
+  --surface-container-low: #101113;
+  --surface-container-high: #1c1d20;
+  --surface-container-highest: #252629;
+  --surface-tint: #8ab4f8;
+  --surface-variant: #252629;
+  --on-surface: #e8eaed;
+  --on-surface-variant: #abb4c0;
+  --background: #0b0c0e;
+  --on-background: #e8eaed;
+  --primary: #8ab4f8;
+  --primary-container: #1b2533;
+  --primary-fixed: #8ab4f8;
+  --primary-fixed-dim: #79a4e8;
+  --on-primary: #101c2e;
+  --on-primary-container: #d3e3fd;
+  --secondary: #c4b8df;
+  --secondary-container: #201f25;
+  --on-secondary: #241c35;
+  --on-secondary-container: #e5dcf4;
+  --outline: #778393;
+  --outline-variant: #303236;
+  --action: #8ab4f8;
+  --on-action: #101c2e;
+  --action-hover: #a4c5fa;
+  --card: #141517;
+  --promo: #141517;
+  --promo-muted: #abb4c0;
+  --secondary-accent: #c4b8df;
+  --on-secondary-accent: #241c35;
+  --tertiary: #bcc2cc;
+  --tertiary-container: #252629;
+  --on-tertiary: #20252d;
+  --on-tertiary-container: #e8eaed;
+  --error: #ffb4ab;
+  --error-container: #442723;
+  --on-error: #461b16;
+  --on-error-container: #ffdad6;
+  --success: #83d5b0;
+  --success-container: #193b30;
+  --warning: #eac179;
+  --warning-container: #3e3220;
+  --focus: #8ab4f8;
+  --action-shadow: none;
 }
 
 @theme {
+  --color-action: var(--action);
+  --color-on-action: var(--on-action);
+  --color-action-hover: var(--action-hover);
+  --color-card: var(--card);
+  --color-promo: var(--promo);
+  --color-promo-muted: var(--promo-muted);
+  --color-secondary-accent: var(--secondary-accent);
+  --color-on-secondary-accent: var(--on-secondary-accent);
+  --color-success: var(--success);
+  --color-success-container: var(--success-container);
+  --color-warning: var(--warning);
+  --color-warning-container: var(--warning-container);
+  --color-focus: var(--focus);
+
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
 
   --color-primary: var(--primary);
   --color-primary-container: var(--primary-container);
-  --color-primary-fixed: #c3f400;
-  --color-primary-fixed-dim: #abd600;
+  --color-primary-fixed: var(--primary-fixed);
+  --color-primary-fixed-dim: var(--primary-fixed-dim);
   --color-on-primary: var(--on-primary);
   --color-on-primary-container: var(--on-primary-container);
-  --color-on-primary-fixed: #161e00;
+  --color-on-primary-fixed: var(--on-action);
   --color-on-primary-fixed-variant: #3c4d00;
 
   --color-secondary: var(--secondary);
@@ -90,17 +148,17 @@
   --color-on-secondary-fixed: #1e0e4e;
   --color-on-secondary-fixed-variant: #4a3d7c;
 
-  --color-tertiary: #5f5e5e;
-  --color-tertiary-container: #efeceb;
+  --color-tertiary: var(--tertiary);
+  --color-tertiary-container: var(--tertiary-container);
   --color-tertiary-fixed: #e5e2e1;
   --color-tertiary-fixed-dim: #c8c6c5;
-  --color-on-tertiary: #ffffff;
-  --color-on-tertiary-container: #6c6a6a;
+  --color-on-tertiary: var(--on-tertiary);
+  --color-on-tertiary-container: var(--on-tertiary-container);
 
-  --color-error: #ba1a1a;
-  --color-error-container: #ffdad6;
-  --color-on-error: #ffffff;
-  --color-on-error-container: #93000a;
+  --color-error: var(--error);
+  --color-error-container: var(--error-container);
+  --color-on-error: var(--on-error);
+  --color-on-error-container: var(--on-error-container);
 
   --color-surface: var(--surface);
   --color-surface-bright: var(--surface-bright);
@@ -121,12 +179,10 @@
   --color-outline: var(--outline);
   --color-outline-variant: var(--outline-variant);
 
-  --color-inverse-surface: #30312e;
-  --color-inverse-on-surface: #f3f1ec;
-  --color-inverse-primary: #abd600;
+  --color-inverse-surface: var(--inverse-surface);
+  --color-inverse-on-surface: var(--inverse-on-surface);
+  --color-inverse-primary: var(--action);
 
-  --color-lima: #ccff00;
-  --color-lavanda: #c6b7ff;
 
   --spacing-unit: 4px;
   --spacing-stack-sm: 8px;
@@ -172,8 +228,8 @@
 .scrollbar-hide::-webkit-scrollbar { display: none; }
 
 .course-card:hover .arrow-btn {
-  background-color: #ccff00;
-  color: #1b1c19;
+  background-color: var(--action);
+  color: var(--on-action);
 }
 
 /* Shared course page layout. Public pages use viewport queries; editor previews
@@ -296,7 +352,7 @@
 }
 
 *:focus-visible {
-  outline: 2px solid #ccff00;
+  outline: 2px solid var(--focus);
   outline-offset: 2px;
 }
 
@@ -321,7 +377,7 @@
 .tape-accent {
   width: 60px;
   height: 24px;
-  background: rgba(198, 183, 255, 0.4);
+  background: color-mix(in srgb, var(--secondary-accent) 40%, transparent);
   position: absolute;
   top: -12px;
   left: 50%;
@@ -335,7 +391,8 @@
 }
 
 .highlighter-lime {
-  background-color: #CCFF00;
+  background-color: var(--action);
+  color: var(--on-action);
   padding: 2px 4px;
 }
 
@@ -352,53 +409,9 @@
   transform: rotate(180deg);
 }
 
-/* Highlighter Lime */
-.highlighter-lime {
-  background-color: #CCFF00;
-  padding: 2px 4px;
-}
-
-/* Handwritten text */
-.handwritten {
-  font-family: 'Bricolage Grotesque', cursive;
-  transform: rotate(-2deg);
-}
-
-/* Polaroid Frame */
-.polaroid-frame {
-  background: white;
-  padding: 12px 12px 48px 12px;
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-  border: 1px solid #E2E2E2;
-  position: relative;
-}
-
-.tape-accent {
-  width: 60px;
-  height: 24px;
-  background: rgba(198, 183, 255, 0.4);
-  position: absolute;
-  top: -12px;
-  left: 50%;
-  transform: translateX(-50%) rotate(-2deg);
-  z-index: 10;
-}
-
-*:focus-visible {
-  outline: 2px solid #ccff00;
-  outline-offset: 2px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
 html, body {
+  background: var(--surface);
+  color: var(--on-surface);
   margin: 0;
   min-height: 100vh;
   max-width: 100vw;
@@ -410,3 +423,24 @@ html, body {
   width: 100%;
   overflow-x: hidden;
 }
+
+/* Paired control colors also cover native controls in feature-owned forms. */
+@layer base {
+  input, select, textarea {
+    accent-color: var(--primary);
+  }
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]), select, textarea {
+    background-color: var(--card);
+    color: var(--on-surface);
+    border-color: var(--outline);
+  }
+  input::placeholder, textarea::placeholder { color: var(--on-surface-variant); }
+}
+.action-shadow { box-shadow: var(--action-shadow); }
+/* Visible on both pale and dark surfaces, independent of utility resets. */
+:where(button, a, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.bg-inverse-surface, .bg-promo { --focus: var(--action); }

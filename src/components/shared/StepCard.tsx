@@ -6,7 +6,7 @@ interface StepCardProps {
 }
 
 export function StepCard({ step }: StepCardProps) {
-  const iconBgClass = step.iconBg === 'lavanda' ? 'bg-lavanda/20' : 'bg-lima/20';
+  const iconBgClass = step.iconBg === 'lavanda' ? 'bg-secondary-accent/20' : 'bg-action/20';
   const iconColorClass = step.iconBg === 'lavanda' ? 'text-secondary' : 'text-on-background';
   return (
     <div className="flex items-start gap-6">

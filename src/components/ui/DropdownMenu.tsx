@@ -39,3 +39,16 @@ export const DropdownMenuItem = forwardRef<
   />
 ));
 DropdownMenuItem.displayName = 'DropdownMenuItem';
+
+export const DropdownMenuRadioGroup = RadixDropdown.RadioGroup;
+export const DropdownMenuItemIndicator = RadixDropdown.ItemIndicator;
+export const DropdownMenuRadioItem = forwardRef<
+  React.ElementRef<typeof RadixDropdown.RadioItem>,
+  React.ComponentPropsWithoutRef<typeof RadixDropdown.RadioItem>
+>(({ className, ...props }, ref) => (
+  <RadixDropdown.RadioItem ref={ref} className={cn(
+    'relative flex cursor-default select-none items-center gap-2 rounded-lg px-3 py-2 text-sm text-on-surface data-[highlighted]:bg-surface-container-high data-[state=checked]:text-primary',
+    className,
+  )} {...props} />
+));
+DropdownMenuRadioItem.displayName = 'DropdownMenuRadioItem';

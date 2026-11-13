@@ -26,9 +26,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             'w-full px-3 py-2 border rounded-lg shadow-sm placeholder:text-on-surface-variant',
             'focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent',
             'disabled:bg-surface-container-low disabled:cursor-not-allowed',
-            'dark:bg-surface-container-high dark:border-outline-variant dark:text-on-surface dark:placeholder:text-on-surface-variant',
+            'bg-card text-on-surface',
             error && 'border-error focus:ring-error',
-            !error && 'border-outline-variant',
+            !error && 'border-outline',
             className
           )}
           aria-invalid={error ? 'true' : 'false'}

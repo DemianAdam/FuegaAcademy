@@ -120,6 +120,6 @@ The purchase flow now enrolls students automatically after a signed Mercado Pago
 
 Passing a manual exam or built-in quiz ends the current run's content access and enables a new purchase. Failed attempts require administrator reopening. Exceptional charges appear in the admin payment area; refunds are performed in Mercado Pago and verified by the application.
 
-`npm run test:e2e` runs five Chromium journeys against an isolated test-only Convex transport on port 3001. Install its browser with `npx playwright install chromium --only-shell`. These tests do not call Mercado Pago or require a deployed backend. Server authorization, grading and payment invariants are exercised separately by `convex-test`; run `npm run check` and `npx tsc --noEmit -p convex/tsconfig.json` for the deterministic gates.
+`npm run test:e2e` runs 17 Chromium scenarios (five purchase journeys and twelve theme checks) against an isolated test-only Convex transport on port 3001. Install its browser with `npx playwright install chromium --only-shell`. These tests do not call Mercado Pago or require a deployed backend. Server authorization, grading and payment invariants are exercised separately by `convex-test`; run `npm run check` and `npx tsc --noEmit -p convex/tsconfig.json` for the deterministic gates.
 
 See [implementation and verification](specs/changes/2026-10-27-simple-course-purchases/verification.md). No migration is provided for obsolete development records.

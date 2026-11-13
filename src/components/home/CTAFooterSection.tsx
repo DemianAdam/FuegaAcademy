@@ -17,10 +17,10 @@ export function CTAFooterSection() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-100px' }}
       transition={{ duration: 0.8 }}
-      className="bg-on-background py-24 px-margin-desktop relative overflow-hidden"
+      className="bg-promo py-24 px-margin-desktop relative overflow-hidden"
       aria-labelledby="cta-footer-heading"
     >
-      <div className="absolute inset-0 opacity-10 pointer-events-none bg-[radial-gradient(circle_at_center,var(--tw-gradient-stops))] from-lima via-transparent to-transparent" aria-hidden="true" />
+      <div className="absolute inset-0 opacity-10 pointer-events-none bg-[radial-gradient(circle_at_center,var(--tw-gradient-stops))] from-action via-transparent to-transparent" aria-hidden="true" />
       <div className="relative z-10 flex flex-col md:flex-row justify-between items-center gap-10">
         <motion.div
           initial={{ opacity: 0, x: -40 }}
@@ -32,7 +32,7 @@ export function CTAFooterSection() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-lima font-bold text-xs uppercase tracking-widest mb-4"
+            className="text-action font-bold text-xs uppercase tracking-widest mb-4"
           >
             Tu Futuro empieza hoy
           </motion.p>
@@ -51,7 +51,7 @@ export function CTAFooterSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="text-surface-dim mb-8"
+            className="text-promo-muted mb-8"
           >
             Sumate a Fuega Academy y empezá hoy.
           </motion.p>
@@ -63,7 +63,7 @@ export function CTAFooterSection() {
           viewport={{ once: true }}
           className="flex flex-col items-center md:items-end gap-6"
         >
-          <Button className="bg-lima text-on-background px-10 py-5 font-medium text-base rounded-full flex items-center gap-2 hover:scale-105 transition-transform shadow-[0_0_20px_rgba(204,255,0,0.3)]">
+          <Button className="bg-action text-on-action px-10 py-5 font-medium text-base rounded-full flex items-center gap-2 hover:scale-105 transition-transform action-shadow">
             Ver Cursos
             <ArrowRight className="w-5 h-5" aria-hidden="true" />
           </Button>

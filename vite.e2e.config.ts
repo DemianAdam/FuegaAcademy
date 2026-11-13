@@ -4,6 +4,7 @@ import path from "node:path";
 export default defineConfig({
   root: path.resolve("e2e/fixture"),
   plugins: [react()],
+  publicDir: path.resolve("public"),
   resolve: {
     alias: [
       {

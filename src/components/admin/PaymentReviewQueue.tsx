@@ -101,7 +101,7 @@ export function PaymentReviewQueue() {
       {orders.map((order) => (
         <article
           key={order._id}
-          className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-4"
+          className="rounded-xl border border-warning/30 bg-warning-container p-4"
         >
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
@@ -110,7 +110,7 @@ export function PaymentReviewQueue() {
                 Estudiante: {order.studentEmail}
               </p>
             </div>
-            <span className="rounded-full bg-amber-500/15 px-2.5 py-1 text-xs font-semibold text-amber-800 dark:text-amber-200">
+            <span className="rounded-full bg-warning-container px-2.5 py-1 text-xs font-semibold text-warning">
               Requiere revisión
             </span>
           </div>
@@ -143,7 +143,7 @@ export function PaymentReviewQueue() {
               </dd>
             </div>
           </dl>
-          <p className="mt-4 border-t border-amber-500/20 pt-3 text-sm text-amber-900 dark:text-amber-100">
+          <p className="mt-4 border-t border-warning/30 pt-3 text-sm text-warning">
             {reasonLabel(order.failureReason)}
           </p>
           {order.externalPaymentId && (

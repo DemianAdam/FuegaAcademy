@@ -1,55 +1,37 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import { ThemeContext, type Theme } from './ThemeContextObject';
+import { themeRuntime } from './themeRuntime';
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>(() => {
-    if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem('fuega-theme') as Theme;
-      if (stored && ['light', 'dark', 'system'].includes(stored)) {
-        return stored;
-      }
-    }
-    return 'system';
-  });
-
-  const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>(() => {
-    if (theme === 'system') {
-      if (typeof window !== 'undefined') {
-        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      }
-      return 'light';
-    }
-    return theme;
-  });
+  const runtime = themeRuntime();
+  const [theme, setThemeState] = useState<Theme>(() => runtime.read());
+  const [resolvedTheme, setResolvedTheme] = useState(() => runtime.resolve(theme));
 
   useEffect(() => {
-    const root = document.documentElement;
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const media = window.matchMedia('(prefers-color-scheme: dark)');
+    const update = () => setResolvedTheme(runtime.apply(theme));
+    update();
+    if (theme !== 'system') return;
+    media.addEventListener('change', update);
+    return () => media.removeEventListener('change', update);
+  }, [theme, runtime]);
 
-    const updateTheme = () => {
-      let resolved: 'light' | 'dark' = 'light';
-      if (theme === 'system') {
-        resolved = mediaQuery.matches ? 'dark' : 'light';
-      } else {
-        resolved = theme;
-      }
-
-      setResolvedTheme(resolved);
-      root.classList.remove('light', 'dark');
-      root.classList.add(resolved);
+  useEffect(() => {
+    const synchronize = (event: StorageEvent) => {
+      if (event.key !== runtime.key && event.key !== null) return;
+      const next = runtime.normalize(event.newValue);
+      setThemeState(next);
+      setResolvedTheme(runtime.apply(next));
     };
+    window.addEventListener('storage', synchronize);
+    return () => window.removeEventListener('storage', synchronize);
+  }, [runtime]);
 
-    updateTheme();
-
-    if (theme === 'system') {
-      mediaQuery.addEventListener('change', updateTheme);
-      return () => mediaQuery.removeEventListener('change', updateTheme);
-    }
-  }, [theme]);
-
-  const setTheme = (newTheme: Theme) => {
-    setThemeState(newTheme);
-    localStorage.setItem('fuega-theme', newTheme);
+  const setTheme = (next: Theme) => {
+    setThemeState(next);
+    setResolvedTheme(runtime.apply(next));
+    try { window.localStorage.setItem(runtime.key, next); }
+    catch { /* The selected theme remains usable for this session. */ }
   };
 
   return (
