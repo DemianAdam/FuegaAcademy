@@ -22,6 +22,7 @@ import type * as enrollments_queries from "../enrollments/queries.js";
 import type * as enrollments_validators from "../enrollments/validators.js";
 import type * as http from "../http.js";
 import type * as learning_functions from "../learning/functions.js";
+import type * as manualTesting_seed from "../manualTesting/seed.js";
 import type * as media_mutations from "../media/mutations.js";
 import type * as modules_validators from "../modules/validators.js";
 import type * as orders_internal from "../orders/internal.js";
@@ -59,6 +60,7 @@ declare const fullApi: ApiFromModules<{
   "enrollments/validators": typeof enrollments_validators;
   http: typeof http;
   "learning/functions": typeof learning_functions;
+  "manualTesting/seed": typeof manualTesting_seed;
   "media/mutations": typeof media_mutations;
   "modules/validators": typeof modules_validators;
   "orders/internal": typeof orders_internal;

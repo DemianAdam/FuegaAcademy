@@ -6,6 +6,8 @@ Fuega Academy is a React 19, TypeScript, Vite, and Convex application for Spanis
 
 Requirements: Node.js 22+, npm, and access to the Fuega Convex development deployment.
 
+For testing on your computer against the existing development database, follow the [manual-testing guide](docs/manual-testing.md). It includes prepared course links, isolated fixture sessions, account setup and the ordered checklist.
+
 ```bash
 npm ci
 npx convex dev
@@ -97,7 +99,7 @@ npm run test:bundle
 npm run test:e2e
 ```
 
-`npm run check` runs every deterministic static/unit/build gate except Playwright. Playwright needs a reachable development Convex deployment and never performs a real payment.
+`npm run check` runs every deterministic static/unit/build gate except Playwright. The current Playwright suite uses an isolated test-only Convex transport and never performs a real payment; it does not verify the deployed integration. Run these commands sequentially so Playwright artifact cleanup does not race with lint discovery.
 
 ## Deterministic development data
 
@@ -109,7 +111,7 @@ npx convex run teachers/seed:seedTeachers
 npx convex run courses/seed:seedCourses
 ```
 
-The seeds upsert Spanish course and teacher content, modules, and stable schedules. They are development-only.
+These generic seeds upsert matching course and teacher content, modules and schedules. For a manual-testing round that must preserve current records, use `npm run prepare:manual -- --session <name>` instead, after syncing development functions; see the [manual-testing guide](docs/manual-testing.md).
 
 
 ## Course purchases and learning (development)

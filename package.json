@@ -7,6 +7,7 @@
     "dev": "vite",
     "dev:public": "node scripts/start-public-dev.mjs",
     "tunnel": "node scripts/start-tunnel.mjs",
+    "prepare:manual": "node scripts/prepare-manual.mjs",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "lint:ox": "oxlint",
